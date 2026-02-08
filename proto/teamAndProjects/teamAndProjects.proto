@@ -1,0 +1,386 @@
+syntax = "proto3";
+
+package workspace.v1;
+
+option go_package = "evggo.workspace.v1;workspacev1";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+
+message Date {
+  int32 year = 1;   // e.g. 2026
+  int32 month = 2;  // 1..12
+  int32 day = 3;    // 1..31
+}
+
+
+
+enum ProjectStatus {
+  PROJECT_STATUS_UNSPECIFIED = 0;
+  PROJECT_STATUS_NOT_STARTED = 1;
+  PROJECT_STATUS_IN_PROGRESS = 2;
+  PROJECT_STATUS_DONE = 3;
+  PROJECT_STATUS_ON_HOLD = 4;
+}
+
+enum JoinRequestStatus {
+  JOIN_REQUEST_STATUS_UNSPECIFIED = 0;
+  JOIN_REQUEST_STATUS_PENDING = 1;
+  JOIN_REQUEST_STATUS_APPROVED = 2;
+  JOIN_REQUEST_STATUS_REJECTED = 3;
+  JOIN_REQUEST_STATUS_CANCELLED = 4;
+}
+
+// Права участника проекта
+// manager_rights — суперправо: может выдавать/отнимать любые права
+message ProjectRights {
+  bool manager_rights = 1;
+  bool manager_member = 2;
+  bool manager_projects = 3;
+  bool manager_tasks = 4;
+}
+
+message Team {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool is_invitable = 4;
+  bool is_joinable = 5;
+
+  string founder_id = 6;         // UUID
+  string lead_id = 7;            // UUID, может быть пустым
+
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+}
+
+message TeamMember {
+  string team_id = 1;            // UUID
+  string user_id = 2;            // UUID
+  string duties = 3;
+
+  google.protobuf.Timestamp joined_at = 4;
+}
+
+message Project {
+  string id = 1;                 // UUID
+  string team_id = 2;            // UUID
+  string creator_id = 3;         // UUID
+
+  string name = 4;
+  string description = 5;
+
+  ProjectStatus status = 6;
+  bool is_open = 7;
+
+  Date started_at = 8;
+  Date finished_at = 9;          // может быть нулевой
+
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+}
+
+
+message ProjectPublic {
+  string id = 1;                 // UUID
+  string team_id = 2;            // UUID
+
+  string name = 3;
+  string description = 4;
+  ProjectStatus status = 5;
+  bool is_open = 6;
+
+  Date started_at = 7;
+  Date finished_at = 8;          // nullable на уровне БД
+
+  google.protobuf.Timestamp created_at = 9;
+}
+
+message ProjectMember {
+  string project_id = 1;         // UUID
+  string user_id = 2;            // UUID
+  ProjectRights rights = 3;
+}
+
+// JoinRequest к проекту пользователь просится в проект
+message ProjectJoinRequest {
+  string id = 1;                 // UUID
+  string project_id = 2;         // UUID
+  string requester_id = 3;       // UUID
+
+  string message = 4;
+  JoinRequestStatus status = 5;
+
+  string decided_by = 6;         // UUID
+  google.protobuf.Timestamp decided_at = 7;
+
+  google.protobuf.Timestamp created_at = 8;
+}
+
+
+
+service Teams {
+  // Создание команды. Обычно создатель становится founder_id
+  rpc CreateTeam(CreateTeamRequest) returns (Team);
+
+  rpc GetTeam(GetTeamRequest) returns (Team);
+
+  // Частичный апдейт команды
+  rpc UpdateTeam(UpdateTeamRequest) returns (Team);
+
+  rpc DeleteTeam(DeleteTeamRequest) returns (google.protobuf.Empty);
+
+  // Список команд
+  rpc ListTeams(ListTeamsRequest) returns (ListTeamsResponse);
+
+  // Участники команды
+  rpc ListTeamMembers(ListTeamMembersRequest) returns (ListTeamMembersResponse);
+
+  // Обновление duties участника команды (частично)
+  rpc UpdateTeamMember(UpdateTeamMemberRequest) returns (TeamMember);
+
+  rpc RemoveTeamMember(RemoveTeamMemberRequest) returns (google.protobuf.Empty);
+}
+
+message CreateTeamRequest {
+  string name = 1;
+  string description = 2;
+  bool is_invitable = 3;
+  bool is_joinable = 4;
+  string lead_id = 5; // опционально
+}
+
+message GetTeamRequest {
+  string team_id = 1;
+}
+
+message UpdateTeamRequest {
+  string team_id = 1;
+
+  optional string name = 2;
+  optional string description = 3;
+  optional bool is_invitable = 4;
+  optional bool is_joinable = 5;
+  optional string lead_id = 6; // "" => очистить
+}
+
+message DeleteTeamRequest {
+  string team_id = 1;
+}
+
+message ListTeamsRequest {
+  string query = 1;        // поиск по названию
+  bool only_my = 2;        // только команды, где я состою
+  int32 page_size = 3;     // 10..100
+  string page_token = 4;   // cursor
+}
+
+message ListTeamsResponse {
+  repeated Team teams = 1;
+  string next_page_token = 2;
+}
+
+message ListTeamMembersRequest {
+  string team_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListTeamMembersResponse {
+  repeated TeamMember members = 1;
+  string next_page_token = 2;
+}
+
+message UpdateTeamMemberRequest {
+  string team_id = 1;
+  string user_id = 2;
+  optional string duties = 3;
+}
+
+message RemoveTeamMemberRequest {
+  string team_id = 1;
+  string user_id = 2;
+}
+
+
+service Projects {
+  // Создать проект под конкретной командой
+  // Создатель автоматически становится project_member с полными правами
+  rpc CreateProject(CreateProjectRequest) returns (Project);
+
+  rpc GetProject(GetProjectRequest) returns (Project);
+
+  // Частичный апдейт проекта
+  rpc UpdateProject(UpdateProjectRequest) returns (Project);
+
+  rpc DeleteProject(DeleteProjectRequest) returns (google.protobuf.Empty);
+
+  // Список проектов для внутренних страниц: мои проекты, проекты команды
+  rpc ListProjects(ListProjectsRequest) returns (ListProjectsResponse);
+
+  // Публичный листинг проектов для поиска (главный сценарий)
+  // Обычно отдаёт только is_open=true
+  rpc ListPublicProjects(ListPublicProjectsRequest) returns (ListPublicProjectsResponse);
+
+  // Участники проекта
+  rpc ListProjectMembers(ListProjectMembersRequest) returns (ListProjectMembersResponse);
+
+  // Прямое добавление участника в проект (для менеджеров проекта)
+  rpc AddProjectMember(AddProjectMemberRequest) returns (ProjectMember);
+
+  // Удаление участника из проекта (для менеджеров проекта)
+  // БД-триггер может удалить team_member, если у пользователя не осталось проектов этой команды
+  rpc RemoveProjectMember(RemoveProjectMemberRequest) returns (google.protobuf.Empty);
+
+  // Выдача/обновление прав участника проекта (только manager_rights)
+  rpc UpdateProjectMemberRights(UpdateProjectMemberRightsRequest) returns (ProjectMember);
+
+  // Пользователь подает заявку на вступление в проект
+  rpc RequestJoinProject(RequestJoinProjectRequest) returns (ProjectJoinRequest);
+
+  // Пользователь отменяет свою pending заявку
+  rpc CancelJoinProject(CancelJoinProjectRequest) returns (ProjectJoinRequest);
+
+  // Менеджеры проекта смотрят заявки
+  rpc ListProjectJoinRequests(ListProjectJoinRequestsRequest) returns (ListProjectJoinRequestsResponse);
+
+  // Менеджер проекта одобряет заявку: создаём project_member и помечаем request approved
+  rpc ApproveProjectJoinRequest(ApproveProjectJoinRequestRequest) returns (ProjectJoinRequest);
+
+  // Менеджер проекта отклоняет заявку
+  rpc RejectProjectJoinRequest(RejectProjectJoinRequestRequest) returns (ProjectJoinRequest);
+}
+
+message CreateProjectRequest {
+  string team_id = 1;         // UUID
+  string name = 2;
+  string description = 3;
+
+  ProjectStatus status = 4;
+  bool is_open = 5;
+
+  Date started_at = 6;
+  Date finished_at = 7;       // если year=0 => NULL
+}
+
+message GetProjectRequest {
+  string project_id = 1;
+}
+
+message UpdateProjectRequest {
+  string project_id = 1;
+
+  optional string name = 2;
+  optional string description = 3;
+  optional ProjectStatus status = 4;
+  optional bool is_open = 5;
+
+  optional Date started_at = 6;
+
+  // finished_at:
+  // - если поле не присутствует => не трогаем
+  // - если присутствует и year=0 => очищаем (NULL)
+  // - если присутствует и year>0 => задаём дату
+  optional Date finished_at = 7;
+}
+
+message DeleteProjectRequest {
+  string project_id = 1;
+}
+
+message ListProjectsRequest {
+  string team_id = 1;        // опционально
+  string creator_id = 2;     // опционально
+  ProjectStatus status = 3;  // опционально (UNSPECIFIED => игнор)
+  bool only_open = 4;
+  string query = 5;
+
+  int32 page_size = 6;
+  string page_token = 7;
+}
+
+message ListProjectsResponse {
+  repeated Project projects = 1;
+  string next_page_token = 2;
+}
+
+message ListPublicProjectsRequest {
+  string query = 1;
+  ProjectStatus status = 2; // фильтр, UNSPECIFIED => игнор
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message ListPublicProjectsResponse {
+  repeated ProjectPublic projects = 1;
+  string next_page_token = 2;
+}
+
+message ListProjectMembersRequest {
+  string project_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListProjectMembersResponse {
+  repeated ProjectMember members = 1;
+  string next_page_token = 2;
+}
+
+message AddProjectMemberRequest {
+  string project_id = 1;
+  string user_id = 2;
+  ProjectRights rights = 3; // можно пустые (все false)
+}
+
+message RemoveProjectMemberRequest {
+  string project_id = 1;
+  string user_id = 2;
+}
+
+message UpdateProjectMemberRightsRequest {
+  string project_id = 1;
+  string user_id = 2;
+
+  // Частичный патч прав
+  optional bool manager_rights = 3;
+  optional bool manager_member = 4;
+  optional bool manager_projects = 5;
+  optional bool manager_tasks = 6;
+}
+
+
+message RequestJoinProjectRequest {
+  string project_id = 1;
+  string message = 2;
+}
+
+message CancelJoinProjectRequest {
+  string request_id = 1;
+}
+
+message ListProjectJoinRequestsRequest {
+  string project_id = 1;
+  JoinRequestStatus status = 2; // UNSPECIFIED => все
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message ListProjectJoinRequestsResponse {
+  repeated ProjectJoinRequest requests = 1;
+  string next_page_token = 2;
+}
+
+message ApproveProjectJoinRequestRequest {
+  string request_id = 1;
+
+  // Права, которые выдаем новому участнику при approve
+  // Если не задано — все false
+  ProjectRights initial_rights = 2;
+}
+
+message RejectProjectJoinRequestRequest {
+  string request_id = 1;
+  string reason = 2; // опционально
+}

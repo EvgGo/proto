@@ -1,0 +1,222 @@
+syntax = "proto3";
+
+package auth;
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "dgeko.sso.v1;ssov1";
+
+service Auth {
+
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+
+  rpc Login (LoginRequest) returns (LoginResponse);
+
+  // Обновление access по refresh (ротация refresh внутри).
+  rpc Refresh(RefreshRequest) returns (RefreshResponse);
+
+  // Выход из одной сессии (по session_id) — полезно для «Logout current device».
+  rpc Logout(LogoutRequest) returns (google.protobuf.Empty);
+
+  // Смена пароля залогинен
+  rpc ChangePassword(ChangePasswordRequest) returns (google.protobuf.Empty);
+
+  // Забыл пароль — запрос на сброс (присылаем токен на e-mail).
+  rpc ForgotPassword(ForgotPasswordRequest) returns (google.protobuf.Empty);
+
+  // Сброс пароля по токену из письма.
+  rpc ResetPassword(ResetPasswordRequest) returns (google.protobuf.Empty);
+
+  rpc ResendVerification(ResendVerificationRequest) returns (google.protobuf.Empty);
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string firstName = 3;
+  string lastName = 4;
+  string phone = 5;
+}
+
+message RegisterResponse {
+  string status = 1;
+  TokenPair tokens = 2;
+}
+
+message TokenPair {
+  string access_token = 1;
+  int64  access_expires_at = 2;
+  string refresh_token = 3;
+  int64  refresh_expires_at = 4;
+  string session_id = 5;
+  int32  token_version = 6;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string status = 1;
+  TokenPair tokens = 2;
+}
+
+message RefreshRequest {
+  // Gateway может доставать refresh из HttpOnly cookie и прокидывать его сюда (или оставить пустым).
+  // Если пусто, сервис может прочитать refresh из метаданных/куки на gateway-слое
+  string refresh_token = 1;
+  string session_id    = 2; // опционально: если хотите адресно обновлять конкретную сессию
+}
+
+message RefreshResponse {
+  string access_token      = 1;
+  int64  access_expires_at = 2; // unix seconds
+  string refresh_token     = 3; // можно возвращать; gateway уберёт в cookie
+  int64  refresh_expires_at = 4;
+  string session_id        = 5;
+  int32  token_version     = 6;
+}
+
+message LogoutRequest {
+  string session_id = 1;
+}
+
+message ResendVerificationRequest {
+  string email = 1;
+}
+
+message ChangePasswordRequest {
+  string current_password = 1;
+  string new_password     = 2;
+}
+
+message ForgotPasswordRequest {
+  string email = 1;
+}
+
+message ResetPasswordRequest {
+  string email        = 1;
+  string reset_token  = 2;
+  string new_password = 3;
+}
+
+service UserProfile {
+  // Профиль текущего пользователя (авторизация обязательна).
+  rpc GetMe(google.protobuf.Empty) returns (User);
+
+  // Обновление профиля текущего пользователя — частичный апдейт.
+  rpc UpdateMe(UpdateMeRequest) returns (User);
+
+  // Публичный профиль по user_id , скрытые поля не возвращаем
+  rpc GetProfile(GetProfileRequest) returns (PublicUser);
+
+  // Поиск/листинг пользователей
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+}
+
+message User {
+  string id = 1;
+  string first_name = 2;
+  string last_name  = 3;
+  string email      = 4; // у себя можно показывать email
+  string phone      = 5;
+  string about      = 6;
+  map<string, string> competence_levels = 7;
+  string reviews = 8;
+  bool is_user_open_suggestions = 9;
+  bool is_profile_hidden = 10;
+  bool is_banned = 11;
+  google.protobuf.Timestamp registered_at = 12;
+  google.protobuf.Timestamp created_at = 13;
+  google.protobuf.Timestamp updated_at = 14;
+}
+
+// Публичная проекция.
+message PublicUser {
+  string id = 1;
+  string first_name = 2;
+  string last_name  = 3;
+  string about      = 4;
+  map<string, string> competence_levels = 5;
+  string reviews = 6;
+  bool is_user_open_suggestions = 7;
+}
+
+message GetProfileRequest {
+  string user_id = 1;
+}
+
+
+message UpdateMeRequest {
+  optional string first_name = 1;
+  optional string last_name  = 2;
+  optional string phone      = 3;
+  optional string about      = 4;
+  // Если поле присутствует — заменяем всю карту. Нужен частичный апдейт — выносите отдельную операцию.
+  map<string, string> competence_levels = 5;
+  optional bool is_user_open_suggestions = 6;
+  optional bool is_profile_hidden = 7;
+}
+
+message ListUsersRequest {
+  string query = 1;       // опционально: поиск по имени/скиллам
+  int32  page_size = 2;   // 10..100
+  string page_token = 3;  // для курсора
+
+  // Фильтр по навыкам: список skill_id из каталога skills.
+  repeated string skill_ids = 4;
+
+  // Только пользователи, которые открыты к предложениям.
+  bool open_suggestions_only = 5;
+}
+
+message ListUsersResponse {
+  repeated PublicUser users = 1;
+  string next_page_token = 2;
+}
+
+service Skills {
+  // Каталог навыков (публично).
+  rpc ListSkills(ListSkillsRequest) returns (ListSkillsResponse);
+
+  // Получить навык по id.
+  rpc GetSkill(GetSkillRequest) returns (Skill);
+
+  // Создать навык - админ.
+  rpc CreateSkill(CreateSkillRequest) returns (Skill);
+
+  // Удалить навык - админ.
+  rpc DeleteSkill(DeleteSkillRequest) returns (google.protobuf.Empty);
+}
+
+message Skill {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3; // опционально (если добавишь поле в БД)
+}
+
+message GetSkillRequest {
+  string skill_id = 1;
+}
+
+message CreateSkillRequest {
+  string name = 1; // уникален
+}
+
+message DeleteSkillRequest {
+  string skill_id = 1;
+}
+
+message ListSkillsRequest {
+  // Поиск по названию навыка (ILIKE/startsWith).
+  string query = 1;
+
+  int32  page_size = 2;   // 10..100
+  string page_token = 3;  // cursor/offset token
+}
+
+message ListSkillsResponse {
+  repeated Skill skills = 1;
+  string next_page_token = 2;
+}
