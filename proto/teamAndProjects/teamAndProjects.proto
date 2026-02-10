@@ -5,7 +5,6 @@ package workspace.v1;
 option go_package = "evggo.workspace.v1;workspacev1";
 
 import "google/protobuf/empty.proto";
-import "google/protobuf/timestamp.proto";
 
 
 message Date {
@@ -51,8 +50,8 @@ message Team {
   string founder_id = 6;         // UUID
   string lead_id = 7;            // UUID, может быть пустым
 
-  google.protobuf.Timestamp created_at = 8;
-  google.protobuf.Timestamp updated_at = 9;
+  Date created_at = 8;
+  Date updated_at = 9;
 }
 
 message TeamMember {
@@ -60,7 +59,7 @@ message TeamMember {
   string user_id = 2;            // UUID
   string duties = 3;
 
-  google.protobuf.Timestamp joined_at = 4;
+  Date joined_at = 4;
 }
 
 message Project {
@@ -75,10 +74,10 @@ message Project {
   bool is_open = 7;
 
   Date started_at = 8;
-  Date finished_at = 9;          // может быть нулевой
+  optional Date finished_at = 9;          // может быть нулевой
 
-  google.protobuf.Timestamp created_at = 10;
-  google.protobuf.Timestamp updated_at = 11;
+  Date created_at = 10;
+  Date updated_at = 11;
 }
 
 
@@ -92,9 +91,9 @@ message ProjectPublic {
   bool is_open = 6;
 
   Date started_at = 7;
-  Date finished_at = 8;          // nullable на уровне БД
+  optional Date finished_at = 8;          // nullable на уровне БД
 
-  google.protobuf.Timestamp created_at = 9;
+  Date created_at = 9;
 }
 
 message ProjectMember {
@@ -112,10 +111,10 @@ message ProjectJoinRequest {
   string message = 4;
   JoinRequestStatus status = 5;
 
-  string decided_by = 6;         // UUID
-  google.protobuf.Timestamp decided_at = 7;
+  optional string decided_by = 6;         // UUID
+  optional Date decided_at = 7;
 
-  google.protobuf.Timestamp created_at = 8;
+  Date created_at = 8;
 }
 
 
@@ -205,7 +204,7 @@ message RemoveTeamMemberRequest {
 
 
 service Projects {
-  // Создать проект под конкретной командой
+  // Создать проект и новую команду автоматически
   // Создатель автоматически становится project_member с полными правами
   rpc CreateProject(CreateProjectRequest) returns (Project);
 
@@ -250,18 +249,27 @@ service Projects {
 
   // Менеджер проекта отклоняет заявку
   rpc RejectProjectJoinRequest(RejectProjectJoinRequestRequest) returns (ProjectJoinRequest);
+
+  // SetOpen - меняет значение поля is_open у проекта
+  rpc SetProjectOpen(SetProjectOpenRequest) returns (Project);
 }
 
 message CreateProjectRequest {
-  string team_id = 1;         // UUID
+  // раньше было: string team_id = 1;
+  reserved 1;
+  reserved "team_id";
+
   string name = 2;
   string description = 3;
-
   ProjectStatus status = 4;
   bool is_open = 5;
 
+
   Date started_at = 6;
-  Date finished_at = 7;       // если year=0 => NULL
+  optional Date finished_at = 7;
+
+  // новое имя команды. Если пусто сервер сгенерирует
+  string team_name = 8;
 }
 
 message GetProjectRequest {
@@ -383,4 +391,9 @@ message ApproveProjectJoinRequestRequest {
 message RejectProjectJoinRequestRequest {
   string request_id = 1;
   string reason = 2; // опционально
+}
+
+message SetProjectOpenRequest {
+  string project_id = 1; // ID проекта, для которого меняем статус
+  bool is_open = 2;      // Новый статус проекта (true/false)
 }

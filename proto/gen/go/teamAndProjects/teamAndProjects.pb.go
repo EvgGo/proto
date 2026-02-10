@@ -10,7 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -265,15 +265,15 @@ func (x *ProjectRights) GetManagerTasks() bool {
 
 type Team struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // UUID
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	IsInvitable   bool                   `protobuf:"varint,4,opt,name=is_invitable,json=isInvitable,proto3" json:"is_invitable,omitempty"`
 	IsJoinable    bool                   `protobuf:"varint,5,opt,name=is_joinable,json=isJoinable,proto3" json:"is_joinable,omitempty"`
 	FounderId     string                 `protobuf:"bytes,6,opt,name=founder_id,json=founderId,proto3" json:"founder_id,omitempty"` // UUID
 	LeadId        string                 `protobuf:"bytes,7,opt,name=lead_id,json=leadId,proto3" json:"lead_id,omitempty"`          // UUID, может быть пустым
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	CreatedAt     *Date                  `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *Date                  `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -357,14 +357,14 @@ func (x *Team) GetLeadId() string {
 	return ""
 }
 
-func (x *Team) GetCreatedAt() *timestamppb.Timestamp {
+func (x *Team) GetCreatedAt() *Date {
 	if x != nil {
 		return x.CreatedAt
 	}
 	return nil
 }
 
-func (x *Team) GetUpdatedAt() *timestamppb.Timestamp {
+func (x *Team) GetUpdatedAt() *Date {
 	if x != nil {
 		return x.UpdatedAt
 	}
@@ -376,7 +376,7 @@ type TeamMember struct {
 	TeamId        string                 `protobuf:"bytes,1,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"` // UUID
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // UUID
 	Duties        string                 `protobuf:"bytes,3,opt,name=duties,proto3" json:"duties,omitempty"`
-	JoinedAt      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=joined_at,json=joinedAt,proto3" json:"joined_at,omitempty"`
+	JoinedAt      *Date                  `protobuf:"bytes,4,opt,name=joined_at,json=joinedAt,proto3" json:"joined_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -432,7 +432,7 @@ func (x *TeamMember) GetDuties() string {
 	return ""
 }
 
-func (x *TeamMember) GetJoinedAt() *timestamppb.Timestamp {
+func (x *TeamMember) GetJoinedAt() *Date {
 	if x != nil {
 		return x.JoinedAt
 	}
@@ -449,9 +449,9 @@ type Project struct {
 	Status        ProjectStatus          `protobuf:"varint,6,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"`
 	IsOpen        bool                   `protobuf:"varint,7,opt,name=is_open,json=isOpen,proto3" json:"is_open,omitempty"`
 	StartedAt     *Date                  `protobuf:"bytes,8,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
-	FinishedAt    *Date                  `protobuf:"bytes,9,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"` // может быть нулевой
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	FinishedAt    *Date                  `protobuf:"bytes,9,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"` // может быть нулевой
+	CreatedAt     *Date                  `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *Date                  `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -549,14 +549,14 @@ func (x *Project) GetFinishedAt() *Date {
 	return nil
 }
 
-func (x *Project) GetCreatedAt() *timestamppb.Timestamp {
+func (x *Project) GetCreatedAt() *Date {
 	if x != nil {
 		return x.CreatedAt
 	}
 	return nil
 }
 
-func (x *Project) GetUpdatedAt() *timestamppb.Timestamp {
+func (x *Project) GetUpdatedAt() *Date {
 	if x != nil {
 		return x.UpdatedAt
 	}
@@ -572,8 +572,8 @@ type ProjectPublic struct {
 	Status        ProjectStatus          `protobuf:"varint,5,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"`
 	IsOpen        bool                   `protobuf:"varint,6,opt,name=is_open,json=isOpen,proto3" json:"is_open,omitempty"`
 	StartedAt     *Date                  `protobuf:"bytes,7,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
-	FinishedAt    *Date                  `protobuf:"bytes,8,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"` // nullable на уровне БД
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	FinishedAt    *Date                  `protobuf:"bytes,8,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"` // nullable на уровне БД
+	CreatedAt     *Date                  `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -664,7 +664,7 @@ func (x *ProjectPublic) GetFinishedAt() *Date {
 	return nil
 }
 
-func (x *ProjectPublic) GetCreatedAt() *timestamppb.Timestamp {
+func (x *ProjectPublic) GetCreatedAt() *Date {
 	if x != nil {
 		return x.CreatedAt
 	}
@@ -739,9 +739,9 @@ type ProjectJoinRequest struct {
 	RequesterId   string                 `protobuf:"bytes,3,opt,name=requester_id,json=requesterId,proto3" json:"requester_id,omitempty"` // UUID
 	Message       string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
 	Status        JoinRequestStatus      `protobuf:"varint,5,opt,name=status,proto3,enum=workspace.v1.JoinRequestStatus" json:"status,omitempty"`
-	DecidedBy     string                 `protobuf:"bytes,6,opt,name=decided_by,json=decidedBy,proto3" json:"decided_by,omitempty"` // UUID
-	DecidedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=decided_at,json=decidedAt,proto3" json:"decided_at,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	DecidedBy     *string                `protobuf:"bytes,6,opt,name=decided_by,json=decidedBy,proto3,oneof" json:"decided_by,omitempty"` // UUID
+	DecidedAt     *Date                  `protobuf:"bytes,7,opt,name=decided_at,json=decidedAt,proto3,oneof" json:"decided_at,omitempty"`
+	CreatedAt     *Date                  `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -812,20 +812,20 @@ func (x *ProjectJoinRequest) GetStatus() JoinRequestStatus {
 }
 
 func (x *ProjectJoinRequest) GetDecidedBy() string {
-	if x != nil {
-		return x.DecidedBy
+	if x != nil && x.DecidedBy != nil {
+		return *x.DecidedBy
 	}
 	return ""
 }
 
-func (x *ProjectJoinRequest) GetDecidedAt() *timestamppb.Timestamp {
+func (x *ProjectJoinRequest) GetDecidedAt() *Date {
 	if x != nil {
 		return x.DecidedAt
 	}
 	return nil
 }
 
-func (x *ProjectJoinRequest) GetCreatedAt() *timestamppb.Timestamp {
+func (x *ProjectJoinRequest) GetCreatedAt() *Date {
 	if x != nil {
 		return x.CreatedAt
 	}
@@ -1425,14 +1425,15 @@ func (x *RemoveTeamMemberRequest) GetUserId() string {
 }
 
 type CreateProjectRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TeamId        string                 `protobuf:"bytes,1,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"` // UUID
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Status        ProjectStatus          `protobuf:"varint,4,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"`
-	IsOpen        bool                   `protobuf:"varint,5,opt,name=is_open,json=isOpen,proto3" json:"is_open,omitempty"`
-	StartedAt     *Date                  `protobuf:"bytes,6,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
-	FinishedAt    *Date                  `protobuf:"bytes,7,opt,name=finished_at,json=finishedAt,proto3" json:"finished_at,omitempty"` // если year=0 => NULL
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Name        string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Status      ProjectStatus          `protobuf:"varint,4,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"`
+	IsOpen      bool                   `protobuf:"varint,5,opt,name=is_open,json=isOpen,proto3" json:"is_open,omitempty"`
+	StartedAt   *Date                  `protobuf:"bytes,6,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	FinishedAt  *Date                  `protobuf:"bytes,7,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"`
+	// новое имя команды. Если пусто сервер сгенерирует
+	TeamName      string `protobuf:"bytes,8,opt,name=team_name,json=teamName,proto3" json:"team_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1465,13 +1466,6 @@ func (x *CreateProjectRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateProjectRequest.ProtoReflect.Descriptor instead.
 func (*CreateProjectRequest) Descriptor() ([]byte, []int) {
 	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *CreateProjectRequest) GetTeamId() string {
-	if x != nil {
-		return x.TeamId
-	}
-	return ""
 }
 
 func (x *CreateProjectRequest) GetName() string {
@@ -1514,6 +1508,13 @@ func (x *CreateProjectRequest) GetFinishedAt() *Date {
 		return x.FinishedAt
 	}
 	return nil
+}
+
+func (x *CreateProjectRequest) GetTeamName() string {
+	if x != nil {
+		return x.TeamName
+	}
+	return ""
 }
 
 type GetProjectRequest struct {
@@ -2595,6 +2596,58 @@ func (x *RejectProjectJoinRequestRequest) GetReason() string {
 	return ""
 }
 
+type SetProjectOpenRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProjectId     string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"` // ID проекта, для которого меняем статус
+	IsOpen        bool                   `protobuf:"varint,2,opt,name=is_open,json=isOpen,proto3" json:"is_open,omitempty"`         // Новый статус проекта (true/false)
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetProjectOpenRequest) Reset() {
+	*x = SetProjectOpenRequest{}
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetProjectOpenRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetProjectOpenRequest) ProtoMessage() {}
+
+func (x *SetProjectOpenRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetProjectOpenRequest.ProtoReflect.Descriptor instead.
+func (*SetProjectOpenRequest) Descriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *SetProjectOpenRequest) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *SetProjectOpenRequest) GetIsOpen() bool {
+	if x != nil {
+		return x.IsOpen
+	}
+	return false
+}
+
 var File_teamAndProjects_teamAndProjects_proto protoreflect.FileDescriptor
 
 const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
@@ -2608,7 +2661,7 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\x0emanager_rights\x18\x01 \x01(\bR\rmanagerRights\x12%\n" +
 	"\x0emanager_member\x18\x02 \x01(\bR\rmanagerMember\x12)\n" +
 	"\x10manager_projects\x18\x03 \x01(\bR\x0fmanagerProjects\x12#\n" +
-	"\rmanager_tasks\x18\x04 \x01(\bR\fmanagerTasks\"\xbe\x02\n" +
+	"\rmanager_tasks\x18\x04 \x01(\bR\fmanagerTasks\"\xae\x02\n" +
 	"\x04Team\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -2618,17 +2671,17 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"isJoinable\x12\x1d\n" +
 	"\n" +
 	"founder_id\x18\x06 \x01(\tR\tfounderId\x12\x17\n" +
-	"\alead_id\x18\a \x01(\tR\x06leadId\x129\n" +
+	"\alead_id\x18\a \x01(\tR\x06leadId\x121\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\b \x01(\v2\x12.workspace.v1.DateR\tcreatedAt\x121\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\x8f\x01\n" +
+	"updated_at\x18\t \x01(\v2\x12.workspace.v1.DateR\tupdatedAt\"\x87\x01\n" +
 	"\n" +
 	"TeamMember\x12\x17\n" +
 	"\ateam_id\x18\x01 \x01(\tR\x06teamId\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x16\n" +
-	"\x06duties\x18\x03 \x01(\tR\x06duties\x127\n" +
-	"\tjoined_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\bjoinedAt\"\xb3\x03\n" +
+	"\x06duties\x18\x03 \x01(\tR\x06duties\x12/\n" +
+	"\tjoined_at\x18\x04 \x01(\v2\x12.workspace.v1.DateR\bjoinedAt\"\xb8\x03\n" +
 	"\aProject\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\ateam_id\x18\x02 \x01(\tR\x06teamId\x12\x1d\n" +
@@ -2639,14 +2692,15 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\x06status\x18\x06 \x01(\x0e2\x1b.workspace.v1.ProjectStatusR\x06status\x12\x17\n" +
 	"\ais_open\x18\a \x01(\bR\x06isOpen\x121\n" +
 	"\n" +
-	"started_at\x18\b \x01(\v2\x12.workspace.v1.DateR\tstartedAt\x123\n" +
-	"\vfinished_at\x18\t \x01(\v2\x12.workspace.v1.DateR\n" +
-	"finishedAt\x129\n" +
+	"started_at\x18\b \x01(\v2\x12.workspace.v1.DateR\tstartedAt\x128\n" +
+	"\vfinished_at\x18\t \x01(\v2\x12.workspace.v1.DateH\x00R\n" +
+	"finishedAt\x88\x01\x01\x121\n" +
 	"\n" +
 	"created_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	" \x01(\v2\x12.workspace.v1.DateR\tcreatedAt\x121\n" +
 	"\n" +
-	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xdf\x02\n" +
+	"updated_at\x18\v \x01(\v2\x12.workspace.v1.DateR\tupdatedAtB\x0e\n" +
+	"\f_finished_at\"\xec\x02\n" +
 	"\rProjectPublic\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\ateam_id\x18\x02 \x01(\tR\x06teamId\x12\x12\n" +
@@ -2655,29 +2709,32 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\x06status\x18\x05 \x01(\x0e2\x1b.workspace.v1.ProjectStatusR\x06status\x12\x17\n" +
 	"\ais_open\x18\x06 \x01(\bR\x06isOpen\x121\n" +
 	"\n" +
-	"started_at\x18\a \x01(\v2\x12.workspace.v1.DateR\tstartedAt\x123\n" +
-	"\vfinished_at\x18\b \x01(\v2\x12.workspace.v1.DateR\n" +
-	"finishedAt\x129\n" +
+	"started_at\x18\a \x01(\v2\x12.workspace.v1.DateR\tstartedAt\x128\n" +
+	"\vfinished_at\x18\b \x01(\v2\x12.workspace.v1.DateH\x00R\n" +
+	"finishedAt\x88\x01\x01\x121\n" +
 	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"|\n" +
+	"created_at\x18\t \x01(\v2\x12.workspace.v1.DateR\tcreatedAtB\x0e\n" +
+	"\f_finished_at\"|\n" +
 	"\rProjectMember\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tR\tprojectId\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x123\n" +
-	"\x06rights\x18\x03 \x01(\v2\x1b.workspace.v1.ProjectRightsR\x06rights\"\xce\x02\n" +
+	"\x06rights\x18\x03 \x01(\v2\x1b.workspace.v1.ProjectRightsR\x06rights\"\xe6\x02\n" +
 	"\x12ProjectJoinRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x02 \x01(\tR\tprojectId\x12!\n" +
 	"\frequester_id\x18\x03 \x01(\tR\vrequesterId\x12\x18\n" +
 	"\amessage\x18\x04 \x01(\tR\amessage\x127\n" +
-	"\x06status\x18\x05 \x01(\x0e2\x1f.workspace.v1.JoinRequestStatusR\x06status\x12\x1d\n" +
+	"\x06status\x18\x05 \x01(\x0e2\x1f.workspace.v1.JoinRequestStatusR\x06status\x12\"\n" +
 	"\n" +
-	"decided_by\x18\x06 \x01(\tR\tdecidedBy\x129\n" +
+	"decided_by\x18\x06 \x01(\tH\x00R\tdecidedBy\x88\x01\x01\x126\n" +
 	"\n" +
-	"decided_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tdecidedAt\x129\n" +
+	"decided_at\x18\a \x01(\v2\x12.workspace.v1.DateH\x01R\tdecidedAt\x88\x01\x01\x121\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xa6\x01\n" +
+	"created_at\x18\b \x01(\v2\x12.workspace.v1.DateR\tcreatedAtB\r\n" +
+	"\v_decided_byB\r\n" +
+	"\v_decided_at\"\xa6\x01\n" +
 	"\x11CreateTeamRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12!\n" +
@@ -2727,17 +2784,18 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\a_duties\"K\n" +
 	"\x17RemoveTeamMemberRequest\x12\x17\n" +
 	"\ateam_id\x18\x01 \x01(\tR\x06teamId\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId\"\x9b\x02\n" +
-	"\x14CreateProjectRequest\x12\x17\n" +
-	"\ateam_id\x18\x01 \x01(\tR\x06teamId\x12\x12\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\"\xc3\x02\n" +
+	"\x14CreateProjectRequest\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x123\n" +
 	"\x06status\x18\x04 \x01(\x0e2\x1b.workspace.v1.ProjectStatusR\x06status\x12\x17\n" +
 	"\ais_open\x18\x05 \x01(\bR\x06isOpen\x121\n" +
 	"\n" +
-	"started_at\x18\x06 \x01(\v2\x12.workspace.v1.DateR\tstartedAt\x123\n" +
-	"\vfinished_at\x18\a \x01(\v2\x12.workspace.v1.DateR\n" +
-	"finishedAt\"2\n" +
+	"started_at\x18\x06 \x01(\v2\x12.workspace.v1.DateR\tstartedAt\x128\n" +
+	"\vfinished_at\x18\a \x01(\v2\x12.workspace.v1.DateH\x00R\n" +
+	"finishedAt\x88\x01\x01\x12\x1b\n" +
+	"\tteam_name\x18\b \x01(\tR\bteamNameB\x0e\n" +
+	"\f_finished_atJ\x04\b\x01\x10\x02R\ateam_id\"2\n" +
 	"\x11GetProjectRequest\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tR\tprojectId\"\x8e\x03\n" +
@@ -2838,7 +2896,11 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\x1fRejectProjectJoinRequestRequest\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12\x16\n" +
-	"\x06reason\x18\x02 \x01(\tR\x06reason*\xa4\x01\n" +
+	"\x06reason\x18\x02 \x01(\tR\x06reason\"O\n" +
+	"\x15SetProjectOpenRequest\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\x12\x17\n" +
+	"\ais_open\x18\x02 \x01(\bR\x06isOpen*\xa4\x01\n" +
 	"\rProjectStatus\x12\x1e\n" +
 	"\x1aPROJECT_STATUS_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aPROJECT_STATUS_NOT_STARTED\x10\x01\x12\x1e\n" +
@@ -2862,7 +2924,7 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\tListTeams\x12\x1e.workspace.v1.ListTeamsRequest\x1a\x1f.workspace.v1.ListTeamsResponse\x12^\n" +
 	"\x0fListTeamMembers\x12$.workspace.v1.ListTeamMembersRequest\x1a%.workspace.v1.ListTeamMembersResponse\x12S\n" +
 	"\x10UpdateTeamMember\x12%.workspace.v1.UpdateTeamMemberRequest\x1a\x18.workspace.v1.TeamMember\x12Q\n" +
-	"\x10RemoveTeamMember\x12%.workspace.v1.RemoveTeamMemberRequest\x1a\x16.google.protobuf.Empty2\x8d\v\n" +
+	"\x10RemoveTeamMember\x12%.workspace.v1.RemoveTeamMemberRequest\x1a\x16.google.protobuf.Empty2\xdb\v\n" +
 	"\bProjects\x12J\n" +
 	"\rCreateProject\x12\".workspace.v1.CreateProjectRequest\x1a\x15.workspace.v1.Project\x12D\n" +
 	"\n" +
@@ -2879,7 +2941,8 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\x11CancelJoinProject\x12&.workspace.v1.CancelJoinProjectRequest\x1a .workspace.v1.ProjectJoinRequest\x12v\n" +
 	"\x17ListProjectJoinRequests\x12,.workspace.v1.ListProjectJoinRequestsRequest\x1a-.workspace.v1.ListProjectJoinRequestsResponse\x12m\n" +
 	"\x19ApproveProjectJoinRequest\x12..workspace.v1.ApproveProjectJoinRequestRequest\x1a .workspace.v1.ProjectJoinRequest\x12k\n" +
-	"\x18RejectProjectJoinRequest\x12-.workspace.v1.RejectProjectJoinRequestRequest\x1a .workspace.v1.ProjectJoinRequestB Z\x1eevggo.workspace.v1;workspacev1b\x06proto3"
+	"\x18RejectProjectJoinRequest\x12-.workspace.v1.RejectProjectJoinRequestRequest\x1a .workspace.v1.ProjectJoinRequest\x12L\n" +
+	"\x0eSetProjectOpen\x12#.workspace.v1.SetProjectOpenRequest\x1a\x15.workspace.v1.ProjectB Z\x1eevggo.workspace.v1;workspacev1b\x06proto3"
 
 var (
 	file_teamAndProjects_teamAndProjects_proto_rawDescOnce sync.Once
@@ -2894,7 +2957,7 @@ func file_teamAndProjects_teamAndProjects_proto_rawDescGZIP() []byte {
 }
 
 var file_teamAndProjects_teamAndProjects_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_teamAndProjects_teamAndProjects_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
+var file_teamAndProjects_teamAndProjects_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
 var file_teamAndProjects_teamAndProjects_proto_goTypes = []any{
 	(ProjectStatus)(0),                       // 0: workspace.v1.ProjectStatus
 	(JoinRequestStatus)(0),                   // 1: workspace.v1.JoinRequestStatus
@@ -2935,26 +2998,26 @@ var file_teamAndProjects_teamAndProjects_proto_goTypes = []any{
 	(*ListProjectJoinRequestsResponse)(nil),  // 36: workspace.v1.ListProjectJoinRequestsResponse
 	(*ApproveProjectJoinRequestRequest)(nil), // 37: workspace.v1.ApproveProjectJoinRequestRequest
 	(*RejectProjectJoinRequestRequest)(nil),  // 38: workspace.v1.RejectProjectJoinRequestRequest
-	(*timestamppb.Timestamp)(nil),            // 39: google.protobuf.Timestamp
+	(*SetProjectOpenRequest)(nil),            // 39: workspace.v1.SetProjectOpenRequest
 	(*emptypb.Empty)(nil),                    // 40: google.protobuf.Empty
 }
 var file_teamAndProjects_teamAndProjects_proto_depIdxs = []int32{
-	39, // 0: workspace.v1.Team.created_at:type_name -> google.protobuf.Timestamp
-	39, // 1: workspace.v1.Team.updated_at:type_name -> google.protobuf.Timestamp
-	39, // 2: workspace.v1.TeamMember.joined_at:type_name -> google.protobuf.Timestamp
+	2,  // 0: workspace.v1.Team.created_at:type_name -> workspace.v1.Date
+	2,  // 1: workspace.v1.Team.updated_at:type_name -> workspace.v1.Date
+	2,  // 2: workspace.v1.TeamMember.joined_at:type_name -> workspace.v1.Date
 	0,  // 3: workspace.v1.Project.status:type_name -> workspace.v1.ProjectStatus
 	2,  // 4: workspace.v1.Project.started_at:type_name -> workspace.v1.Date
 	2,  // 5: workspace.v1.Project.finished_at:type_name -> workspace.v1.Date
-	39, // 6: workspace.v1.Project.created_at:type_name -> google.protobuf.Timestamp
-	39, // 7: workspace.v1.Project.updated_at:type_name -> google.protobuf.Timestamp
+	2,  // 6: workspace.v1.Project.created_at:type_name -> workspace.v1.Date
+	2,  // 7: workspace.v1.Project.updated_at:type_name -> workspace.v1.Date
 	0,  // 8: workspace.v1.ProjectPublic.status:type_name -> workspace.v1.ProjectStatus
 	2,  // 9: workspace.v1.ProjectPublic.started_at:type_name -> workspace.v1.Date
 	2,  // 10: workspace.v1.ProjectPublic.finished_at:type_name -> workspace.v1.Date
-	39, // 11: workspace.v1.ProjectPublic.created_at:type_name -> google.protobuf.Timestamp
+	2,  // 11: workspace.v1.ProjectPublic.created_at:type_name -> workspace.v1.Date
 	3,  // 12: workspace.v1.ProjectMember.rights:type_name -> workspace.v1.ProjectRights
 	1,  // 13: workspace.v1.ProjectJoinRequest.status:type_name -> workspace.v1.JoinRequestStatus
-	39, // 14: workspace.v1.ProjectJoinRequest.decided_at:type_name -> google.protobuf.Timestamp
-	39, // 15: workspace.v1.ProjectJoinRequest.created_at:type_name -> google.protobuf.Timestamp
+	2,  // 14: workspace.v1.ProjectJoinRequest.decided_at:type_name -> workspace.v1.Date
+	2,  // 15: workspace.v1.ProjectJoinRequest.created_at:type_name -> workspace.v1.Date
 	4,  // 16: workspace.v1.ListTeamsResponse.teams:type_name -> workspace.v1.Team
 	5,  // 17: workspace.v1.ListTeamMembersResponse.members:type_name -> workspace.v1.TeamMember
 	0,  // 18: workspace.v1.CreateProjectRequest.status:type_name -> workspace.v1.ProjectStatus
@@ -2995,31 +3058,33 @@ var file_teamAndProjects_teamAndProjects_proto_depIdxs = []int32{
 	35, // 53: workspace.v1.Projects.ListProjectJoinRequests:input_type -> workspace.v1.ListProjectJoinRequestsRequest
 	37, // 54: workspace.v1.Projects.ApproveProjectJoinRequest:input_type -> workspace.v1.ApproveProjectJoinRequestRequest
 	38, // 55: workspace.v1.Projects.RejectProjectJoinRequest:input_type -> workspace.v1.RejectProjectJoinRequestRequest
-	4,  // 56: workspace.v1.Teams.CreateTeam:output_type -> workspace.v1.Team
-	4,  // 57: workspace.v1.Teams.GetTeam:output_type -> workspace.v1.Team
-	4,  // 58: workspace.v1.Teams.UpdateTeam:output_type -> workspace.v1.Team
-	40, // 59: workspace.v1.Teams.DeleteTeam:output_type -> google.protobuf.Empty
-	15, // 60: workspace.v1.Teams.ListTeams:output_type -> workspace.v1.ListTeamsResponse
-	17, // 61: workspace.v1.Teams.ListTeamMembers:output_type -> workspace.v1.ListTeamMembersResponse
-	5,  // 62: workspace.v1.Teams.UpdateTeamMember:output_type -> workspace.v1.TeamMember
-	40, // 63: workspace.v1.Teams.RemoveTeamMember:output_type -> google.protobuf.Empty
-	6,  // 64: workspace.v1.Projects.CreateProject:output_type -> workspace.v1.Project
-	6,  // 65: workspace.v1.Projects.GetProject:output_type -> workspace.v1.Project
-	6,  // 66: workspace.v1.Projects.UpdateProject:output_type -> workspace.v1.Project
-	40, // 67: workspace.v1.Projects.DeleteProject:output_type -> google.protobuf.Empty
-	25, // 68: workspace.v1.Projects.ListProjects:output_type -> workspace.v1.ListProjectsResponse
-	27, // 69: workspace.v1.Projects.ListPublicProjects:output_type -> workspace.v1.ListPublicProjectsResponse
-	29, // 70: workspace.v1.Projects.ListProjectMembers:output_type -> workspace.v1.ListProjectMembersResponse
-	8,  // 71: workspace.v1.Projects.AddProjectMember:output_type -> workspace.v1.ProjectMember
-	40, // 72: workspace.v1.Projects.RemoveProjectMember:output_type -> google.protobuf.Empty
-	8,  // 73: workspace.v1.Projects.UpdateProjectMemberRights:output_type -> workspace.v1.ProjectMember
-	9,  // 74: workspace.v1.Projects.RequestJoinProject:output_type -> workspace.v1.ProjectJoinRequest
-	9,  // 75: workspace.v1.Projects.CancelJoinProject:output_type -> workspace.v1.ProjectJoinRequest
-	36, // 76: workspace.v1.Projects.ListProjectJoinRequests:output_type -> workspace.v1.ListProjectJoinRequestsResponse
-	9,  // 77: workspace.v1.Projects.ApproveProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
-	9,  // 78: workspace.v1.Projects.RejectProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
-	56, // [56:79] is the sub-list for method output_type
-	33, // [33:56] is the sub-list for method input_type
+	39, // 56: workspace.v1.Projects.SetProjectOpen:input_type -> workspace.v1.SetProjectOpenRequest
+	4,  // 57: workspace.v1.Teams.CreateTeam:output_type -> workspace.v1.Team
+	4,  // 58: workspace.v1.Teams.GetTeam:output_type -> workspace.v1.Team
+	4,  // 59: workspace.v1.Teams.UpdateTeam:output_type -> workspace.v1.Team
+	40, // 60: workspace.v1.Teams.DeleteTeam:output_type -> google.protobuf.Empty
+	15, // 61: workspace.v1.Teams.ListTeams:output_type -> workspace.v1.ListTeamsResponse
+	17, // 62: workspace.v1.Teams.ListTeamMembers:output_type -> workspace.v1.ListTeamMembersResponse
+	5,  // 63: workspace.v1.Teams.UpdateTeamMember:output_type -> workspace.v1.TeamMember
+	40, // 64: workspace.v1.Teams.RemoveTeamMember:output_type -> google.protobuf.Empty
+	6,  // 65: workspace.v1.Projects.CreateProject:output_type -> workspace.v1.Project
+	6,  // 66: workspace.v1.Projects.GetProject:output_type -> workspace.v1.Project
+	6,  // 67: workspace.v1.Projects.UpdateProject:output_type -> workspace.v1.Project
+	40, // 68: workspace.v1.Projects.DeleteProject:output_type -> google.protobuf.Empty
+	25, // 69: workspace.v1.Projects.ListProjects:output_type -> workspace.v1.ListProjectsResponse
+	27, // 70: workspace.v1.Projects.ListPublicProjects:output_type -> workspace.v1.ListPublicProjectsResponse
+	29, // 71: workspace.v1.Projects.ListProjectMembers:output_type -> workspace.v1.ListProjectMembersResponse
+	8,  // 72: workspace.v1.Projects.AddProjectMember:output_type -> workspace.v1.ProjectMember
+	40, // 73: workspace.v1.Projects.RemoveProjectMember:output_type -> google.protobuf.Empty
+	8,  // 74: workspace.v1.Projects.UpdateProjectMemberRights:output_type -> workspace.v1.ProjectMember
+	9,  // 75: workspace.v1.Projects.RequestJoinProject:output_type -> workspace.v1.ProjectJoinRequest
+	9,  // 76: workspace.v1.Projects.CancelJoinProject:output_type -> workspace.v1.ProjectJoinRequest
+	36, // 77: workspace.v1.Projects.ListProjectJoinRequests:output_type -> workspace.v1.ListProjectJoinRequestsResponse
+	9,  // 78: workspace.v1.Projects.ApproveProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
+	9,  // 79: workspace.v1.Projects.RejectProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
+	6,  // 80: workspace.v1.Projects.SetProjectOpen:output_type -> workspace.v1.Project
+	57, // [57:81] is the sub-list for method output_type
+	33, // [33:57] is the sub-list for method input_type
 	33, // [33:33] is the sub-list for extension type_name
 	33, // [33:33] is the sub-list for extension extendee
 	0,  // [0:33] is the sub-list for field type_name
@@ -3030,8 +3095,12 @@ func file_teamAndProjects_teamAndProjects_proto_init() {
 	if File_teamAndProjects_teamAndProjects_proto != nil {
 		return
 	}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[4].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[5].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[7].OneofWrappers = []any{}
 	file_teamAndProjects_teamAndProjects_proto_msgTypes[10].OneofWrappers = []any{}
 	file_teamAndProjects_teamAndProjects_proto_msgTypes[16].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[18].OneofWrappers = []any{}
 	file_teamAndProjects_teamAndProjects_proto_msgTypes[20].OneofWrappers = []any{}
 	file_teamAndProjects_teamAndProjects_proto_msgTypes[30].OneofWrappers = []any{}
 	type x struct{}
@@ -3040,7 +3109,7 @@ func file_teamAndProjects_teamAndProjects_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_teamAndProjects_teamAndProjects_proto_rawDesc), len(file_teamAndProjects_teamAndProjects_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   37,
+			NumMessages:   38,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

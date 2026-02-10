@@ -413,13 +413,14 @@ const (
 	Projects_ListProjectJoinRequests_FullMethodName   = "/workspace.v1.Projects/ListProjectJoinRequests"
 	Projects_ApproveProjectJoinRequest_FullMethodName = "/workspace.v1.Projects/ApproveProjectJoinRequest"
 	Projects_RejectProjectJoinRequest_FullMethodName  = "/workspace.v1.Projects/RejectProjectJoinRequest"
+	Projects_SetProjectOpen_FullMethodName            = "/workspace.v1.Projects/SetProjectOpen"
 )
 
 // ProjectsClient is the client API for Projects service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsClient interface {
-	// Создать проект под конкретной командой
+	// Создать проект и новую команду автоматически
 	// Создатель автоматически становится project_member с полными правами
 	CreateProject(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*Project, error)
 	GetProject(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*Project, error)
@@ -450,6 +451,8 @@ type ProjectsClient interface {
 	ApproveProjectJoinRequest(ctx context.Context, in *ApproveProjectJoinRequestRequest, opts ...grpc.CallOption) (*ProjectJoinRequest, error)
 	// Менеджер проекта отклоняет заявку
 	RejectProjectJoinRequest(ctx context.Context, in *RejectProjectJoinRequestRequest, opts ...grpc.CallOption) (*ProjectJoinRequest, error)
+	// SetOpen - меняет значение поля is_open у проекта
+	SetProjectOpen(ctx context.Context, in *SetProjectOpenRequest, opts ...grpc.CallOption) (*Project, error)
 }
 
 type projectsClient struct {
@@ -610,11 +613,21 @@ func (c *projectsClient) RejectProjectJoinRequest(ctx context.Context, in *Rejec
 	return out, nil
 }
 
+func (c *projectsClient) SetProjectOpen(ctx context.Context, in *SetProjectOpenRequest, opts ...grpc.CallOption) (*Project, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Project)
+	err := c.cc.Invoke(ctx, Projects_SetProjectOpen_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectsServer is the server API for Projects service.
 // All implementations must embed UnimplementedProjectsServer
 // for forward compatibility.
 type ProjectsServer interface {
-	// Создать проект под конкретной командой
+	// Создать проект и новую команду автоматически
 	// Создатель автоматически становится project_member с полными правами
 	CreateProject(context.Context, *CreateProjectRequest) (*Project, error)
 	GetProject(context.Context, *GetProjectRequest) (*Project, error)
@@ -645,6 +658,8 @@ type ProjectsServer interface {
 	ApproveProjectJoinRequest(context.Context, *ApproveProjectJoinRequestRequest) (*ProjectJoinRequest, error)
 	// Менеджер проекта отклоняет заявку
 	RejectProjectJoinRequest(context.Context, *RejectProjectJoinRequestRequest) (*ProjectJoinRequest, error)
+	// SetOpen - меняет значение поля is_open у проекта
+	SetProjectOpen(context.Context, *SetProjectOpenRequest) (*Project, error)
 	mustEmbedUnimplementedProjectsServer()
 }
 
@@ -699,6 +714,9 @@ func (UnimplementedProjectsServer) ApproveProjectJoinRequest(context.Context, *A
 }
 func (UnimplementedProjectsServer) RejectProjectJoinRequest(context.Context, *RejectProjectJoinRequestRequest) (*ProjectJoinRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RejectProjectJoinRequest not implemented")
+}
+func (UnimplementedProjectsServer) SetProjectOpen(context.Context, *SetProjectOpenRequest) (*Project, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetProjectOpen not implemented")
 }
 func (UnimplementedProjectsServer) mustEmbedUnimplementedProjectsServer() {}
 func (UnimplementedProjectsServer) testEmbeddedByValue()                  {}
@@ -991,6 +1009,24 @@ func _Projects_RejectProjectJoinRequest_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_SetProjectOpen_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetProjectOpenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).SetProjectOpen(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_SetProjectOpen_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).SetProjectOpen(ctx, req.(*SetProjectOpenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Projects_ServiceDesc is the grpc.ServiceDesc for Projects service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1057,6 +1093,10 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RejectProjectJoinRequest",
 			Handler:    _Projects_RejectProjectJoinRequest_Handler,
+		},
+		{
+			MethodName: "SetProjectOpen",
+			Handler:    _Projects_SetProjectOpen_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
