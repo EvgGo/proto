@@ -304,8 +304,9 @@ message ListProjectsRequest {
   bool only_open = 4;
   string query = 5;
 
-  int32 page_size = 6;
-  string page_token = 7;
+  string user_id = 6;        // ID пользователя для фильтрации
+  int32 page_size = 7;       // Количество элементов на странице
+  string page_token = 8;     // Токен для пагинации
 }
 
 message ListProjectsResponse {

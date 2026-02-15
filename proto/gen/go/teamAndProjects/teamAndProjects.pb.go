@@ -10,7 +10,6 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -1708,8 +1707,9 @@ type ListProjectsRequest struct {
 	Status        ProjectStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"` // опционально (UNSPECIFIED => игнор)
 	OnlyOpen      bool                   `protobuf:"varint,4,opt,name=only_open,json=onlyOpen,proto3" json:"only_open,omitempty"`
 	Query         string                 `protobuf:"bytes,5,opt,name=query,proto3" json:"query,omitempty"`
-	PageSize      int32                  `protobuf:"varint,6,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,7,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	UserId        string                 `protobuf:"bytes,6,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`          // ID пользователя для фильтрации
+	PageSize      int32                  `protobuf:"varint,7,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`   // Количество элементов на странице
+	PageToken     string                 `protobuf:"bytes,8,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"` // Токен для пагинации
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1775,6 +1775,13 @@ func (x *ListProjectsRequest) GetOnlyOpen() bool {
 func (x *ListProjectsRequest) GetQuery() string {
 	if x != nil {
 		return x.Query
+	}
+	return ""
+}
+
+func (x *ListProjectsRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
 	}
 	return ""
 }
@@ -2652,7 +2659,7 @@ var File_teamAndProjects_teamAndProjects_proto protoreflect.FileDescriptor
 
 const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\n" +
-	"%teamAndProjects/teamAndProjects.proto\x12\fworkspace.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"B\n" +
+	"%teamAndProjects/teamAndProjects.proto\x12\fworkspace.v1\x1a\x1bgoogle/protobuf/empty.proto\"B\n" +
 	"\x04Date\x12\x12\n" +
 	"\x04year\x18\x01 \x01(\x05R\x04year\x12\x14\n" +
 	"\x05month\x18\x02 \x01(\x05R\x05month\x12\x10\n" +
@@ -2819,17 +2826,18 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\f_finished_at\"5\n" +
 	"\x14DeleteProjectRequest\x12\x1d\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\tR\tprojectId\"\xf1\x01\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\"\x8a\x02\n" +
 	"\x13ListProjectsRequest\x12\x17\n" +
 	"\ateam_id\x18\x01 \x01(\tR\x06teamId\x12\x1d\n" +
 	"\n" +
 	"creator_id\x18\x02 \x01(\tR\tcreatorId\x123\n" +
 	"\x06status\x18\x03 \x01(\x0e2\x1b.workspace.v1.ProjectStatusR\x06status\x12\x1b\n" +
 	"\tonly_open\x18\x04 \x01(\bR\bonlyOpen\x12\x14\n" +
-	"\x05query\x18\x05 \x01(\tR\x05query\x12\x1b\n" +
-	"\tpage_size\x18\x06 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\x05query\x18\x05 \x01(\tR\x05query\x12\x17\n" +
+	"\auser_id\x18\x06 \x01(\tR\x06userId\x12\x1b\n" +
+	"\tpage_size\x18\a \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\a \x01(\tR\tpageToken\"q\n" +
+	"page_token\x18\b \x01(\tR\tpageToken\"q\n" +
 	"\x14ListProjectsResponse\x121\n" +
 	"\bprojects\x18\x01 \x03(\v2\x15.workspace.v1.ProjectR\bprojects\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa2\x01\n" +
