@@ -130,6 +130,8 @@ message User {
   google.protobuf.Timestamp registered_at = 12;
   google.protobuf.Timestamp created_at = 13;
   google.protobuf.Timestamp updated_at = 14;
+
+  repeated Skill skills = 15;
 }
 
 // Публичная проекция.
@@ -157,6 +159,8 @@ message UpdateMeRequest {
   map<string, string> competence_levels = 5;
   optional bool is_user_open_suggestions = 6;
   optional bool is_profile_hidden = 7;
+
+  SkillSelection skills = 8;
 }
 
 message ListUsersRequest {
@@ -193,7 +197,10 @@ service Skills {
 message Skill {
   string id = 1;
   string name = 2;
-  google.protobuf.Timestamp created_at = 3; // опционально (если добавишь поле в БД)
+}
+
+message SkillSelection {
+  repeated string ids = 1; // полный итоговый список skill_id, максимум 30
 }
 
 message GetSkillRequest {

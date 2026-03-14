@@ -1,0 +1,374 @@
+syntax = "proto3";
+
+package assessment.v1;
+
+option go_package = "evggo.assessment.v1;assessmentv1";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+enum AssessmentStatus {
+  ASSESSMENT_STATUS_UNSPECIFIED = 0;
+  ASSESSMENT_STATUS_ACTIVE = 1;
+  ASSESSMENT_STATUS_ARCHIVED = 2;
+}
+
+enum AttemptStatus {
+  ATTEMPT_STATUS_UNSPECIFIED = 0;
+  ATTEMPT_STATUS_IN_PROGRESS = 1;
+  ATTEMPT_STATUS_COMPLETED = 2;
+  ATTEMPT_STATUS_ABANDONED = 3;
+  ATTEMPT_STATUS_EXPIRED = 4;
+}
+
+enum FinishAction {
+  FINISH_ACTION_UNSPECIFIED = 0;
+  // Завершить попытку и зафиксировать результат (даже если досрочно)
+  FINISH_ACTION_COMPLETE = 1;
+  // Бросить попытку (результат можно вернуть, но статус будет ABANDONED)
+  FINISH_ACTION_ABANDON = 2;
+}
+
+enum FinishReason {
+  FINISH_REASON_UNSPECIFIED = 0;
+  FINISH_REASON_USER_FINISH = 1;     // досрочно / по кнопке завершить
+  FINISH_REASON_USER_ABANDON = 2;    // бросил
+  FINISH_REASON_TIMEOUT = 3;         // истекло expires_at
+  FINISH_REASON_SYSTEM = 4;          // системное завершение
+}
+
+
+// Предмет: верхний уровень (Golang, Git, PostgreSQL, ...)
+message Subject {
+  int64 id = 1;
+  string code = 2;   // "golang"
+  string title = 3;  // "Golang"
+  google.protobuf.Timestamp created_at = 4;
+}
+
+// Подтема: адаптация строится по подтемам
+message Subtopic {
+  int64 id = 1;
+  int64 subject_id = 2;
+  string code = 3;   // "interfaces"
+  string title = 4;  // "Interfaces"
+  google.protobuf.Timestamp created_at = 5;
+}
+
+// Конфигурация подтемы внутри теста (assessment)
+message AssessmentSubtopicConfig {
+  int64 assessment_id = 1;
+  int64 subtopic_id = 2;
+
+  // Важность подтемы для общего результата
+  double weight = 3;
+
+  // Меньше priority -> выше приоритет (как в твоей логике)
+  int32 priority = 4;
+
+  // Пер-подтема лимиты / настройки (если не заданы, сервер использует assessment defaults)
+  optional int32 min_items = 5;
+  optional int32 max_items = 6;
+  optional int32 start_difficulty = 7;    // 1..5
+  optional double stop_confidence = 8;    // 0..1
+}
+
+// Тест (продукт), который проходит пользователь
+message Assessment {
+  int64 id = 1;
+  int64 subject_id = 2;
+
+  string code = 3;   // "golang_core"
+  string title = 4;  // "Golang Core"
+  string description = 5;
+
+  AssessmentStatus status = 6;
+
+  // Глобальный конфиг (defaults)
+  int32 min_items = 7;
+  int32 max_items = 8;
+
+  int32 min_difficulty = 9;      // 1..5
+  int32 max_difficulty = 10;     // 1..5
+  int32 start_difficulty = 11;   // 1..5
+  double stop_confidence = 12;   // 0..1
+
+  // Таймер на попытку
+  int32 duration_seconds = 13;
+
+  google.protobuf.Timestamp created_at = 14;
+  google.protobuf.Timestamp updated_at = 15;
+
+  // Какие подтемы входят в тест
+  repeated AssessmentSubtopicConfig subtopics = 16;
+}
+
+// Короткая карточка теста для списков
+message AssessmentSummary {
+  int64 id = 1;
+  int64 subject_id = 2;
+  string code = 3;
+  string title = 4;
+  string description = 5;
+  AssessmentStatus status = 6;
+  int32 duration_seconds = 7;
+}
+
+message QuestionOption {
+  int64 id = 1;
+  int64 question_id = 2;
+  string body = 3;
+  int32 position = 4;
+}
+
+message Question {
+  int64 id = 1;
+  int64 subtopic_id = 2;
+
+  int32 difficulty = 3; // 1..5
+  string body = 4;
+
+  repeated QuestionOption options = 5;
+}
+
+// Состояние подтемы внутри попытки
+// Внешнему клиенту это не обязательно, но полезно для дебага/внутренней админки
+message AttemptSubtopicState {
+  int64 attempt_id = 1;
+  int64 subtopic_id = 2;
+
+  int32 asked_count = 3;
+  int32 correct_count = 4;
+  int32 wrong_count = 5;
+
+  int32 consecutive_correct = 6;
+  int32 consecutive_wrong = 7;
+
+  // Внутренняя плавающая оценка (1.00 .. 5.00)
+  double level_score = 8;
+
+  // Округленный уровень (1..5)
+  int32 estimated_level = 9;
+
+  // Уверенность классификации (0..1)
+  double confidence = 10;
+
+  bool is_locked = 11;
+
+  optional int64 last_question_id = 12;
+  optional bool last_answer_correct = 13;
+
+  // Snapshot конфигов (чтобы попытка была стабильной)
+  double weight = 14;
+  int32 priority = 15;
+
+  int32 min_items = 16;
+  int32 max_items = 17;
+  int32 start_difficulty = 18;
+  double stop_confidence = 19;
+}
+
+message Attempt {
+  int64 id = 1;
+  int64 assessment_id = 2;
+
+  AttemptStatus status = 3;
+  FinishReason finish_reason = 4;
+
+  // Сколько ответов уже принято (seq_no)
+  int32 sequence_no = 5;
+
+  google.protobuf.Timestamp started_at = 6;
+  google.protobuf.Timestamp expires_at = 7;
+  optional google.protobuf.Timestamp completed_at = 8;
+
+  // Snapshot таймера (на момент старта)
+  int32 duration_seconds = 9;
+
+  // Итог/прогресс. На UI можно показывать только overall_level в конце
+  int32 overall_level = 10;        // 0..5 (0 = еще не определено)
+  double overall_level_score = 11; // 0..5
+  double overall_confidence = 12;  // 0..1
+
+  // По желанию: вернуть состояния подтем (для дебага)
+  repeated AttemptSubtopicState subtopic_states = 13;
+}
+
+message AttemptProgress {
+  int64 attempt_id = 1;
+  AttemptStatus status = 2;
+
+  int32 sequence_no = 3;
+
+  google.protobuf.Timestamp started_at = 4;
+  google.protobuf.Timestamp expires_at = 5;
+
+  // Сколько секунд осталось до expires_at (сервер вычисляет на лету)
+  int64 remaining_seconds = 6;
+
+  int32 overall_level = 7;
+  double overall_level_score = 8;
+  double overall_confidence = 9;
+}
+
+service AdaptiveTesting {
+  //  Каталог (read-only)
+
+  rpc ListSubjects(ListSubjectsRequest) returns (ListSubjectsResponse);
+  rpc ListSubtopics(ListSubtopicsRequest) returns (ListSubtopicsResponse);
+
+  rpc ListAssessments(ListAssessmentsRequest) returns (ListAssessmentsResponse);
+  rpc GetAssessment(GetAssessmentRequest) returns (Assessment);
+
+  //  Попытки 
+
+  // Старт попытки. Сервер:
+  // 1) создает attempts (expires_at = now + duration_seconds)
+  // 2) создает attempt_subtopic_state для всех подтем + snapshot конфигов
+  // 3) возвращает attempt + первый вопрос (если есть)
+  rpc StartAttempt(StartAttemptRequest) returns (StartAttemptResponse);
+
+  // Получить попытку (только владелец). Для дебага можно include_subtopic_states
+  rpc GetAttempt(GetAttemptRequest) returns (Attempt);
+
+  // Получить текущий прогресс (легкий ответ без subtopic_states)
+  rpc GetAttemptProgress(GetAttemptProgressRequest) returns (AttemptProgress);
+
+  // Получить следующий вопрос (без фиксации ответа). Детеминированно вернет тот же вопрос,
+  // пока не будет принят новый ответ (за счет unasked + сортировки по id)
+  rpc GetNextQuestion(GetNextQuestionRequest) returns (GetNextQuestionResponse);
+
+  // Принять ответ и вернуть следующий вопрос или completed=true
+  // В ответе НЕ возвращаем is_correct (по твоему требованию).
+  rpc SubmitAnswer(SubmitAnswerRequest) returns (SubmitAnswerResponse);
+
+  // Досрочное завершение (complete или abandon). Возвращает финальный attempt
+  rpc FinishAttempt(FinishAttemptRequest) returns (Attempt);
+
+  // История моих попыток (только владелец)
+  rpc ListMyAttempts(ListMyAttemptsRequest) returns (ListMyAttemptsResponse);
+}
+
+message ListSubjectsRequest {
+  string query = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListSubjectsResponse {
+  repeated Subject subjects = 1;
+  string next_page_token = 2;
+}
+
+message ListSubtopicsRequest {
+  // Фильтр по предмету (0 - все)
+  int64 subject_id = 1;
+  string query = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message ListSubtopicsResponse {
+  repeated Subtopic subtopics = 1;
+  string next_page_token = 2;
+}
+
+message ListAssessmentsRequest {
+  // Фильтр по предмету (0 - все)
+  int64 subject_id = 1;
+
+  // Поиск по title/code
+  string query = 2;
+
+  // UNSPECIFIED - любые
+  AssessmentStatus status = 3;
+
+  int32 page_size = 4;
+  string page_token = 5;
+}
+
+message ListAssessmentsResponse {
+  repeated AssessmentSummary assessments = 1;
+  string next_page_token = 2;
+}
+
+message GetAssessmentRequest {
+  int64 assessment_id = 1;
+
+  // Если false - сервер может вернуть без subtopics (быстрее)
+  bool include_subtopics = 2;
+}
+
+message StartAttemptRequest {
+  int64 assessment_id = 1;
+}
+
+message StartAttemptResponse {
+  Attempt attempt = 1;
+
+  // Первый вопрос (может быть пустым, если банк пуст / тест сразу завершается)
+  optional Question first_question = 2;
+
+  // Удобно сразу иметь прогресс/таймер
+  AttemptProgress progress = 3;
+}
+
+message GetAttemptRequest {
+  int64 attempt_id = 1;
+
+  // Для дебага
+  bool include_subtopic_states = 2;
+}
+
+message GetAttemptProgressRequest {
+  int64 attempt_id = 1;
+}
+
+message GetNextQuestionRequest {
+  int64 attempt_id = 1;
+}
+
+message GetNextQuestionResponse {
+  bool completed = 1;
+  AttemptProgress progress = 2;
+
+  // Если completed=true, вопрос не возвращаем
+  optional Question next_question = 3;
+}
+
+message SubmitAnswerRequest {
+  int64 attempt_id = 1;
+  int64 question_id = 2;
+  int64 selected_option_id = 3;
+}
+
+message SubmitAnswerResponse {
+  bool completed = 1;
+  AttemptProgress progress = 2;
+
+  // Если completed=true, вопрос не возвращаем
+  optional Question next_question = 3;
+}
+
+message FinishAttemptRequest {
+  int64 attempt_id = 1;
+
+  // COMPLETE - статус completed, ABANDON - abandoned
+  FinishAction action = 2;
+}
+
+message ListMyAttemptsRequest {
+  // 0 - все тесты
+  int64 assessment_id = 1;
+
+  // UNSPECIFIED - все статусы
+  AttemptStatus status = 2;
+
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message ListMyAttemptsResponse {
+  repeated Attempt attempts = 1;
+  string next_page_token = 2;
+}
