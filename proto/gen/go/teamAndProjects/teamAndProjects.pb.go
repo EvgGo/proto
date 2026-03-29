@@ -132,6 +132,55 @@ func (JoinRequestStatus) EnumDescriptor() ([]byte, []int) {
 	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{1}
 }
 
+type ProjectSkillMatchMode int32
+
+const (
+	ProjectSkillMatchMode_PROJECT_SKILL_MATCH_MODE_UNSPECIFIED ProjectSkillMatchMode = 0
+	ProjectSkillMatchMode_PROJECT_SKILL_MATCH_MODE_ANY         ProjectSkillMatchMode = 1 // проект подходит, если есть хотя бы один skill
+	ProjectSkillMatchMode_PROJECT_SKILL_MATCH_MODE_ALL         ProjectSkillMatchMode = 2 // проект подходит, если есть все skill_ids
+)
+
+// Enum value maps for ProjectSkillMatchMode.
+var (
+	ProjectSkillMatchMode_name = map[int32]string{
+		0: "PROJECT_SKILL_MATCH_MODE_UNSPECIFIED",
+		1: "PROJECT_SKILL_MATCH_MODE_ANY",
+		2: "PROJECT_SKILL_MATCH_MODE_ALL",
+	}
+	ProjectSkillMatchMode_value = map[string]int32{
+		"PROJECT_SKILL_MATCH_MODE_UNSPECIFIED": 0,
+		"PROJECT_SKILL_MATCH_MODE_ANY":         1,
+		"PROJECT_SKILL_MATCH_MODE_ALL":         2,
+	}
+)
+
+func (x ProjectSkillMatchMode) Enum() *ProjectSkillMatchMode {
+	p := new(ProjectSkillMatchMode)
+	*p = x
+	return p
+}
+
+func (x ProjectSkillMatchMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ProjectSkillMatchMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_teamAndProjects_teamAndProjects_proto_enumTypes[2].Descriptor()
+}
+
+func (ProjectSkillMatchMode) Type() protoreflect.EnumType {
+	return &file_teamAndProjects_teamAndProjects_proto_enumTypes[2]
+}
+
+func (x ProjectSkillMatchMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ProjectSkillMatchMode.Descriptor instead.
+func (ProjectSkillMatchMode) EnumDescriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{2}
+}
+
 type Date struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Year          int32                  `protobuf:"varint,1,opt,name=year,proto3" json:"year,omitempty"`   // e.g. 2026
@@ -192,6 +241,51 @@ func (x *Date) GetDay() int32 {
 	return 0
 }
 
+// Для partial update skills у проекта
+type SkillIdsSelection struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Ids           []string               `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"` // полный итоговый набор skill_id, max 60
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SkillIdsSelection) Reset() {
+	*x = SkillIdsSelection{}
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SkillIdsSelection) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SkillIdsSelection) ProtoMessage() {}
+
+func (x *SkillIdsSelection) ProtoReflect() protoreflect.Message {
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SkillIdsSelection.ProtoReflect.Descriptor instead.
+func (*SkillIdsSelection) Descriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *SkillIdsSelection) GetIds() []string {
+	if x != nil {
+		return x.Ids
+	}
+	return nil
+}
+
 // Права участника проекта
 // manager_rights — суперправо: может выдавать/отнимать любые права
 type ProjectRights struct {
@@ -206,7 +300,7 @@ type ProjectRights struct {
 
 func (x *ProjectRights) Reset() {
 	*x = ProjectRights{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[1]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -218,7 +312,7 @@ func (x *ProjectRights) String() string {
 func (*ProjectRights) ProtoMessage() {}
 
 func (x *ProjectRights) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[1]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -231,7 +325,7 @@ func (x *ProjectRights) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectRights.ProtoReflect.Descriptor instead.
 func (*ProjectRights) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{1}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ProjectRights) GetManagerRights() bool {
@@ -279,7 +373,7 @@ type Team struct {
 
 func (x *Team) Reset() {
 	*x = Team{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[2]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -291,7 +385,7 @@ func (x *Team) String() string {
 func (*Team) ProtoMessage() {}
 
 func (x *Team) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[2]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -304,7 +398,7 @@ func (x *Team) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Team.ProtoReflect.Descriptor instead.
 func (*Team) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{2}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Team) GetId() string {
@@ -382,7 +476,7 @@ type TeamMember struct {
 
 func (x *TeamMember) Reset() {
 	*x = TeamMember{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[3]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -394,7 +488,7 @@ func (x *TeamMember) String() string {
 func (*TeamMember) ProtoMessage() {}
 
 func (x *TeamMember) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[3]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -407,7 +501,7 @@ func (x *TeamMember) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TeamMember.ProtoReflect.Descriptor instead.
 func (*TeamMember) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{3}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *TeamMember) GetTeamId() string {
@@ -451,13 +545,14 @@ type Project struct {
 	FinishedAt    *Date                  `protobuf:"bytes,9,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"` // может быть нулевой
 	CreatedAt     *Date                  `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *Date                  `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	SkillIds      []string               `protobuf:"bytes,12,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"` // требуемые проекту skills, max 60
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Project) Reset() {
 	*x = Project{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[4]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -469,7 +564,7 @@ func (x *Project) String() string {
 func (*Project) ProtoMessage() {}
 
 func (x *Project) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[4]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -482,7 +577,7 @@ func (x *Project) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Project.ProtoReflect.Descriptor instead.
 func (*Project) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{4}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Project) GetId() string {
@@ -562,6 +657,13 @@ func (x *Project) GetUpdatedAt() *Date {
 	return nil
 }
 
+func (x *Project) GetSkillIds() []string {
+	if x != nil {
+		return x.SkillIds
+	}
+	return nil
+}
+
 type ProjectPublic struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                       // UUID
@@ -579,7 +681,7 @@ type ProjectPublic struct {
 
 func (x *ProjectPublic) Reset() {
 	*x = ProjectPublic{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[5]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -591,7 +693,7 @@ func (x *ProjectPublic) String() string {
 func (*ProjectPublic) ProtoMessage() {}
 
 func (x *ProjectPublic) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[5]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -604,7 +706,7 @@ func (x *ProjectPublic) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectPublic.ProtoReflect.Descriptor instead.
 func (*ProjectPublic) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{5}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ProjectPublic) GetId() string {
@@ -681,7 +783,7 @@ type ProjectMember struct {
 
 func (x *ProjectMember) Reset() {
 	*x = ProjectMember{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[6]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -693,7 +795,7 @@ func (x *ProjectMember) String() string {
 func (*ProjectMember) ProtoMessage() {}
 
 func (x *ProjectMember) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[6]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -706,7 +808,7 @@ func (x *ProjectMember) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectMember.ProtoReflect.Descriptor instead.
 func (*ProjectMember) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{6}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ProjectMember) GetProjectId() string {
@@ -747,7 +849,7 @@ type ProjectJoinRequest struct {
 
 func (x *ProjectJoinRequest) Reset() {
 	*x = ProjectJoinRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[7]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -759,7 +861,7 @@ func (x *ProjectJoinRequest) String() string {
 func (*ProjectJoinRequest) ProtoMessage() {}
 
 func (x *ProjectJoinRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[7]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -772,7 +874,7 @@ func (x *ProjectJoinRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectJoinRequest.ProtoReflect.Descriptor instead.
 func (*ProjectJoinRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{7}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ProjectJoinRequest) GetId() string {
@@ -844,7 +946,7 @@ type CreateTeamRequest struct {
 
 func (x *CreateTeamRequest) Reset() {
 	*x = CreateTeamRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[8]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -856,7 +958,7 @@ func (x *CreateTeamRequest) String() string {
 func (*CreateTeamRequest) ProtoMessage() {}
 
 func (x *CreateTeamRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[8]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -869,7 +971,7 @@ func (x *CreateTeamRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTeamRequest.ProtoReflect.Descriptor instead.
 func (*CreateTeamRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{8}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreateTeamRequest) GetName() string {
@@ -916,7 +1018,7 @@ type GetTeamRequest struct {
 
 func (x *GetTeamRequest) Reset() {
 	*x = GetTeamRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[9]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -928,7 +1030,7 @@ func (x *GetTeamRequest) String() string {
 func (*GetTeamRequest) ProtoMessage() {}
 
 func (x *GetTeamRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[9]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -941,7 +1043,7 @@ func (x *GetTeamRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTeamRequest.ProtoReflect.Descriptor instead.
 func (*GetTeamRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{9}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetTeamRequest) GetTeamId() string {
@@ -965,7 +1067,7 @@ type UpdateTeamRequest struct {
 
 func (x *UpdateTeamRequest) Reset() {
 	*x = UpdateTeamRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[10]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -977,7 +1079,7 @@ func (x *UpdateTeamRequest) String() string {
 func (*UpdateTeamRequest) ProtoMessage() {}
 
 func (x *UpdateTeamRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[10]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -990,7 +1092,7 @@ func (x *UpdateTeamRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTeamRequest.ProtoReflect.Descriptor instead.
 func (*UpdateTeamRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{10}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *UpdateTeamRequest) GetTeamId() string {
@@ -1044,7 +1146,7 @@ type DeleteTeamRequest struct {
 
 func (x *DeleteTeamRequest) Reset() {
 	*x = DeleteTeamRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[11]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1056,7 +1158,7 @@ func (x *DeleteTeamRequest) String() string {
 func (*DeleteTeamRequest) ProtoMessage() {}
 
 func (x *DeleteTeamRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[11]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1069,7 +1171,7 @@ func (x *DeleteTeamRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteTeamRequest.ProtoReflect.Descriptor instead.
 func (*DeleteTeamRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{11}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *DeleteTeamRequest) GetTeamId() string {
@@ -1091,7 +1193,7 @@ type ListTeamsRequest struct {
 
 func (x *ListTeamsRequest) Reset() {
 	*x = ListTeamsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[12]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1103,7 +1205,7 @@ func (x *ListTeamsRequest) String() string {
 func (*ListTeamsRequest) ProtoMessage() {}
 
 func (x *ListTeamsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[12]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1116,7 +1218,7 @@ func (x *ListTeamsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTeamsRequest.ProtoReflect.Descriptor instead.
 func (*ListTeamsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{12}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListTeamsRequest) GetQuery() string {
@@ -1157,7 +1259,7 @@ type ListTeamsResponse struct {
 
 func (x *ListTeamsResponse) Reset() {
 	*x = ListTeamsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[13]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1169,7 +1271,7 @@ func (x *ListTeamsResponse) String() string {
 func (*ListTeamsResponse) ProtoMessage() {}
 
 func (x *ListTeamsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[13]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1182,7 +1284,7 @@ func (x *ListTeamsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTeamsResponse.ProtoReflect.Descriptor instead.
 func (*ListTeamsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{13}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListTeamsResponse) GetTeams() []*Team {
@@ -1210,7 +1312,7 @@ type ListTeamMembersRequest struct {
 
 func (x *ListTeamMembersRequest) Reset() {
 	*x = ListTeamMembersRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[14]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1222,7 +1324,7 @@ func (x *ListTeamMembersRequest) String() string {
 func (*ListTeamMembersRequest) ProtoMessage() {}
 
 func (x *ListTeamMembersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[14]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1235,7 +1337,7 @@ func (x *ListTeamMembersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTeamMembersRequest.ProtoReflect.Descriptor instead.
 func (*ListTeamMembersRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{14}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ListTeamMembersRequest) GetTeamId() string {
@@ -1269,7 +1371,7 @@ type ListTeamMembersResponse struct {
 
 func (x *ListTeamMembersResponse) Reset() {
 	*x = ListTeamMembersResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[15]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1281,7 +1383,7 @@ func (x *ListTeamMembersResponse) String() string {
 func (*ListTeamMembersResponse) ProtoMessage() {}
 
 func (x *ListTeamMembersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[15]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1294,7 +1396,7 @@ func (x *ListTeamMembersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTeamMembersResponse.ProtoReflect.Descriptor instead.
 func (*ListTeamMembersResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{15}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ListTeamMembersResponse) GetMembers() []*TeamMember {
@@ -1322,7 +1424,7 @@ type UpdateTeamMemberRequest struct {
 
 func (x *UpdateTeamMemberRequest) Reset() {
 	*x = UpdateTeamMemberRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[16]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1334,7 +1436,7 @@ func (x *UpdateTeamMemberRequest) String() string {
 func (*UpdateTeamMemberRequest) ProtoMessage() {}
 
 func (x *UpdateTeamMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[16]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1347,7 +1449,7 @@ func (x *UpdateTeamMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTeamMemberRequest.ProtoReflect.Descriptor instead.
 func (*UpdateTeamMemberRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{16}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *UpdateTeamMemberRequest) GetTeamId() string {
@@ -1381,7 +1483,7 @@ type RemoveTeamMemberRequest struct {
 
 func (x *RemoveTeamMemberRequest) Reset() {
 	*x = RemoveTeamMemberRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[17]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1393,7 +1495,7 @@ func (x *RemoveTeamMemberRequest) String() string {
 func (*RemoveTeamMemberRequest) ProtoMessage() {}
 
 func (x *RemoveTeamMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[17]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1406,7 +1508,7 @@ func (x *RemoveTeamMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveTeamMemberRequest.ProtoReflect.Descriptor instead.
 func (*RemoveTeamMemberRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{17}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *RemoveTeamMemberRequest) GetTeamId() string {
@@ -1432,14 +1534,15 @@ type CreateProjectRequest struct {
 	StartedAt   *Date                  `protobuf:"bytes,6,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
 	FinishedAt  *Date                  `protobuf:"bytes,7,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"`
 	// новое имя команды. Если пусто сервер сгенерирует
-	TeamName      string `protobuf:"bytes,8,opt,name=team_name,json=teamName,proto3" json:"team_name,omitempty"`
+	TeamName      string   `protobuf:"bytes,8,opt,name=team_name,json=teamName,proto3" json:"team_name,omitempty"`
+	SkillIds      []string `protobuf:"bytes,9,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"` // полный список skill_id для проекта, max 60
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateProjectRequest) Reset() {
 	*x = CreateProjectRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[18]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1451,7 +1554,7 @@ func (x *CreateProjectRequest) String() string {
 func (*CreateProjectRequest) ProtoMessage() {}
 
 func (x *CreateProjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[18]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1464,7 +1567,7 @@ func (x *CreateProjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateProjectRequest.ProtoReflect.Descriptor instead.
 func (*CreateProjectRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{18}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *CreateProjectRequest) GetName() string {
@@ -1516,6 +1619,13 @@ func (x *CreateProjectRequest) GetTeamName() string {
 	return ""
 }
 
+func (x *CreateProjectRequest) GetSkillIds() []string {
+	if x != nil {
+		return x.SkillIds
+	}
+	return nil
+}
+
 type GetProjectRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProjectId     string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
@@ -1525,7 +1635,7 @@ type GetProjectRequest struct {
 
 func (x *GetProjectRequest) Reset() {
 	*x = GetProjectRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[19]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1537,7 +1647,7 @@ func (x *GetProjectRequest) String() string {
 func (*GetProjectRequest) ProtoMessage() {}
 
 func (x *GetProjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[19]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1550,7 +1660,7 @@ func (x *GetProjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetProjectRequest.ProtoReflect.Descriptor instead.
 func (*GetProjectRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{19}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetProjectRequest) GetProjectId() string {
@@ -1571,15 +1681,20 @@ type UpdateProjectRequest struct {
 	// finished_at:
 	// - если поле не присутствует => не трогаем
 	// - если присутствует и year=0 => очищаем (NULL)
-	// - если присутствует и year>0 => задаём дату
-	FinishedAt    *Date `protobuf:"bytes,7,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"`
+	// - если присутствует и year>0 => ставим дату
+	FinishedAt *Date `protobuf:"bytes,7,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"`
+	// skills:
+	// - если поле не присутствует => не трогаем
+	// - если ids пустой => очищаем все skills проекта
+	// - если ids заполнен => полностью заменяем набор skills проекта
+	Skills        *SkillIdsSelection `protobuf:"bytes,8,opt,name=skills,proto3" json:"skills,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateProjectRequest) Reset() {
 	*x = UpdateProjectRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[20]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1591,7 +1706,7 @@ func (x *UpdateProjectRequest) String() string {
 func (*UpdateProjectRequest) ProtoMessage() {}
 
 func (x *UpdateProjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[20]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1604,7 +1719,7 @@ func (x *UpdateProjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateProjectRequest.ProtoReflect.Descriptor instead.
 func (*UpdateProjectRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{20}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *UpdateProjectRequest) GetProjectId() string {
@@ -1656,6 +1771,13 @@ func (x *UpdateProjectRequest) GetFinishedAt() *Date {
 	return nil
 }
 
+func (x *UpdateProjectRequest) GetSkills() *SkillIdsSelection {
+	if x != nil {
+		return x.Skills
+	}
+	return nil
+}
+
 type DeleteProjectRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProjectId     string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
@@ -1665,7 +1787,7 @@ type DeleteProjectRequest struct {
 
 func (x *DeleteProjectRequest) Reset() {
 	*x = DeleteProjectRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[21]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1677,7 +1799,7 @@ func (x *DeleteProjectRequest) String() string {
 func (*DeleteProjectRequest) ProtoMessage() {}
 
 func (x *DeleteProjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[21]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1690,7 +1812,7 @@ func (x *DeleteProjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteProjectRequest.ProtoReflect.Descriptor instead.
 func (*DeleteProjectRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{21}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *DeleteProjectRequest) GetProjectId() string {
@@ -1701,22 +1823,24 @@ func (x *DeleteProjectRequest) GetProjectId() string {
 }
 
 type ListProjectsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TeamId        string                 `protobuf:"bytes,1,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`                    // опционально
-	CreatorId     string                 `protobuf:"bytes,2,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`           // опционально
-	Status        ProjectStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"` // опционально (UNSPECIFIED => игнор)
-	OnlyOpen      bool                   `protobuf:"varint,4,opt,name=only_open,json=onlyOpen,proto3" json:"only_open,omitempty"`
-	Query         string                 `protobuf:"bytes,5,opt,name=query,proto3" json:"query,omitempty"`
-	UserId        string                 `protobuf:"bytes,6,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`          // ID пользователя для фильтрации
-	PageSize      int32                  `protobuf:"varint,7,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`   // Количество элементов на странице
-	PageToken     string                 `protobuf:"bytes,8,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"` // Токен для пагинации
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	TeamId         string                 `protobuf:"bytes,1,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`                    // опционально
+	CreatorId      string                 `protobuf:"bytes,2,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`           // опционально
+	Status         ProjectStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"` // опционально (UNSPECIFIED => игнор)
+	OnlyOpen       bool                   `protobuf:"varint,4,opt,name=only_open,json=onlyOpen,proto3" json:"only_open,omitempty"`
+	Query          string                 `protobuf:"bytes,5,opt,name=query,proto3" json:"query,omitempty"`
+	UserId         string                 `protobuf:"bytes,6,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`          // ID пользователя для фильтрации
+	PageSize       int32                  `protobuf:"varint,7,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`   // Количество элементов на странице
+	PageToken      string                 `protobuf:"bytes,8,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"` // Токен для пагинации
+	SkillIds       []string               `protobuf:"bytes,9,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"`    // фильтр по skills
+	SkillMatchMode ProjectSkillMatchMode  `protobuf:"varint,10,opt,name=skill_match_mode,json=skillMatchMode,proto3,enum=workspace.v1.ProjectSkillMatchMode" json:"skill_match_mode,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *ListProjectsRequest) Reset() {
 	*x = ListProjectsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[22]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1728,7 +1852,7 @@ func (x *ListProjectsRequest) String() string {
 func (*ListProjectsRequest) ProtoMessage() {}
 
 func (x *ListProjectsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[22]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1741,7 +1865,7 @@ func (x *ListProjectsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectsRequest.ProtoReflect.Descriptor instead.
 func (*ListProjectsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{22}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ListProjectsRequest) GetTeamId() string {
@@ -1800,6 +1924,20 @@ func (x *ListProjectsRequest) GetPageToken() string {
 	return ""
 }
 
+func (x *ListProjectsRequest) GetSkillIds() []string {
+	if x != nil {
+		return x.SkillIds
+	}
+	return nil
+}
+
+func (x *ListProjectsRequest) GetSkillMatchMode() ProjectSkillMatchMode {
+	if x != nil {
+		return x.SkillMatchMode
+	}
+	return ProjectSkillMatchMode_PROJECT_SKILL_MATCH_MODE_UNSPECIFIED
+}
+
 type ListProjectsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Projects      []*Project             `protobuf:"bytes,1,rep,name=projects,proto3" json:"projects,omitempty"`
@@ -1810,7 +1948,7 @@ type ListProjectsResponse struct {
 
 func (x *ListProjectsResponse) Reset() {
 	*x = ListProjectsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[23]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1822,7 +1960,7 @@ func (x *ListProjectsResponse) String() string {
 func (*ListProjectsResponse) ProtoMessage() {}
 
 func (x *ListProjectsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[23]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1835,7 +1973,7 @@ func (x *ListProjectsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectsResponse.ProtoReflect.Descriptor instead.
 func (*ListProjectsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{23}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *ListProjectsResponse) GetProjects() []*Project {
@@ -1853,18 +1991,20 @@ func (x *ListProjectsResponse) GetNextPageToken() string {
 }
 
 type ListPublicProjectsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
-	Status        ProjectStatus          `protobuf:"varint,2,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"` // фильтр, UNSPECIFIED => игнор
-	PageSize      int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Query          string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	Status         ProjectStatus          `protobuf:"varint,2,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"` // фильтр, UNSPECIFIED => игнор
+	PageSize       int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken      string                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	SkillIds       []string               `protobuf:"bytes,5,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"`
+	SkillMatchMode ProjectSkillMatchMode  `protobuf:"varint,6,opt,name=skill_match_mode,json=skillMatchMode,proto3,enum=workspace.v1.ProjectSkillMatchMode" json:"skill_match_mode,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *ListPublicProjectsRequest) Reset() {
 	*x = ListPublicProjectsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[24]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1876,7 +2016,7 @@ func (x *ListPublicProjectsRequest) String() string {
 func (*ListPublicProjectsRequest) ProtoMessage() {}
 
 func (x *ListPublicProjectsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[24]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1889,7 +2029,7 @@ func (x *ListPublicProjectsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPublicProjectsRequest.ProtoReflect.Descriptor instead.
 func (*ListPublicProjectsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{24}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *ListPublicProjectsRequest) GetQuery() string {
@@ -1920,6 +2060,20 @@ func (x *ListPublicProjectsRequest) GetPageToken() string {
 	return ""
 }
 
+func (x *ListPublicProjectsRequest) GetSkillIds() []string {
+	if x != nil {
+		return x.SkillIds
+	}
+	return nil
+}
+
+func (x *ListPublicProjectsRequest) GetSkillMatchMode() ProjectSkillMatchMode {
+	if x != nil {
+		return x.SkillMatchMode
+	}
+	return ProjectSkillMatchMode_PROJECT_SKILL_MATCH_MODE_UNSPECIFIED
+}
+
 type ListPublicProjectsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Projects      []*ProjectPublic       `protobuf:"bytes,1,rep,name=projects,proto3" json:"projects,omitempty"`
@@ -1930,7 +2084,7 @@ type ListPublicProjectsResponse struct {
 
 func (x *ListPublicProjectsResponse) Reset() {
 	*x = ListPublicProjectsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[25]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1942,7 +2096,7 @@ func (x *ListPublicProjectsResponse) String() string {
 func (*ListPublicProjectsResponse) ProtoMessage() {}
 
 func (x *ListPublicProjectsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[25]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1955,7 +2109,7 @@ func (x *ListPublicProjectsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPublicProjectsResponse.ProtoReflect.Descriptor instead.
 func (*ListPublicProjectsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{25}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ListPublicProjectsResponse) GetProjects() []*ProjectPublic {
@@ -1983,7 +2137,7 @@ type ListProjectMembersRequest struct {
 
 func (x *ListProjectMembersRequest) Reset() {
 	*x = ListProjectMembersRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[26]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1995,7 +2149,7 @@ func (x *ListProjectMembersRequest) String() string {
 func (*ListProjectMembersRequest) ProtoMessage() {}
 
 func (x *ListProjectMembersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[26]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2008,7 +2162,7 @@ func (x *ListProjectMembersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectMembersRequest.ProtoReflect.Descriptor instead.
 func (*ListProjectMembersRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{26}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ListProjectMembersRequest) GetProjectId() string {
@@ -2042,7 +2196,7 @@ type ListProjectMembersResponse struct {
 
 func (x *ListProjectMembersResponse) Reset() {
 	*x = ListProjectMembersResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[27]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2054,7 +2208,7 @@ func (x *ListProjectMembersResponse) String() string {
 func (*ListProjectMembersResponse) ProtoMessage() {}
 
 func (x *ListProjectMembersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[27]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2067,7 +2221,7 @@ func (x *ListProjectMembersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectMembersResponse.ProtoReflect.Descriptor instead.
 func (*ListProjectMembersResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{27}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ListProjectMembersResponse) GetMembers() []*ProjectMember {
@@ -2095,7 +2249,7 @@ type AddProjectMemberRequest struct {
 
 func (x *AddProjectMemberRequest) Reset() {
 	*x = AddProjectMemberRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[28]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2107,7 +2261,7 @@ func (x *AddProjectMemberRequest) String() string {
 func (*AddProjectMemberRequest) ProtoMessage() {}
 
 func (x *AddProjectMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[28]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2120,7 +2274,7 @@ func (x *AddProjectMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddProjectMemberRequest.ProtoReflect.Descriptor instead.
 func (*AddProjectMemberRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{28}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *AddProjectMemberRequest) GetProjectId() string {
@@ -2154,7 +2308,7 @@ type RemoveProjectMemberRequest struct {
 
 func (x *RemoveProjectMemberRequest) Reset() {
 	*x = RemoveProjectMemberRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[29]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2166,7 +2320,7 @@ func (x *RemoveProjectMemberRequest) String() string {
 func (*RemoveProjectMemberRequest) ProtoMessage() {}
 
 func (x *RemoveProjectMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[29]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2179,7 +2333,7 @@ func (x *RemoveProjectMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveProjectMemberRequest.ProtoReflect.Descriptor instead.
 func (*RemoveProjectMemberRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{29}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *RemoveProjectMemberRequest) GetProjectId() string {
@@ -2211,7 +2365,7 @@ type UpdateProjectMemberRightsRequest struct {
 
 func (x *UpdateProjectMemberRightsRequest) Reset() {
 	*x = UpdateProjectMemberRightsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[30]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2223,7 +2377,7 @@ func (x *UpdateProjectMemberRightsRequest) String() string {
 func (*UpdateProjectMemberRightsRequest) ProtoMessage() {}
 
 func (x *UpdateProjectMemberRightsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[30]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2236,7 +2390,7 @@ func (x *UpdateProjectMemberRightsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateProjectMemberRightsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateProjectMemberRightsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{30}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *UpdateProjectMemberRightsRequest) GetProjectId() string {
@@ -2291,7 +2445,7 @@ type RequestJoinProjectRequest struct {
 
 func (x *RequestJoinProjectRequest) Reset() {
 	*x = RequestJoinProjectRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[31]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2303,7 +2457,7 @@ func (x *RequestJoinProjectRequest) String() string {
 func (*RequestJoinProjectRequest) ProtoMessage() {}
 
 func (x *RequestJoinProjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[31]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2316,7 +2470,7 @@ func (x *RequestJoinProjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RequestJoinProjectRequest.ProtoReflect.Descriptor instead.
 func (*RequestJoinProjectRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{31}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *RequestJoinProjectRequest) GetProjectId() string {
@@ -2342,7 +2496,7 @@ type CancelJoinProjectRequest struct {
 
 func (x *CancelJoinProjectRequest) Reset() {
 	*x = CancelJoinProjectRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[32]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2354,7 +2508,7 @@ func (x *CancelJoinProjectRequest) String() string {
 func (*CancelJoinProjectRequest) ProtoMessage() {}
 
 func (x *CancelJoinProjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[32]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2367,7 +2521,7 @@ func (x *CancelJoinProjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelJoinProjectRequest.ProtoReflect.Descriptor instead.
 func (*CancelJoinProjectRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{32}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *CancelJoinProjectRequest) GetRequestId() string {
@@ -2389,7 +2543,7 @@ type ListProjectJoinRequestsRequest struct {
 
 func (x *ListProjectJoinRequestsRequest) Reset() {
 	*x = ListProjectJoinRequestsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[33]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2401,7 +2555,7 @@ func (x *ListProjectJoinRequestsRequest) String() string {
 func (*ListProjectJoinRequestsRequest) ProtoMessage() {}
 
 func (x *ListProjectJoinRequestsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[33]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2414,7 +2568,7 @@ func (x *ListProjectJoinRequestsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectJoinRequestsRequest.ProtoReflect.Descriptor instead.
 func (*ListProjectJoinRequestsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{33}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *ListProjectJoinRequestsRequest) GetProjectId() string {
@@ -2455,7 +2609,7 @@ type ListProjectJoinRequestsResponse struct {
 
 func (x *ListProjectJoinRequestsResponse) Reset() {
 	*x = ListProjectJoinRequestsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[34]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2467,7 +2621,7 @@ func (x *ListProjectJoinRequestsResponse) String() string {
 func (*ListProjectJoinRequestsResponse) ProtoMessage() {}
 
 func (x *ListProjectJoinRequestsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[34]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2480,7 +2634,7 @@ func (x *ListProjectJoinRequestsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectJoinRequestsResponse.ProtoReflect.Descriptor instead.
 func (*ListProjectJoinRequestsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{34}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *ListProjectJoinRequestsResponse) GetRequests() []*ProjectJoinRequest {
@@ -2509,7 +2663,7 @@ type ApproveProjectJoinRequestRequest struct {
 
 func (x *ApproveProjectJoinRequestRequest) Reset() {
 	*x = ApproveProjectJoinRequestRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[35]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2521,7 +2675,7 @@ func (x *ApproveProjectJoinRequestRequest) String() string {
 func (*ApproveProjectJoinRequestRequest) ProtoMessage() {}
 
 func (x *ApproveProjectJoinRequestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[35]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2534,7 +2688,7 @@ func (x *ApproveProjectJoinRequestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveProjectJoinRequestRequest.ProtoReflect.Descriptor instead.
 func (*ApproveProjectJoinRequestRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{35}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *ApproveProjectJoinRequestRequest) GetRequestId() string {
@@ -2561,7 +2715,7 @@ type RejectProjectJoinRequestRequest struct {
 
 func (x *RejectProjectJoinRequestRequest) Reset() {
 	*x = RejectProjectJoinRequestRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[36]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2573,7 +2727,7 @@ func (x *RejectProjectJoinRequestRequest) String() string {
 func (*RejectProjectJoinRequestRequest) ProtoMessage() {}
 
 func (x *RejectProjectJoinRequestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[36]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2586,7 +2740,7 @@ func (x *RejectProjectJoinRequestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectProjectJoinRequestRequest.ProtoReflect.Descriptor instead.
 func (*RejectProjectJoinRequestRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{36}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *RejectProjectJoinRequestRequest) GetRequestId() string {
@@ -2613,7 +2767,7 @@ type SetProjectOpenRequest struct {
 
 func (x *SetProjectOpenRequest) Reset() {
 	*x = SetProjectOpenRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[37]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2625,7 +2779,7 @@ func (x *SetProjectOpenRequest) String() string {
 func (*SetProjectOpenRequest) ProtoMessage() {}
 
 func (x *SetProjectOpenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[37]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2638,7 +2792,7 @@ func (x *SetProjectOpenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetProjectOpenRequest.ProtoReflect.Descriptor instead.
 func (*SetProjectOpenRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{37}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *SetProjectOpenRequest) GetProjectId() string {
@@ -2663,7 +2817,9 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\x04Date\x12\x12\n" +
 	"\x04year\x18\x01 \x01(\x05R\x04year\x12\x14\n" +
 	"\x05month\x18\x02 \x01(\x05R\x05month\x12\x10\n" +
-	"\x03day\x18\x03 \x01(\x05R\x03day\"\xad\x01\n" +
+	"\x03day\x18\x03 \x01(\x05R\x03day\"%\n" +
+	"\x11SkillIdsSelection\x12\x10\n" +
+	"\x03ids\x18\x01 \x03(\tR\x03ids\"\xad\x01\n" +
 	"\rProjectRights\x12%\n" +
 	"\x0emanager_rights\x18\x01 \x01(\bR\rmanagerRights\x12%\n" +
 	"\x0emanager_member\x18\x02 \x01(\bR\rmanagerMember\x12)\n" +
@@ -2688,7 +2844,7 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\ateam_id\x18\x01 \x01(\tR\x06teamId\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x16\n" +
 	"\x06duties\x18\x03 \x01(\tR\x06duties\x12/\n" +
-	"\tjoined_at\x18\x04 \x01(\v2\x12.workspace.v1.DateR\bjoinedAt\"\xb8\x03\n" +
+	"\tjoined_at\x18\x04 \x01(\v2\x12.workspace.v1.DateR\bjoinedAt\"\xd5\x03\n" +
 	"\aProject\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\ateam_id\x18\x02 \x01(\tR\x06teamId\x12\x1d\n" +
@@ -2706,7 +2862,8 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"created_at\x18\n" +
 	" \x01(\v2\x12.workspace.v1.DateR\tcreatedAt\x121\n" +
 	"\n" +
-	"updated_at\x18\v \x01(\v2\x12.workspace.v1.DateR\tupdatedAtB\x0e\n" +
+	"updated_at\x18\v \x01(\v2\x12.workspace.v1.DateR\tupdatedAt\x12\x1b\n" +
+	"\tskill_ids\x18\f \x03(\tR\bskillIdsB\x0e\n" +
 	"\f_finished_at\"\xec\x02\n" +
 	"\rProjectPublic\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
@@ -2791,7 +2948,7 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\a_duties\"K\n" +
 	"\x17RemoveTeamMemberRequest\x12\x17\n" +
 	"\ateam_id\x18\x01 \x01(\tR\x06teamId\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId\"\xc3\x02\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\"\xe0\x02\n" +
 	"\x14CreateProjectRequest\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x123\n" +
@@ -2801,11 +2958,12 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"started_at\x18\x06 \x01(\v2\x12.workspace.v1.DateR\tstartedAt\x128\n" +
 	"\vfinished_at\x18\a \x01(\v2\x12.workspace.v1.DateH\x00R\n" +
 	"finishedAt\x88\x01\x01\x12\x1b\n" +
-	"\tteam_name\x18\b \x01(\tR\bteamNameB\x0e\n" +
+	"\tteam_name\x18\b \x01(\tR\bteamName\x12\x1b\n" +
+	"\tskill_ids\x18\t \x03(\tR\bskillIdsB\x0e\n" +
 	"\f_finished_atJ\x04\b\x01\x10\x02R\ateam_id\"2\n" +
 	"\x11GetProjectRequest\x12\x1d\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\tR\tprojectId\"\x8e\x03\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\"\xc7\x03\n" +
 	"\x14UpdateProjectRequest\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tR\tprojectId\x12\x17\n" +
@@ -2816,7 +2974,8 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\n" +
 	"started_at\x18\x06 \x01(\v2\x12.workspace.v1.DateH\x04R\tstartedAt\x88\x01\x01\x128\n" +
 	"\vfinished_at\x18\a \x01(\v2\x12.workspace.v1.DateH\x05R\n" +
-	"finishedAt\x88\x01\x01B\a\n" +
+	"finishedAt\x88\x01\x01\x127\n" +
+	"\x06skills\x18\b \x01(\v2\x1f.workspace.v1.SkillIdsSelectionR\x06skillsB\a\n" +
 	"\x05_nameB\x0e\n" +
 	"\f_descriptionB\t\n" +
 	"\a_statusB\n" +
@@ -2826,7 +2985,7 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\f_finished_at\"5\n" +
 	"\x14DeleteProjectRequest\x12\x1d\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\tR\tprojectId\"\x8a\x02\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\"\xf6\x02\n" +
 	"\x13ListProjectsRequest\x12\x17\n" +
 	"\ateam_id\x18\x01 \x01(\tR\x06teamId\x12\x1d\n" +
 	"\n" +
@@ -2837,16 +2996,21 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\auser_id\x18\x06 \x01(\tR\x06userId\x12\x1b\n" +
 	"\tpage_size\x18\a \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\b \x01(\tR\tpageToken\"q\n" +
+	"page_token\x18\b \x01(\tR\tpageToken\x12\x1b\n" +
+	"\tskill_ids\x18\t \x03(\tR\bskillIds\x12M\n" +
+	"\x10skill_match_mode\x18\n" +
+	" \x01(\x0e2#.workspace.v1.ProjectSkillMatchModeR\x0eskillMatchMode\"q\n" +
 	"\x14ListProjectsResponse\x121\n" +
 	"\bprojects\x18\x01 \x03(\v2\x15.workspace.v1.ProjectR\bprojects\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa2\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x8e\x02\n" +
 	"\x19ListPublicProjectsRequest\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\x123\n" +
 	"\x06status\x18\x02 \x01(\x0e2\x1b.workspace.v1.ProjectStatusR\x06status\x12\x1b\n" +
 	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x04 \x01(\tR\tpageToken\"}\n" +
+	"page_token\x18\x04 \x01(\tR\tpageToken\x12\x1b\n" +
+	"\tskill_ids\x18\x05 \x03(\tR\bskillIds\x12M\n" +
+	"\x10skill_match_mode\x18\x06 \x01(\x0e2#.workspace.v1.ProjectSkillMatchModeR\x0eskillMatchMode\"}\n" +
 	"\x1aListPublicProjectsResponse\x127\n" +
 	"\bprojects\x18\x01 \x03(\v2\x1b.workspace.v1.ProjectPublicR\bprojects\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"v\n" +
@@ -2920,7 +3084,11 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\x1bJOIN_REQUEST_STATUS_PENDING\x10\x01\x12 \n" +
 	"\x1cJOIN_REQUEST_STATUS_APPROVED\x10\x02\x12 \n" +
 	"\x1cJOIN_REQUEST_STATUS_REJECTED\x10\x03\x12!\n" +
-	"\x1dJOIN_REQUEST_STATUS_CANCELLED\x10\x042\xe7\x04\n" +
+	"\x1dJOIN_REQUEST_STATUS_CANCELLED\x10\x04*\x85\x01\n" +
+	"\x15ProjectSkillMatchMode\x12(\n" +
+	"$PROJECT_SKILL_MATCH_MODE_UNSPECIFIED\x10\x00\x12 \n" +
+	"\x1cPROJECT_SKILL_MATCH_MODE_ANY\x10\x01\x12 \n" +
+	"\x1cPROJECT_SKILL_MATCH_MODE_ALL\x10\x022\xe7\x04\n" +
 	"\x05Teams\x12A\n" +
 	"\n" +
 	"CreateTeam\x12\x1f.workspace.v1.CreateTeamRequest\x1a\x12.workspace.v1.Team\x12;\n" +
@@ -2964,138 +3132,143 @@ func file_teamAndProjects_teamAndProjects_proto_rawDescGZIP() []byte {
 	return file_teamAndProjects_teamAndProjects_proto_rawDescData
 }
 
-var file_teamAndProjects_teamAndProjects_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_teamAndProjects_teamAndProjects_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
+var file_teamAndProjects_teamAndProjects_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_teamAndProjects_teamAndProjects_proto_msgTypes = make([]protoimpl.MessageInfo, 39)
 var file_teamAndProjects_teamAndProjects_proto_goTypes = []any{
 	(ProjectStatus)(0),                       // 0: workspace.v1.ProjectStatus
 	(JoinRequestStatus)(0),                   // 1: workspace.v1.JoinRequestStatus
-	(*Date)(nil),                             // 2: workspace.v1.Date
-	(*ProjectRights)(nil),                    // 3: workspace.v1.ProjectRights
-	(*Team)(nil),                             // 4: workspace.v1.Team
-	(*TeamMember)(nil),                       // 5: workspace.v1.TeamMember
-	(*Project)(nil),                          // 6: workspace.v1.Project
-	(*ProjectPublic)(nil),                    // 7: workspace.v1.ProjectPublic
-	(*ProjectMember)(nil),                    // 8: workspace.v1.ProjectMember
-	(*ProjectJoinRequest)(nil),               // 9: workspace.v1.ProjectJoinRequest
-	(*CreateTeamRequest)(nil),                // 10: workspace.v1.CreateTeamRequest
-	(*GetTeamRequest)(nil),                   // 11: workspace.v1.GetTeamRequest
-	(*UpdateTeamRequest)(nil),                // 12: workspace.v1.UpdateTeamRequest
-	(*DeleteTeamRequest)(nil),                // 13: workspace.v1.DeleteTeamRequest
-	(*ListTeamsRequest)(nil),                 // 14: workspace.v1.ListTeamsRequest
-	(*ListTeamsResponse)(nil),                // 15: workspace.v1.ListTeamsResponse
-	(*ListTeamMembersRequest)(nil),           // 16: workspace.v1.ListTeamMembersRequest
-	(*ListTeamMembersResponse)(nil),          // 17: workspace.v1.ListTeamMembersResponse
-	(*UpdateTeamMemberRequest)(nil),          // 18: workspace.v1.UpdateTeamMemberRequest
-	(*RemoveTeamMemberRequest)(nil),          // 19: workspace.v1.RemoveTeamMemberRequest
-	(*CreateProjectRequest)(nil),             // 20: workspace.v1.CreateProjectRequest
-	(*GetProjectRequest)(nil),                // 21: workspace.v1.GetProjectRequest
-	(*UpdateProjectRequest)(nil),             // 22: workspace.v1.UpdateProjectRequest
-	(*DeleteProjectRequest)(nil),             // 23: workspace.v1.DeleteProjectRequest
-	(*ListProjectsRequest)(nil),              // 24: workspace.v1.ListProjectsRequest
-	(*ListProjectsResponse)(nil),             // 25: workspace.v1.ListProjectsResponse
-	(*ListPublicProjectsRequest)(nil),        // 26: workspace.v1.ListPublicProjectsRequest
-	(*ListPublicProjectsResponse)(nil),       // 27: workspace.v1.ListPublicProjectsResponse
-	(*ListProjectMembersRequest)(nil),        // 28: workspace.v1.ListProjectMembersRequest
-	(*ListProjectMembersResponse)(nil),       // 29: workspace.v1.ListProjectMembersResponse
-	(*AddProjectMemberRequest)(nil),          // 30: workspace.v1.AddProjectMemberRequest
-	(*RemoveProjectMemberRequest)(nil),       // 31: workspace.v1.RemoveProjectMemberRequest
-	(*UpdateProjectMemberRightsRequest)(nil), // 32: workspace.v1.UpdateProjectMemberRightsRequest
-	(*RequestJoinProjectRequest)(nil),        // 33: workspace.v1.RequestJoinProjectRequest
-	(*CancelJoinProjectRequest)(nil),         // 34: workspace.v1.CancelJoinProjectRequest
-	(*ListProjectJoinRequestsRequest)(nil),   // 35: workspace.v1.ListProjectJoinRequestsRequest
-	(*ListProjectJoinRequestsResponse)(nil),  // 36: workspace.v1.ListProjectJoinRequestsResponse
-	(*ApproveProjectJoinRequestRequest)(nil), // 37: workspace.v1.ApproveProjectJoinRequestRequest
-	(*RejectProjectJoinRequestRequest)(nil),  // 38: workspace.v1.RejectProjectJoinRequestRequest
-	(*SetProjectOpenRequest)(nil),            // 39: workspace.v1.SetProjectOpenRequest
-	(*emptypb.Empty)(nil),                    // 40: google.protobuf.Empty
+	(ProjectSkillMatchMode)(0),               // 2: workspace.v1.ProjectSkillMatchMode
+	(*Date)(nil),                             // 3: workspace.v1.Date
+	(*SkillIdsSelection)(nil),                // 4: workspace.v1.SkillIdsSelection
+	(*ProjectRights)(nil),                    // 5: workspace.v1.ProjectRights
+	(*Team)(nil),                             // 6: workspace.v1.Team
+	(*TeamMember)(nil),                       // 7: workspace.v1.TeamMember
+	(*Project)(nil),                          // 8: workspace.v1.Project
+	(*ProjectPublic)(nil),                    // 9: workspace.v1.ProjectPublic
+	(*ProjectMember)(nil),                    // 10: workspace.v1.ProjectMember
+	(*ProjectJoinRequest)(nil),               // 11: workspace.v1.ProjectJoinRequest
+	(*CreateTeamRequest)(nil),                // 12: workspace.v1.CreateTeamRequest
+	(*GetTeamRequest)(nil),                   // 13: workspace.v1.GetTeamRequest
+	(*UpdateTeamRequest)(nil),                // 14: workspace.v1.UpdateTeamRequest
+	(*DeleteTeamRequest)(nil),                // 15: workspace.v1.DeleteTeamRequest
+	(*ListTeamsRequest)(nil),                 // 16: workspace.v1.ListTeamsRequest
+	(*ListTeamsResponse)(nil),                // 17: workspace.v1.ListTeamsResponse
+	(*ListTeamMembersRequest)(nil),           // 18: workspace.v1.ListTeamMembersRequest
+	(*ListTeamMembersResponse)(nil),          // 19: workspace.v1.ListTeamMembersResponse
+	(*UpdateTeamMemberRequest)(nil),          // 20: workspace.v1.UpdateTeamMemberRequest
+	(*RemoveTeamMemberRequest)(nil),          // 21: workspace.v1.RemoveTeamMemberRequest
+	(*CreateProjectRequest)(nil),             // 22: workspace.v1.CreateProjectRequest
+	(*GetProjectRequest)(nil),                // 23: workspace.v1.GetProjectRequest
+	(*UpdateProjectRequest)(nil),             // 24: workspace.v1.UpdateProjectRequest
+	(*DeleteProjectRequest)(nil),             // 25: workspace.v1.DeleteProjectRequest
+	(*ListProjectsRequest)(nil),              // 26: workspace.v1.ListProjectsRequest
+	(*ListProjectsResponse)(nil),             // 27: workspace.v1.ListProjectsResponse
+	(*ListPublicProjectsRequest)(nil),        // 28: workspace.v1.ListPublicProjectsRequest
+	(*ListPublicProjectsResponse)(nil),       // 29: workspace.v1.ListPublicProjectsResponse
+	(*ListProjectMembersRequest)(nil),        // 30: workspace.v1.ListProjectMembersRequest
+	(*ListProjectMembersResponse)(nil),       // 31: workspace.v1.ListProjectMembersResponse
+	(*AddProjectMemberRequest)(nil),          // 32: workspace.v1.AddProjectMemberRequest
+	(*RemoveProjectMemberRequest)(nil),       // 33: workspace.v1.RemoveProjectMemberRequest
+	(*UpdateProjectMemberRightsRequest)(nil), // 34: workspace.v1.UpdateProjectMemberRightsRequest
+	(*RequestJoinProjectRequest)(nil),        // 35: workspace.v1.RequestJoinProjectRequest
+	(*CancelJoinProjectRequest)(nil),         // 36: workspace.v1.CancelJoinProjectRequest
+	(*ListProjectJoinRequestsRequest)(nil),   // 37: workspace.v1.ListProjectJoinRequestsRequest
+	(*ListProjectJoinRequestsResponse)(nil),  // 38: workspace.v1.ListProjectJoinRequestsResponse
+	(*ApproveProjectJoinRequestRequest)(nil), // 39: workspace.v1.ApproveProjectJoinRequestRequest
+	(*RejectProjectJoinRequestRequest)(nil),  // 40: workspace.v1.RejectProjectJoinRequestRequest
+	(*SetProjectOpenRequest)(nil),            // 41: workspace.v1.SetProjectOpenRequest
+	(*emptypb.Empty)(nil),                    // 42: google.protobuf.Empty
 }
 var file_teamAndProjects_teamAndProjects_proto_depIdxs = []int32{
-	2,  // 0: workspace.v1.Team.created_at:type_name -> workspace.v1.Date
-	2,  // 1: workspace.v1.Team.updated_at:type_name -> workspace.v1.Date
-	2,  // 2: workspace.v1.TeamMember.joined_at:type_name -> workspace.v1.Date
+	3,  // 0: workspace.v1.Team.created_at:type_name -> workspace.v1.Date
+	3,  // 1: workspace.v1.Team.updated_at:type_name -> workspace.v1.Date
+	3,  // 2: workspace.v1.TeamMember.joined_at:type_name -> workspace.v1.Date
 	0,  // 3: workspace.v1.Project.status:type_name -> workspace.v1.ProjectStatus
-	2,  // 4: workspace.v1.Project.started_at:type_name -> workspace.v1.Date
-	2,  // 5: workspace.v1.Project.finished_at:type_name -> workspace.v1.Date
-	2,  // 6: workspace.v1.Project.created_at:type_name -> workspace.v1.Date
-	2,  // 7: workspace.v1.Project.updated_at:type_name -> workspace.v1.Date
+	3,  // 4: workspace.v1.Project.started_at:type_name -> workspace.v1.Date
+	3,  // 5: workspace.v1.Project.finished_at:type_name -> workspace.v1.Date
+	3,  // 6: workspace.v1.Project.created_at:type_name -> workspace.v1.Date
+	3,  // 7: workspace.v1.Project.updated_at:type_name -> workspace.v1.Date
 	0,  // 8: workspace.v1.ProjectPublic.status:type_name -> workspace.v1.ProjectStatus
-	2,  // 9: workspace.v1.ProjectPublic.started_at:type_name -> workspace.v1.Date
-	2,  // 10: workspace.v1.ProjectPublic.finished_at:type_name -> workspace.v1.Date
-	2,  // 11: workspace.v1.ProjectPublic.created_at:type_name -> workspace.v1.Date
-	3,  // 12: workspace.v1.ProjectMember.rights:type_name -> workspace.v1.ProjectRights
+	3,  // 9: workspace.v1.ProjectPublic.started_at:type_name -> workspace.v1.Date
+	3,  // 10: workspace.v1.ProjectPublic.finished_at:type_name -> workspace.v1.Date
+	3,  // 11: workspace.v1.ProjectPublic.created_at:type_name -> workspace.v1.Date
+	5,  // 12: workspace.v1.ProjectMember.rights:type_name -> workspace.v1.ProjectRights
 	1,  // 13: workspace.v1.ProjectJoinRequest.status:type_name -> workspace.v1.JoinRequestStatus
-	2,  // 14: workspace.v1.ProjectJoinRequest.decided_at:type_name -> workspace.v1.Date
-	2,  // 15: workspace.v1.ProjectJoinRequest.created_at:type_name -> workspace.v1.Date
-	4,  // 16: workspace.v1.ListTeamsResponse.teams:type_name -> workspace.v1.Team
-	5,  // 17: workspace.v1.ListTeamMembersResponse.members:type_name -> workspace.v1.TeamMember
+	3,  // 14: workspace.v1.ProjectJoinRequest.decided_at:type_name -> workspace.v1.Date
+	3,  // 15: workspace.v1.ProjectJoinRequest.created_at:type_name -> workspace.v1.Date
+	6,  // 16: workspace.v1.ListTeamsResponse.teams:type_name -> workspace.v1.Team
+	7,  // 17: workspace.v1.ListTeamMembersResponse.members:type_name -> workspace.v1.TeamMember
 	0,  // 18: workspace.v1.CreateProjectRequest.status:type_name -> workspace.v1.ProjectStatus
-	2,  // 19: workspace.v1.CreateProjectRequest.started_at:type_name -> workspace.v1.Date
-	2,  // 20: workspace.v1.CreateProjectRequest.finished_at:type_name -> workspace.v1.Date
+	3,  // 19: workspace.v1.CreateProjectRequest.started_at:type_name -> workspace.v1.Date
+	3,  // 20: workspace.v1.CreateProjectRequest.finished_at:type_name -> workspace.v1.Date
 	0,  // 21: workspace.v1.UpdateProjectRequest.status:type_name -> workspace.v1.ProjectStatus
-	2,  // 22: workspace.v1.UpdateProjectRequest.started_at:type_name -> workspace.v1.Date
-	2,  // 23: workspace.v1.UpdateProjectRequest.finished_at:type_name -> workspace.v1.Date
-	0,  // 24: workspace.v1.ListProjectsRequest.status:type_name -> workspace.v1.ProjectStatus
-	6,  // 25: workspace.v1.ListProjectsResponse.projects:type_name -> workspace.v1.Project
-	0,  // 26: workspace.v1.ListPublicProjectsRequest.status:type_name -> workspace.v1.ProjectStatus
-	7,  // 27: workspace.v1.ListPublicProjectsResponse.projects:type_name -> workspace.v1.ProjectPublic
-	8,  // 28: workspace.v1.ListProjectMembersResponse.members:type_name -> workspace.v1.ProjectMember
-	3,  // 29: workspace.v1.AddProjectMemberRequest.rights:type_name -> workspace.v1.ProjectRights
-	1,  // 30: workspace.v1.ListProjectJoinRequestsRequest.status:type_name -> workspace.v1.JoinRequestStatus
-	9,  // 31: workspace.v1.ListProjectJoinRequestsResponse.requests:type_name -> workspace.v1.ProjectJoinRequest
-	3,  // 32: workspace.v1.ApproveProjectJoinRequestRequest.initial_rights:type_name -> workspace.v1.ProjectRights
-	10, // 33: workspace.v1.Teams.CreateTeam:input_type -> workspace.v1.CreateTeamRequest
-	11, // 34: workspace.v1.Teams.GetTeam:input_type -> workspace.v1.GetTeamRequest
-	12, // 35: workspace.v1.Teams.UpdateTeam:input_type -> workspace.v1.UpdateTeamRequest
-	13, // 36: workspace.v1.Teams.DeleteTeam:input_type -> workspace.v1.DeleteTeamRequest
-	14, // 37: workspace.v1.Teams.ListTeams:input_type -> workspace.v1.ListTeamsRequest
-	16, // 38: workspace.v1.Teams.ListTeamMembers:input_type -> workspace.v1.ListTeamMembersRequest
-	18, // 39: workspace.v1.Teams.UpdateTeamMember:input_type -> workspace.v1.UpdateTeamMemberRequest
-	19, // 40: workspace.v1.Teams.RemoveTeamMember:input_type -> workspace.v1.RemoveTeamMemberRequest
-	20, // 41: workspace.v1.Projects.CreateProject:input_type -> workspace.v1.CreateProjectRequest
-	21, // 42: workspace.v1.Projects.GetProject:input_type -> workspace.v1.GetProjectRequest
-	22, // 43: workspace.v1.Projects.UpdateProject:input_type -> workspace.v1.UpdateProjectRequest
-	23, // 44: workspace.v1.Projects.DeleteProject:input_type -> workspace.v1.DeleteProjectRequest
-	24, // 45: workspace.v1.Projects.ListProjects:input_type -> workspace.v1.ListProjectsRequest
-	26, // 46: workspace.v1.Projects.ListPublicProjects:input_type -> workspace.v1.ListPublicProjectsRequest
-	28, // 47: workspace.v1.Projects.ListProjectMembers:input_type -> workspace.v1.ListProjectMembersRequest
-	30, // 48: workspace.v1.Projects.AddProjectMember:input_type -> workspace.v1.AddProjectMemberRequest
-	31, // 49: workspace.v1.Projects.RemoveProjectMember:input_type -> workspace.v1.RemoveProjectMemberRequest
-	32, // 50: workspace.v1.Projects.UpdateProjectMemberRights:input_type -> workspace.v1.UpdateProjectMemberRightsRequest
-	33, // 51: workspace.v1.Projects.RequestJoinProject:input_type -> workspace.v1.RequestJoinProjectRequest
-	34, // 52: workspace.v1.Projects.CancelJoinProject:input_type -> workspace.v1.CancelJoinProjectRequest
-	35, // 53: workspace.v1.Projects.ListProjectJoinRequests:input_type -> workspace.v1.ListProjectJoinRequestsRequest
-	37, // 54: workspace.v1.Projects.ApproveProjectJoinRequest:input_type -> workspace.v1.ApproveProjectJoinRequestRequest
-	38, // 55: workspace.v1.Projects.RejectProjectJoinRequest:input_type -> workspace.v1.RejectProjectJoinRequestRequest
-	39, // 56: workspace.v1.Projects.SetProjectOpen:input_type -> workspace.v1.SetProjectOpenRequest
-	4,  // 57: workspace.v1.Teams.CreateTeam:output_type -> workspace.v1.Team
-	4,  // 58: workspace.v1.Teams.GetTeam:output_type -> workspace.v1.Team
-	4,  // 59: workspace.v1.Teams.UpdateTeam:output_type -> workspace.v1.Team
-	40, // 60: workspace.v1.Teams.DeleteTeam:output_type -> google.protobuf.Empty
-	15, // 61: workspace.v1.Teams.ListTeams:output_type -> workspace.v1.ListTeamsResponse
-	17, // 62: workspace.v1.Teams.ListTeamMembers:output_type -> workspace.v1.ListTeamMembersResponse
-	5,  // 63: workspace.v1.Teams.UpdateTeamMember:output_type -> workspace.v1.TeamMember
-	40, // 64: workspace.v1.Teams.RemoveTeamMember:output_type -> google.protobuf.Empty
-	6,  // 65: workspace.v1.Projects.CreateProject:output_type -> workspace.v1.Project
-	6,  // 66: workspace.v1.Projects.GetProject:output_type -> workspace.v1.Project
-	6,  // 67: workspace.v1.Projects.UpdateProject:output_type -> workspace.v1.Project
-	40, // 68: workspace.v1.Projects.DeleteProject:output_type -> google.protobuf.Empty
-	25, // 69: workspace.v1.Projects.ListProjects:output_type -> workspace.v1.ListProjectsResponse
-	27, // 70: workspace.v1.Projects.ListPublicProjects:output_type -> workspace.v1.ListPublicProjectsResponse
-	29, // 71: workspace.v1.Projects.ListProjectMembers:output_type -> workspace.v1.ListProjectMembersResponse
-	8,  // 72: workspace.v1.Projects.AddProjectMember:output_type -> workspace.v1.ProjectMember
-	40, // 73: workspace.v1.Projects.RemoveProjectMember:output_type -> google.protobuf.Empty
-	8,  // 74: workspace.v1.Projects.UpdateProjectMemberRights:output_type -> workspace.v1.ProjectMember
-	9,  // 75: workspace.v1.Projects.RequestJoinProject:output_type -> workspace.v1.ProjectJoinRequest
-	9,  // 76: workspace.v1.Projects.CancelJoinProject:output_type -> workspace.v1.ProjectJoinRequest
-	36, // 77: workspace.v1.Projects.ListProjectJoinRequests:output_type -> workspace.v1.ListProjectJoinRequestsResponse
-	9,  // 78: workspace.v1.Projects.ApproveProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
-	9,  // 79: workspace.v1.Projects.RejectProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
-	6,  // 80: workspace.v1.Projects.SetProjectOpen:output_type -> workspace.v1.Project
-	57, // [57:81] is the sub-list for method output_type
-	33, // [33:57] is the sub-list for method input_type
-	33, // [33:33] is the sub-list for extension type_name
-	33, // [33:33] is the sub-list for extension extendee
-	0,  // [0:33] is the sub-list for field type_name
+	3,  // 22: workspace.v1.UpdateProjectRequest.started_at:type_name -> workspace.v1.Date
+	3,  // 23: workspace.v1.UpdateProjectRequest.finished_at:type_name -> workspace.v1.Date
+	4,  // 24: workspace.v1.UpdateProjectRequest.skills:type_name -> workspace.v1.SkillIdsSelection
+	0,  // 25: workspace.v1.ListProjectsRequest.status:type_name -> workspace.v1.ProjectStatus
+	2,  // 26: workspace.v1.ListProjectsRequest.skill_match_mode:type_name -> workspace.v1.ProjectSkillMatchMode
+	8,  // 27: workspace.v1.ListProjectsResponse.projects:type_name -> workspace.v1.Project
+	0,  // 28: workspace.v1.ListPublicProjectsRequest.status:type_name -> workspace.v1.ProjectStatus
+	2,  // 29: workspace.v1.ListPublicProjectsRequest.skill_match_mode:type_name -> workspace.v1.ProjectSkillMatchMode
+	9,  // 30: workspace.v1.ListPublicProjectsResponse.projects:type_name -> workspace.v1.ProjectPublic
+	10, // 31: workspace.v1.ListProjectMembersResponse.members:type_name -> workspace.v1.ProjectMember
+	5,  // 32: workspace.v1.AddProjectMemberRequest.rights:type_name -> workspace.v1.ProjectRights
+	1,  // 33: workspace.v1.ListProjectJoinRequestsRequest.status:type_name -> workspace.v1.JoinRequestStatus
+	11, // 34: workspace.v1.ListProjectJoinRequestsResponse.requests:type_name -> workspace.v1.ProjectJoinRequest
+	5,  // 35: workspace.v1.ApproveProjectJoinRequestRequest.initial_rights:type_name -> workspace.v1.ProjectRights
+	12, // 36: workspace.v1.Teams.CreateTeam:input_type -> workspace.v1.CreateTeamRequest
+	13, // 37: workspace.v1.Teams.GetTeam:input_type -> workspace.v1.GetTeamRequest
+	14, // 38: workspace.v1.Teams.UpdateTeam:input_type -> workspace.v1.UpdateTeamRequest
+	15, // 39: workspace.v1.Teams.DeleteTeam:input_type -> workspace.v1.DeleteTeamRequest
+	16, // 40: workspace.v1.Teams.ListTeams:input_type -> workspace.v1.ListTeamsRequest
+	18, // 41: workspace.v1.Teams.ListTeamMembers:input_type -> workspace.v1.ListTeamMembersRequest
+	20, // 42: workspace.v1.Teams.UpdateTeamMember:input_type -> workspace.v1.UpdateTeamMemberRequest
+	21, // 43: workspace.v1.Teams.RemoveTeamMember:input_type -> workspace.v1.RemoveTeamMemberRequest
+	22, // 44: workspace.v1.Projects.CreateProject:input_type -> workspace.v1.CreateProjectRequest
+	23, // 45: workspace.v1.Projects.GetProject:input_type -> workspace.v1.GetProjectRequest
+	24, // 46: workspace.v1.Projects.UpdateProject:input_type -> workspace.v1.UpdateProjectRequest
+	25, // 47: workspace.v1.Projects.DeleteProject:input_type -> workspace.v1.DeleteProjectRequest
+	26, // 48: workspace.v1.Projects.ListProjects:input_type -> workspace.v1.ListProjectsRequest
+	28, // 49: workspace.v1.Projects.ListPublicProjects:input_type -> workspace.v1.ListPublicProjectsRequest
+	30, // 50: workspace.v1.Projects.ListProjectMembers:input_type -> workspace.v1.ListProjectMembersRequest
+	32, // 51: workspace.v1.Projects.AddProjectMember:input_type -> workspace.v1.AddProjectMemberRequest
+	33, // 52: workspace.v1.Projects.RemoveProjectMember:input_type -> workspace.v1.RemoveProjectMemberRequest
+	34, // 53: workspace.v1.Projects.UpdateProjectMemberRights:input_type -> workspace.v1.UpdateProjectMemberRightsRequest
+	35, // 54: workspace.v1.Projects.RequestJoinProject:input_type -> workspace.v1.RequestJoinProjectRequest
+	36, // 55: workspace.v1.Projects.CancelJoinProject:input_type -> workspace.v1.CancelJoinProjectRequest
+	37, // 56: workspace.v1.Projects.ListProjectJoinRequests:input_type -> workspace.v1.ListProjectJoinRequestsRequest
+	39, // 57: workspace.v1.Projects.ApproveProjectJoinRequest:input_type -> workspace.v1.ApproveProjectJoinRequestRequest
+	40, // 58: workspace.v1.Projects.RejectProjectJoinRequest:input_type -> workspace.v1.RejectProjectJoinRequestRequest
+	41, // 59: workspace.v1.Projects.SetProjectOpen:input_type -> workspace.v1.SetProjectOpenRequest
+	6,  // 60: workspace.v1.Teams.CreateTeam:output_type -> workspace.v1.Team
+	6,  // 61: workspace.v1.Teams.GetTeam:output_type -> workspace.v1.Team
+	6,  // 62: workspace.v1.Teams.UpdateTeam:output_type -> workspace.v1.Team
+	42, // 63: workspace.v1.Teams.DeleteTeam:output_type -> google.protobuf.Empty
+	17, // 64: workspace.v1.Teams.ListTeams:output_type -> workspace.v1.ListTeamsResponse
+	19, // 65: workspace.v1.Teams.ListTeamMembers:output_type -> workspace.v1.ListTeamMembersResponse
+	7,  // 66: workspace.v1.Teams.UpdateTeamMember:output_type -> workspace.v1.TeamMember
+	42, // 67: workspace.v1.Teams.RemoveTeamMember:output_type -> google.protobuf.Empty
+	8,  // 68: workspace.v1.Projects.CreateProject:output_type -> workspace.v1.Project
+	8,  // 69: workspace.v1.Projects.GetProject:output_type -> workspace.v1.Project
+	8,  // 70: workspace.v1.Projects.UpdateProject:output_type -> workspace.v1.Project
+	42, // 71: workspace.v1.Projects.DeleteProject:output_type -> google.protobuf.Empty
+	27, // 72: workspace.v1.Projects.ListProjects:output_type -> workspace.v1.ListProjectsResponse
+	29, // 73: workspace.v1.Projects.ListPublicProjects:output_type -> workspace.v1.ListPublicProjectsResponse
+	31, // 74: workspace.v1.Projects.ListProjectMembers:output_type -> workspace.v1.ListProjectMembersResponse
+	10, // 75: workspace.v1.Projects.AddProjectMember:output_type -> workspace.v1.ProjectMember
+	42, // 76: workspace.v1.Projects.RemoveProjectMember:output_type -> google.protobuf.Empty
+	10, // 77: workspace.v1.Projects.UpdateProjectMemberRights:output_type -> workspace.v1.ProjectMember
+	11, // 78: workspace.v1.Projects.RequestJoinProject:output_type -> workspace.v1.ProjectJoinRequest
+	11, // 79: workspace.v1.Projects.CancelJoinProject:output_type -> workspace.v1.ProjectJoinRequest
+	38, // 80: workspace.v1.Projects.ListProjectJoinRequests:output_type -> workspace.v1.ListProjectJoinRequestsResponse
+	11, // 81: workspace.v1.Projects.ApproveProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
+	11, // 82: workspace.v1.Projects.RejectProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
+	8,  // 83: workspace.v1.Projects.SetProjectOpen:output_type -> workspace.v1.Project
+	60, // [60:84] is the sub-list for method output_type
+	36, // [36:60] is the sub-list for method input_type
+	36, // [36:36] is the sub-list for extension type_name
+	36, // [36:36] is the sub-list for extension extendee
+	0,  // [0:36] is the sub-list for field type_name
 }
 
 func init() { file_teamAndProjects_teamAndProjects_proto_init() }
@@ -3103,21 +3276,21 @@ func file_teamAndProjects_teamAndProjects_proto_init() {
 	if File_teamAndProjects_teamAndProjects_proto != nil {
 		return
 	}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[4].OneofWrappers = []any{}
 	file_teamAndProjects_teamAndProjects_proto_msgTypes[5].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[7].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[10].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[16].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[18].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[20].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[30].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[6].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[8].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[11].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[17].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[19].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[21].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[31].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_teamAndProjects_teamAndProjects_proto_rawDesc), len(file_teamAndProjects_teamAndProjects_proto_rawDesc)),
-			NumEnums:      2,
-			NumMessages:   38,
+			NumEnums:      3,
+			NumMessages:   39,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

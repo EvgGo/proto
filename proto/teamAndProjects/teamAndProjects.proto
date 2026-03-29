@@ -31,6 +31,17 @@ enum JoinRequestStatus {
   JOIN_REQUEST_STATUS_CANCELLED = 4;
 }
 
+enum ProjectSkillMatchMode {
+  PROJECT_SKILL_MATCH_MODE_UNSPECIFIED = 0;
+  PROJECT_SKILL_MATCH_MODE_ANY = 1; // проект подходит, если есть хотя бы один skill
+  PROJECT_SKILL_MATCH_MODE_ALL = 2; // проект подходит, если есть все skill_ids
+}
+
+// Для partial update skills у проекта
+message SkillIdsSelection {
+  repeated string ids = 1; // полный итоговый набор skill_id, max 60
+}
+
 // Права участника проекта
 // manager_rights — суперправо: может выдавать/отнимать любые права
 message ProjectRights {
@@ -78,6 +89,8 @@ message Project {
 
   Date created_at = 10;
   Date updated_at = 11;
+
+  repeated string skill_ids = 12; // требуемые проекту skills, max 60
 }
 
 
@@ -270,6 +283,8 @@ message CreateProjectRequest {
 
   // новое имя команды. Если пусто сервер сгенерирует
   string team_name = 8;
+
+  repeated string skill_ids = 9; // полный список skill_id для проекта, max 60
 }
 
 message GetProjectRequest {
@@ -289,8 +304,14 @@ message UpdateProjectRequest {
   // finished_at:
   // - если поле не присутствует => не трогаем
   // - если присутствует и year=0 => очищаем (NULL)
-  // - если присутствует и year>0 => задаём дату
+  // - если присутствует и year>0 => ставим дату
   optional Date finished_at = 7;
+
+  // skills:
+  // - если поле не присутствует => не трогаем
+  // - если ids пустой => очищаем все skills проекта
+  // - если ids заполнен => полностью заменяем набор skills проекта
+  SkillIdsSelection skills = 8;
 }
 
 message DeleteProjectRequest {
@@ -307,6 +328,9 @@ message ListProjectsRequest {
   string user_id = 6;        // ID пользователя для фильтрации
   int32 page_size = 7;       // Количество элементов на странице
   string page_token = 8;     // Токен для пагинации
+
+  repeated string skill_ids = 9; // фильтр по skills
+  ProjectSkillMatchMode skill_match_mode = 10;
 }
 
 message ListProjectsResponse {
@@ -319,6 +343,8 @@ message ListPublicProjectsRequest {
   ProjectStatus status = 2; // фильтр, UNSPECIFIED => игнор
   int32 page_size = 3;
   string page_token = 4;
+  repeated string skill_ids = 5;
+  ProjectSkillMatchMode skill_match_mode = 6;
 }
 
 message ListPublicProjectsResponse {
