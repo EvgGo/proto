@@ -675,6 +675,7 @@ type ProjectPublic struct {
 	StartedAt     *Date                  `protobuf:"bytes,7,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
 	FinishedAt    *Date                  `protobuf:"bytes,8,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"` // nullable на уровне БД
 	CreatedAt     *Date                  `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	SkillIds      []string               `protobuf:"bytes,10,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"` // skills проекта для публичного списка
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -768,6 +769,13 @@ func (x *ProjectPublic) GetFinishedAt() *Date {
 func (x *ProjectPublic) GetCreatedAt() *Date {
 	if x != nil {
 		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *ProjectPublic) GetSkillIds() []string {
+	if x != nil {
+		return x.SkillIds
 	}
 	return nil
 }
@@ -2864,7 +2872,7 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\v \x01(\v2\x12.workspace.v1.DateR\tupdatedAt\x12\x1b\n" +
 	"\tskill_ids\x18\f \x03(\tR\bskillIdsB\x0e\n" +
-	"\f_finished_at\"\xec\x02\n" +
+	"\f_finished_at\"\x89\x03\n" +
 	"\rProjectPublic\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\ateam_id\x18\x02 \x01(\tR\x06teamId\x12\x12\n" +
@@ -2877,7 +2885,9 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\vfinished_at\x18\b \x01(\v2\x12.workspace.v1.DateH\x00R\n" +
 	"finishedAt\x88\x01\x01\x121\n" +
 	"\n" +
-	"created_at\x18\t \x01(\v2\x12.workspace.v1.DateR\tcreatedAtB\x0e\n" +
+	"created_at\x18\t \x01(\v2\x12.workspace.v1.DateR\tcreatedAt\x12\x1b\n" +
+	"\tskill_ids\x18\n" +
+	" \x03(\tR\bskillIdsB\x0e\n" +
 	"\f_finished_at\"|\n" +
 	"\rProjectMember\x12\x1d\n" +
 	"\n" +

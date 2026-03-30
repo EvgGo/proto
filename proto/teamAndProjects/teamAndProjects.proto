@@ -107,6 +107,8 @@ message ProjectPublic {
   optional Date finished_at = 8;          // nullable на уровне БД
 
   Date created_at = 9;
+
+  repeated string skill_ids = 10; // skills проекта для публичного списка
 }
 
 message ProjectMember {
