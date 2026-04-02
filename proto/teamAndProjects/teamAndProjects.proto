@@ -91,6 +91,7 @@ message Project {
   Date updated_at = 11;
 
   repeated string skill_ids = 12; // требуемые проекту skills, max 60
+  repeated ProjectSkill skills = 13;
 }
 
 
@@ -109,6 +110,7 @@ message ProjectPublic {
   Date created_at = 9;
 
   repeated string skill_ids = 10; // skills проекта для публичного списка
+  repeated ProjectSkill skills = 11;
 }
 
 message ProjectMember {
@@ -425,4 +427,9 @@ message RejectProjectJoinRequestRequest {
 message SetProjectOpenRequest {
   string project_id = 1; // ID проекта, для которого меняем статус
   bool is_open = 2;      // Новый статус проекта (true/false)
+}
+
+message ProjectSkill {
+  string id = 1;
+  string name = 2;
 }
