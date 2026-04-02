@@ -622,10 +622,11 @@ var UserProfile_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	Skills_ListSkills_FullMethodName  = "/auth.Skills/ListSkills"
-	Skills_GetSkill_FullMethodName    = "/auth.Skills/GetSkill"
-	Skills_CreateSkill_FullMethodName = "/auth.Skills/CreateSkill"
-	Skills_DeleteSkill_FullMethodName = "/auth.Skills/DeleteSkill"
+	Skills_ListSkills_FullMethodName     = "/auth.Skills/ListSkills"
+	Skills_GetSkill_FullMethodName       = "/auth.Skills/GetSkill"
+	Skills_GetSkillsByIds_FullMethodName = "/auth.Skills/GetSkillsByIds"
+	Skills_CreateSkill_FullMethodName    = "/auth.Skills/CreateSkill"
+	Skills_DeleteSkill_FullMethodName    = "/auth.Skills/DeleteSkill"
 )
 
 // SkillsClient is the client API for Skills service.
@@ -636,6 +637,8 @@ type SkillsClient interface {
 	ListSkills(ctx context.Context, in *ListSkillsRequest, opts ...grpc.CallOption) (*ListSkillsResponse, error)
 	// Получить навык по id.
 	GetSkill(ctx context.Context, in *GetSkillRequest, opts ...grpc.CallOption) (*Skill, error)
+	// Получить
+	GetSkillsByIds(ctx context.Context, in *GetSkillsByIdsRequest, opts ...grpc.CallOption) (*GetSkillsByIdsResponse, error)
 	// Создать навык - админ.
 	CreateSkill(ctx context.Context, in *CreateSkillRequest, opts ...grpc.CallOption) (*Skill, error)
 	// Удалить навык - админ.
@@ -670,6 +673,16 @@ func (c *skillsClient) GetSkill(ctx context.Context, in *GetSkillRequest, opts .
 	return out, nil
 }
 
+func (c *skillsClient) GetSkillsByIds(ctx context.Context, in *GetSkillsByIdsRequest, opts ...grpc.CallOption) (*GetSkillsByIdsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSkillsByIdsResponse)
+	err := c.cc.Invoke(ctx, Skills_GetSkillsByIds_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *skillsClient) CreateSkill(ctx context.Context, in *CreateSkillRequest, opts ...grpc.CallOption) (*Skill, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Skill)
@@ -698,6 +711,8 @@ type SkillsServer interface {
 	ListSkills(context.Context, *ListSkillsRequest) (*ListSkillsResponse, error)
 	// Получить навык по id.
 	GetSkill(context.Context, *GetSkillRequest) (*Skill, error)
+	// Получить
+	GetSkillsByIds(context.Context, *GetSkillsByIdsRequest) (*GetSkillsByIdsResponse, error)
 	// Создать навык - админ.
 	CreateSkill(context.Context, *CreateSkillRequest) (*Skill, error)
 	// Удалить навык - админ.
@@ -717,6 +732,9 @@ func (UnimplementedSkillsServer) ListSkills(context.Context, *ListSkillsRequest)
 }
 func (UnimplementedSkillsServer) GetSkill(context.Context, *GetSkillRequest) (*Skill, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSkill not implemented")
+}
+func (UnimplementedSkillsServer) GetSkillsByIds(context.Context, *GetSkillsByIdsRequest) (*GetSkillsByIdsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSkillsByIds not implemented")
 }
 func (UnimplementedSkillsServer) CreateSkill(context.Context, *CreateSkillRequest) (*Skill, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSkill not implemented")
@@ -781,6 +799,24 @@ func _Skills_GetSkill_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Skills_GetSkillsByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSkillsByIdsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SkillsServer).GetSkillsByIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Skills_GetSkillsByIds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SkillsServer).GetSkillsByIds(ctx, req.(*GetSkillsByIdsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Skills_CreateSkill_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateSkillRequest)
 	if err := dec(in); err != nil {
@@ -831,6 +867,10 @@ var Skills_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSkill",
 			Handler:    _Skills_GetSkill_Handler,
+		},
+		{
+			MethodName: "GetSkillsByIds",
+			Handler:    _Skills_GetSkillsByIds_Handler,
 		},
 		{
 			MethodName: "CreateSkill",

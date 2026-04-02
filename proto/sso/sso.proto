@@ -187,6 +187,9 @@ service Skills {
   // Получить навык по id.
   rpc GetSkill(GetSkillRequest) returns (Skill);
 
+  // Получить
+  rpc GetSkillsByIds(GetSkillsByIdsRequest) returns (GetSkillsByIdsResponse);
+
   // Создать навык - админ.
   rpc CreateSkill(CreateSkillRequest) returns (Skill);
 
@@ -226,4 +229,12 @@ message ListSkillsRequest {
 message ListSkillsResponse {
   repeated Skill skills = 1;
   string next_page_token = 2;
+}
+
+message GetSkillsByIdsRequest {
+  repeated string skill_ids = 1;
+}
+
+message GetSkillsByIdsResponse {
+  repeated Skill skills = 1;
 }
