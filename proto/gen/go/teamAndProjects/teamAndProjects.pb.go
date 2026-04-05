@@ -181,6 +181,107 @@ func (ProjectSkillMatchMode) EnumDescriptor() ([]byte, []int) {
 	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{2}
 }
 
+type ProjectPublicSortBy int32
+
+const (
+	ProjectPublicSortBy_PROJECT_PUBLIC_SORT_BY_UNSPECIFIED         ProjectPublicSortBy = 0
+	ProjectPublicSortBy_PROJECT_PUBLIC_SORT_BY_CREATED_AT          ProjectPublicSortBy = 1
+	ProjectPublicSortBy_PROJECT_PUBLIC_SORT_BY_STARTED_AT          ProjectPublicSortBy = 2
+	ProjectPublicSortBy_PROJECT_PUBLIC_SORT_BY_PROFILE_SKILL_MATCH ProjectPublicSortBy = 3
+)
+
+// Enum value maps for ProjectPublicSortBy.
+var (
+	ProjectPublicSortBy_name = map[int32]string{
+		0: "PROJECT_PUBLIC_SORT_BY_UNSPECIFIED",
+		1: "PROJECT_PUBLIC_SORT_BY_CREATED_AT",
+		2: "PROJECT_PUBLIC_SORT_BY_STARTED_AT",
+		3: "PROJECT_PUBLIC_SORT_BY_PROFILE_SKILL_MATCH",
+	}
+	ProjectPublicSortBy_value = map[string]int32{
+		"PROJECT_PUBLIC_SORT_BY_UNSPECIFIED":         0,
+		"PROJECT_PUBLIC_SORT_BY_CREATED_AT":          1,
+		"PROJECT_PUBLIC_SORT_BY_STARTED_AT":          2,
+		"PROJECT_PUBLIC_SORT_BY_PROFILE_SKILL_MATCH": 3,
+	}
+)
+
+func (x ProjectPublicSortBy) Enum() *ProjectPublicSortBy {
+	p := new(ProjectPublicSortBy)
+	*p = x
+	return p
+}
+
+func (x ProjectPublicSortBy) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ProjectPublicSortBy) Descriptor() protoreflect.EnumDescriptor {
+	return file_teamAndProjects_teamAndProjects_proto_enumTypes[3].Descriptor()
+}
+
+func (ProjectPublicSortBy) Type() protoreflect.EnumType {
+	return &file_teamAndProjects_teamAndProjects_proto_enumTypes[3]
+}
+
+func (x ProjectPublicSortBy) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ProjectPublicSortBy.Descriptor instead.
+func (ProjectPublicSortBy) EnumDescriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{3}
+}
+
+type SortOrder int32
+
+const (
+	SortOrder_SORT_ORDER_UNSPECIFIED SortOrder = 0
+	SortOrder_SORT_ORDER_ASC         SortOrder = 1
+	SortOrder_SORT_ORDER_DESC        SortOrder = 2
+)
+
+// Enum value maps for SortOrder.
+var (
+	SortOrder_name = map[int32]string{
+		0: "SORT_ORDER_UNSPECIFIED",
+		1: "SORT_ORDER_ASC",
+		2: "SORT_ORDER_DESC",
+	}
+	SortOrder_value = map[string]int32{
+		"SORT_ORDER_UNSPECIFIED": 0,
+		"SORT_ORDER_ASC":         1,
+		"SORT_ORDER_DESC":        2,
+	}
+)
+
+func (x SortOrder) Enum() *SortOrder {
+	p := new(SortOrder)
+	*p = x
+	return p
+}
+
+func (x SortOrder) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SortOrder) Descriptor() protoreflect.EnumDescriptor {
+	return file_teamAndProjects_teamAndProjects_proto_enumTypes[4].Descriptor()
+}
+
+func (SortOrder) Type() protoreflect.EnumType {
+	return &file_teamAndProjects_teamAndProjects_proto_enumTypes[4]
+}
+
+func (x SortOrder) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SortOrder.Descriptor instead.
+func (SortOrder) EnumDescriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{4}
+}
+
 type Date struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Year          int32                  `protobuf:"varint,1,opt,name=year,proto3" json:"year,omitempty"`   // e.g. 2026
@@ -673,20 +774,21 @@ func (x *Project) GetSkills() []*ProjectSkill {
 }
 
 type ProjectPublic struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                       // UUID
-	TeamId        string                 `protobuf:"bytes,2,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"` // UUID
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	Status        ProjectStatus          `protobuf:"varint,5,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"`
-	IsOpen        bool                   `protobuf:"varint,6,opt,name=is_open,json=isOpen,proto3" json:"is_open,omitempty"`
-	StartedAt     *Date                  `protobuf:"bytes,7,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
-	FinishedAt    *Date                  `protobuf:"bytes,8,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"` // nullable на уровне БД
-	CreatedAt     *Date                  `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	SkillIds      []string               `protobuf:"bytes,10,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"` // skills проекта для публичного списка
-	Skills        []*ProjectSkill        `protobuf:"bytes,11,rep,name=skills,proto3" json:"skills,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                    protoimpl.MessageState `protogen:"open.v1"`
+	Id                       string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                       // UUID
+	TeamId                   string                 `protobuf:"bytes,2,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"` // UUID
+	Name                     string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Description              string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Status                   ProjectStatus          `protobuf:"varint,5,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"`
+	IsOpen                   bool                   `protobuf:"varint,6,opt,name=is_open,json=isOpen,proto3" json:"is_open,omitempty"`
+	StartedAt                *Date                  `protobuf:"bytes,7,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	FinishedAt               *Date                  `protobuf:"bytes,8,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"` // nullable на уровне БД
+	CreatedAt                *Date                  `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	SkillIds                 []string               `protobuf:"bytes,10,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"` // skills проекта для публичного списка
+	Skills                   []*ProjectSkill        `protobuf:"bytes,11,rep,name=skills,proto3" json:"skills,omitempty"`
+	ProfileSkillMatchPercent *int32                 `protobuf:"varint,12,opt,name=profile_skill_match_percent,json=profileSkillMatchPercent,proto3,oneof" json:"profile_skill_match_percent,omitempty"`
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *ProjectPublic) Reset() {
@@ -794,6 +896,13 @@ func (x *ProjectPublic) GetSkills() []*ProjectSkill {
 		return x.Skills
 	}
 	return nil
+}
+
+func (x *ProjectPublic) GetProfileSkillMatchPercent() int32 {
+	if x != nil && x.ProfileSkillMatchPercent != nil {
+		return *x.ProfileSkillMatchPercent
+	}
+	return 0
 }
 
 type ProjectMember struct {
@@ -2022,6 +2131,8 @@ type ListPublicProjectsRequest struct {
 	PageToken      string                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	SkillIds       []string               `protobuf:"bytes,5,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"`
 	SkillMatchMode ProjectSkillMatchMode  `protobuf:"varint,6,opt,name=skill_match_mode,json=skillMatchMode,proto3,enum=workspace.v1.ProjectSkillMatchMode" json:"skill_match_mode,omitempty"`
+	SortBy         ProjectPublicSortBy    `protobuf:"varint,7,opt,name=sort_by,json=sortBy,proto3,enum=workspace.v1.ProjectPublicSortBy" json:"sort_by,omitempty"`
+	SortOrder      SortOrder              `protobuf:"varint,8,opt,name=sort_order,json=sortOrder,proto3,enum=workspace.v1.SortOrder" json:"sort_order,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -2096,6 +2207,20 @@ func (x *ListPublicProjectsRequest) GetSkillMatchMode() ProjectSkillMatchMode {
 		return x.SkillMatchMode
 	}
 	return ProjectSkillMatchMode_PROJECT_SKILL_MATCH_MODE_UNSPECIFIED
+}
+
+func (x *ListPublicProjectsRequest) GetSortBy() ProjectPublicSortBy {
+	if x != nil {
+		return x.SortBy
+	}
+	return ProjectPublicSortBy_PROJECT_PUBLIC_SORT_BY_UNSPECIFIED
+}
+
+func (x *ListPublicProjectsRequest) GetSortOrder() SortOrder {
+	if x != nil {
+		return x.SortOrder
+	}
+	return SortOrder_SORT_ORDER_UNSPECIFIED
 }
 
 type ListPublicProjectsResponse struct {
@@ -2941,7 +3066,7 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"updated_at\x18\v \x01(\v2\x12.workspace.v1.DateR\tupdatedAt\x12\x1b\n" +
 	"\tskill_ids\x18\f \x03(\tR\bskillIds\x122\n" +
 	"\x06skills\x18\r \x03(\v2\x1a.workspace.v1.ProjectSkillR\x06skillsB\x0e\n" +
-	"\f_finished_at\"\xbd\x03\n" +
+	"\f_finished_at\"\xa1\x04\n" +
 	"\rProjectPublic\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\ateam_id\x18\x02 \x01(\tR\x06teamId\x12\x12\n" +
@@ -2957,8 +3082,10 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"created_at\x18\t \x01(\v2\x12.workspace.v1.DateR\tcreatedAt\x12\x1b\n" +
 	"\tskill_ids\x18\n" +
 	" \x03(\tR\bskillIds\x122\n" +
-	"\x06skills\x18\v \x03(\v2\x1a.workspace.v1.ProjectSkillR\x06skillsB\x0e\n" +
-	"\f_finished_at\"|\n" +
+	"\x06skills\x18\v \x03(\v2\x1a.workspace.v1.ProjectSkillR\x06skills\x12B\n" +
+	"\x1bprofile_skill_match_percent\x18\f \x01(\x05H\x01R\x18profileSkillMatchPercent\x88\x01\x01B\x0e\n" +
+	"\f_finished_atB\x1e\n" +
+	"\x1c_profile_skill_match_percent\"|\n" +
 	"\rProjectMember\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tR\tprojectId\x12\x17\n" +
@@ -3082,7 +3209,7 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	" \x01(\x0e2#.workspace.v1.ProjectSkillMatchModeR\x0eskillMatchMode\"q\n" +
 	"\x14ListProjectsResponse\x121\n" +
 	"\bprojects\x18\x01 \x03(\v2\x15.workspace.v1.ProjectR\bprojects\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x8e\x02\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x82\x03\n" +
 	"\x19ListPublicProjectsRequest\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\x123\n" +
 	"\x06status\x18\x02 \x01(\x0e2\x1b.workspace.v1.ProjectStatusR\x06status\x12\x1b\n" +
@@ -3090,7 +3217,10 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\n" +
 	"page_token\x18\x04 \x01(\tR\tpageToken\x12\x1b\n" +
 	"\tskill_ids\x18\x05 \x03(\tR\bskillIds\x12M\n" +
-	"\x10skill_match_mode\x18\x06 \x01(\x0e2#.workspace.v1.ProjectSkillMatchModeR\x0eskillMatchMode\"}\n" +
+	"\x10skill_match_mode\x18\x06 \x01(\x0e2#.workspace.v1.ProjectSkillMatchModeR\x0eskillMatchMode\x12:\n" +
+	"\asort_by\x18\a \x01(\x0e2!.workspace.v1.ProjectPublicSortByR\x06sortBy\x126\n" +
+	"\n" +
+	"sort_order\x18\b \x01(\x0e2\x17.workspace.v1.SortOrderR\tsortOrder\"}\n" +
 	"\x1aListPublicProjectsResponse\x127\n" +
 	"\bprojects\x18\x01 \x03(\v2\x1b.workspace.v1.ProjectPublicR\bprojects\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"v\n" +
@@ -3171,7 +3301,16 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\x15ProjectSkillMatchMode\x12(\n" +
 	"$PROJECT_SKILL_MATCH_MODE_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cPROJECT_SKILL_MATCH_MODE_ANY\x10\x01\x12 \n" +
-	"\x1cPROJECT_SKILL_MATCH_MODE_ALL\x10\x022\xe7\x04\n" +
+	"\x1cPROJECT_SKILL_MATCH_MODE_ALL\x10\x02*\xbb\x01\n" +
+	"\x13ProjectPublicSortBy\x12&\n" +
+	"\"PROJECT_PUBLIC_SORT_BY_UNSPECIFIED\x10\x00\x12%\n" +
+	"!PROJECT_PUBLIC_SORT_BY_CREATED_AT\x10\x01\x12%\n" +
+	"!PROJECT_PUBLIC_SORT_BY_STARTED_AT\x10\x02\x12.\n" +
+	"*PROJECT_PUBLIC_SORT_BY_PROFILE_SKILL_MATCH\x10\x03*P\n" +
+	"\tSortOrder\x12\x1a\n" +
+	"\x16SORT_ORDER_UNSPECIFIED\x10\x00\x12\x12\n" +
+	"\x0eSORT_ORDER_ASC\x10\x01\x12\x13\n" +
+	"\x0fSORT_ORDER_DESC\x10\x022\xe7\x04\n" +
 	"\x05Teams\x12A\n" +
 	"\n" +
 	"CreateTeam\x12\x1f.workspace.v1.CreateTeamRequest\x1a\x12.workspace.v1.Team\x12;\n" +
@@ -3215,146 +3354,150 @@ func file_teamAndProjects_teamAndProjects_proto_rawDescGZIP() []byte {
 	return file_teamAndProjects_teamAndProjects_proto_rawDescData
 }
 
-var file_teamAndProjects_teamAndProjects_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_teamAndProjects_teamAndProjects_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
 var file_teamAndProjects_teamAndProjects_proto_msgTypes = make([]protoimpl.MessageInfo, 40)
 var file_teamAndProjects_teamAndProjects_proto_goTypes = []any{
 	(ProjectStatus)(0),                       // 0: workspace.v1.ProjectStatus
 	(JoinRequestStatus)(0),                   // 1: workspace.v1.JoinRequestStatus
 	(ProjectSkillMatchMode)(0),               // 2: workspace.v1.ProjectSkillMatchMode
-	(*Date)(nil),                             // 3: workspace.v1.Date
-	(*SkillIdsSelection)(nil),                // 4: workspace.v1.SkillIdsSelection
-	(*ProjectRights)(nil),                    // 5: workspace.v1.ProjectRights
-	(*Team)(nil),                             // 6: workspace.v1.Team
-	(*TeamMember)(nil),                       // 7: workspace.v1.TeamMember
-	(*Project)(nil),                          // 8: workspace.v1.Project
-	(*ProjectPublic)(nil),                    // 9: workspace.v1.ProjectPublic
-	(*ProjectMember)(nil),                    // 10: workspace.v1.ProjectMember
-	(*ProjectJoinRequest)(nil),               // 11: workspace.v1.ProjectJoinRequest
-	(*CreateTeamRequest)(nil),                // 12: workspace.v1.CreateTeamRequest
-	(*GetTeamRequest)(nil),                   // 13: workspace.v1.GetTeamRequest
-	(*UpdateTeamRequest)(nil),                // 14: workspace.v1.UpdateTeamRequest
-	(*DeleteTeamRequest)(nil),                // 15: workspace.v1.DeleteTeamRequest
-	(*ListTeamsRequest)(nil),                 // 16: workspace.v1.ListTeamsRequest
-	(*ListTeamsResponse)(nil),                // 17: workspace.v1.ListTeamsResponse
-	(*ListTeamMembersRequest)(nil),           // 18: workspace.v1.ListTeamMembersRequest
-	(*ListTeamMembersResponse)(nil),          // 19: workspace.v1.ListTeamMembersResponse
-	(*UpdateTeamMemberRequest)(nil),          // 20: workspace.v1.UpdateTeamMemberRequest
-	(*RemoveTeamMemberRequest)(nil),          // 21: workspace.v1.RemoveTeamMemberRequest
-	(*CreateProjectRequest)(nil),             // 22: workspace.v1.CreateProjectRequest
-	(*GetProjectRequest)(nil),                // 23: workspace.v1.GetProjectRequest
-	(*UpdateProjectRequest)(nil),             // 24: workspace.v1.UpdateProjectRequest
-	(*DeleteProjectRequest)(nil),             // 25: workspace.v1.DeleteProjectRequest
-	(*ListProjectsRequest)(nil),              // 26: workspace.v1.ListProjectsRequest
-	(*ListProjectsResponse)(nil),             // 27: workspace.v1.ListProjectsResponse
-	(*ListPublicProjectsRequest)(nil),        // 28: workspace.v1.ListPublicProjectsRequest
-	(*ListPublicProjectsResponse)(nil),       // 29: workspace.v1.ListPublicProjectsResponse
-	(*ListProjectMembersRequest)(nil),        // 30: workspace.v1.ListProjectMembersRequest
-	(*ListProjectMembersResponse)(nil),       // 31: workspace.v1.ListProjectMembersResponse
-	(*AddProjectMemberRequest)(nil),          // 32: workspace.v1.AddProjectMemberRequest
-	(*RemoveProjectMemberRequest)(nil),       // 33: workspace.v1.RemoveProjectMemberRequest
-	(*UpdateProjectMemberRightsRequest)(nil), // 34: workspace.v1.UpdateProjectMemberRightsRequest
-	(*RequestJoinProjectRequest)(nil),        // 35: workspace.v1.RequestJoinProjectRequest
-	(*CancelJoinProjectRequest)(nil),         // 36: workspace.v1.CancelJoinProjectRequest
-	(*ListProjectJoinRequestsRequest)(nil),   // 37: workspace.v1.ListProjectJoinRequestsRequest
-	(*ListProjectJoinRequestsResponse)(nil),  // 38: workspace.v1.ListProjectJoinRequestsResponse
-	(*ApproveProjectJoinRequestRequest)(nil), // 39: workspace.v1.ApproveProjectJoinRequestRequest
-	(*RejectProjectJoinRequestRequest)(nil),  // 40: workspace.v1.RejectProjectJoinRequestRequest
-	(*SetProjectOpenRequest)(nil),            // 41: workspace.v1.SetProjectOpenRequest
-	(*ProjectSkill)(nil),                     // 42: workspace.v1.ProjectSkill
-	(*emptypb.Empty)(nil),                    // 43: google.protobuf.Empty
+	(ProjectPublicSortBy)(0),                 // 3: workspace.v1.ProjectPublicSortBy
+	(SortOrder)(0),                           // 4: workspace.v1.SortOrder
+	(*Date)(nil),                             // 5: workspace.v1.Date
+	(*SkillIdsSelection)(nil),                // 6: workspace.v1.SkillIdsSelection
+	(*ProjectRights)(nil),                    // 7: workspace.v1.ProjectRights
+	(*Team)(nil),                             // 8: workspace.v1.Team
+	(*TeamMember)(nil),                       // 9: workspace.v1.TeamMember
+	(*Project)(nil),                          // 10: workspace.v1.Project
+	(*ProjectPublic)(nil),                    // 11: workspace.v1.ProjectPublic
+	(*ProjectMember)(nil),                    // 12: workspace.v1.ProjectMember
+	(*ProjectJoinRequest)(nil),               // 13: workspace.v1.ProjectJoinRequest
+	(*CreateTeamRequest)(nil),                // 14: workspace.v1.CreateTeamRequest
+	(*GetTeamRequest)(nil),                   // 15: workspace.v1.GetTeamRequest
+	(*UpdateTeamRequest)(nil),                // 16: workspace.v1.UpdateTeamRequest
+	(*DeleteTeamRequest)(nil),                // 17: workspace.v1.DeleteTeamRequest
+	(*ListTeamsRequest)(nil),                 // 18: workspace.v1.ListTeamsRequest
+	(*ListTeamsResponse)(nil),                // 19: workspace.v1.ListTeamsResponse
+	(*ListTeamMembersRequest)(nil),           // 20: workspace.v1.ListTeamMembersRequest
+	(*ListTeamMembersResponse)(nil),          // 21: workspace.v1.ListTeamMembersResponse
+	(*UpdateTeamMemberRequest)(nil),          // 22: workspace.v1.UpdateTeamMemberRequest
+	(*RemoveTeamMemberRequest)(nil),          // 23: workspace.v1.RemoveTeamMemberRequest
+	(*CreateProjectRequest)(nil),             // 24: workspace.v1.CreateProjectRequest
+	(*GetProjectRequest)(nil),                // 25: workspace.v1.GetProjectRequest
+	(*UpdateProjectRequest)(nil),             // 26: workspace.v1.UpdateProjectRequest
+	(*DeleteProjectRequest)(nil),             // 27: workspace.v1.DeleteProjectRequest
+	(*ListProjectsRequest)(nil),              // 28: workspace.v1.ListProjectsRequest
+	(*ListProjectsResponse)(nil),             // 29: workspace.v1.ListProjectsResponse
+	(*ListPublicProjectsRequest)(nil),        // 30: workspace.v1.ListPublicProjectsRequest
+	(*ListPublicProjectsResponse)(nil),       // 31: workspace.v1.ListPublicProjectsResponse
+	(*ListProjectMembersRequest)(nil),        // 32: workspace.v1.ListProjectMembersRequest
+	(*ListProjectMembersResponse)(nil),       // 33: workspace.v1.ListProjectMembersResponse
+	(*AddProjectMemberRequest)(nil),          // 34: workspace.v1.AddProjectMemberRequest
+	(*RemoveProjectMemberRequest)(nil),       // 35: workspace.v1.RemoveProjectMemberRequest
+	(*UpdateProjectMemberRightsRequest)(nil), // 36: workspace.v1.UpdateProjectMemberRightsRequest
+	(*RequestJoinProjectRequest)(nil),        // 37: workspace.v1.RequestJoinProjectRequest
+	(*CancelJoinProjectRequest)(nil),         // 38: workspace.v1.CancelJoinProjectRequest
+	(*ListProjectJoinRequestsRequest)(nil),   // 39: workspace.v1.ListProjectJoinRequestsRequest
+	(*ListProjectJoinRequestsResponse)(nil),  // 40: workspace.v1.ListProjectJoinRequestsResponse
+	(*ApproveProjectJoinRequestRequest)(nil), // 41: workspace.v1.ApproveProjectJoinRequestRequest
+	(*RejectProjectJoinRequestRequest)(nil),  // 42: workspace.v1.RejectProjectJoinRequestRequest
+	(*SetProjectOpenRequest)(nil),            // 43: workspace.v1.SetProjectOpenRequest
+	(*ProjectSkill)(nil),                     // 44: workspace.v1.ProjectSkill
+	(*emptypb.Empty)(nil),                    // 45: google.protobuf.Empty
 }
 var file_teamAndProjects_teamAndProjects_proto_depIdxs = []int32{
-	3,  // 0: workspace.v1.Team.created_at:type_name -> workspace.v1.Date
-	3,  // 1: workspace.v1.Team.updated_at:type_name -> workspace.v1.Date
-	3,  // 2: workspace.v1.TeamMember.joined_at:type_name -> workspace.v1.Date
+	5,  // 0: workspace.v1.Team.created_at:type_name -> workspace.v1.Date
+	5,  // 1: workspace.v1.Team.updated_at:type_name -> workspace.v1.Date
+	5,  // 2: workspace.v1.TeamMember.joined_at:type_name -> workspace.v1.Date
 	0,  // 3: workspace.v1.Project.status:type_name -> workspace.v1.ProjectStatus
-	3,  // 4: workspace.v1.Project.started_at:type_name -> workspace.v1.Date
-	3,  // 5: workspace.v1.Project.finished_at:type_name -> workspace.v1.Date
-	3,  // 6: workspace.v1.Project.created_at:type_name -> workspace.v1.Date
-	3,  // 7: workspace.v1.Project.updated_at:type_name -> workspace.v1.Date
-	42, // 8: workspace.v1.Project.skills:type_name -> workspace.v1.ProjectSkill
+	5,  // 4: workspace.v1.Project.started_at:type_name -> workspace.v1.Date
+	5,  // 5: workspace.v1.Project.finished_at:type_name -> workspace.v1.Date
+	5,  // 6: workspace.v1.Project.created_at:type_name -> workspace.v1.Date
+	5,  // 7: workspace.v1.Project.updated_at:type_name -> workspace.v1.Date
+	44, // 8: workspace.v1.Project.skills:type_name -> workspace.v1.ProjectSkill
 	0,  // 9: workspace.v1.ProjectPublic.status:type_name -> workspace.v1.ProjectStatus
-	3,  // 10: workspace.v1.ProjectPublic.started_at:type_name -> workspace.v1.Date
-	3,  // 11: workspace.v1.ProjectPublic.finished_at:type_name -> workspace.v1.Date
-	3,  // 12: workspace.v1.ProjectPublic.created_at:type_name -> workspace.v1.Date
-	42, // 13: workspace.v1.ProjectPublic.skills:type_name -> workspace.v1.ProjectSkill
-	5,  // 14: workspace.v1.ProjectMember.rights:type_name -> workspace.v1.ProjectRights
+	5,  // 10: workspace.v1.ProjectPublic.started_at:type_name -> workspace.v1.Date
+	5,  // 11: workspace.v1.ProjectPublic.finished_at:type_name -> workspace.v1.Date
+	5,  // 12: workspace.v1.ProjectPublic.created_at:type_name -> workspace.v1.Date
+	44, // 13: workspace.v1.ProjectPublic.skills:type_name -> workspace.v1.ProjectSkill
+	7,  // 14: workspace.v1.ProjectMember.rights:type_name -> workspace.v1.ProjectRights
 	1,  // 15: workspace.v1.ProjectJoinRequest.status:type_name -> workspace.v1.JoinRequestStatus
-	3,  // 16: workspace.v1.ProjectJoinRequest.decided_at:type_name -> workspace.v1.Date
-	3,  // 17: workspace.v1.ProjectJoinRequest.created_at:type_name -> workspace.v1.Date
-	6,  // 18: workspace.v1.ListTeamsResponse.teams:type_name -> workspace.v1.Team
-	7,  // 19: workspace.v1.ListTeamMembersResponse.members:type_name -> workspace.v1.TeamMember
+	5,  // 16: workspace.v1.ProjectJoinRequest.decided_at:type_name -> workspace.v1.Date
+	5,  // 17: workspace.v1.ProjectJoinRequest.created_at:type_name -> workspace.v1.Date
+	8,  // 18: workspace.v1.ListTeamsResponse.teams:type_name -> workspace.v1.Team
+	9,  // 19: workspace.v1.ListTeamMembersResponse.members:type_name -> workspace.v1.TeamMember
 	0,  // 20: workspace.v1.CreateProjectRequest.status:type_name -> workspace.v1.ProjectStatus
-	3,  // 21: workspace.v1.CreateProjectRequest.started_at:type_name -> workspace.v1.Date
-	3,  // 22: workspace.v1.CreateProjectRequest.finished_at:type_name -> workspace.v1.Date
+	5,  // 21: workspace.v1.CreateProjectRequest.started_at:type_name -> workspace.v1.Date
+	5,  // 22: workspace.v1.CreateProjectRequest.finished_at:type_name -> workspace.v1.Date
 	0,  // 23: workspace.v1.UpdateProjectRequest.status:type_name -> workspace.v1.ProjectStatus
-	3,  // 24: workspace.v1.UpdateProjectRequest.started_at:type_name -> workspace.v1.Date
-	3,  // 25: workspace.v1.UpdateProjectRequest.finished_at:type_name -> workspace.v1.Date
-	4,  // 26: workspace.v1.UpdateProjectRequest.skills:type_name -> workspace.v1.SkillIdsSelection
+	5,  // 24: workspace.v1.UpdateProjectRequest.started_at:type_name -> workspace.v1.Date
+	5,  // 25: workspace.v1.UpdateProjectRequest.finished_at:type_name -> workspace.v1.Date
+	6,  // 26: workspace.v1.UpdateProjectRequest.skills:type_name -> workspace.v1.SkillIdsSelection
 	0,  // 27: workspace.v1.ListProjectsRequest.status:type_name -> workspace.v1.ProjectStatus
 	2,  // 28: workspace.v1.ListProjectsRequest.skill_match_mode:type_name -> workspace.v1.ProjectSkillMatchMode
-	8,  // 29: workspace.v1.ListProjectsResponse.projects:type_name -> workspace.v1.Project
+	10, // 29: workspace.v1.ListProjectsResponse.projects:type_name -> workspace.v1.Project
 	0,  // 30: workspace.v1.ListPublicProjectsRequest.status:type_name -> workspace.v1.ProjectStatus
 	2,  // 31: workspace.v1.ListPublicProjectsRequest.skill_match_mode:type_name -> workspace.v1.ProjectSkillMatchMode
-	9,  // 32: workspace.v1.ListPublicProjectsResponse.projects:type_name -> workspace.v1.ProjectPublic
-	10, // 33: workspace.v1.ListProjectMembersResponse.members:type_name -> workspace.v1.ProjectMember
-	5,  // 34: workspace.v1.AddProjectMemberRequest.rights:type_name -> workspace.v1.ProjectRights
-	1,  // 35: workspace.v1.ListProjectJoinRequestsRequest.status:type_name -> workspace.v1.JoinRequestStatus
-	11, // 36: workspace.v1.ListProjectJoinRequestsResponse.requests:type_name -> workspace.v1.ProjectJoinRequest
-	5,  // 37: workspace.v1.ApproveProjectJoinRequestRequest.initial_rights:type_name -> workspace.v1.ProjectRights
-	12, // 38: workspace.v1.Teams.CreateTeam:input_type -> workspace.v1.CreateTeamRequest
-	13, // 39: workspace.v1.Teams.GetTeam:input_type -> workspace.v1.GetTeamRequest
-	14, // 40: workspace.v1.Teams.UpdateTeam:input_type -> workspace.v1.UpdateTeamRequest
-	15, // 41: workspace.v1.Teams.DeleteTeam:input_type -> workspace.v1.DeleteTeamRequest
-	16, // 42: workspace.v1.Teams.ListTeams:input_type -> workspace.v1.ListTeamsRequest
-	18, // 43: workspace.v1.Teams.ListTeamMembers:input_type -> workspace.v1.ListTeamMembersRequest
-	20, // 44: workspace.v1.Teams.UpdateTeamMember:input_type -> workspace.v1.UpdateTeamMemberRequest
-	21, // 45: workspace.v1.Teams.RemoveTeamMember:input_type -> workspace.v1.RemoveTeamMemberRequest
-	22, // 46: workspace.v1.Projects.CreateProject:input_type -> workspace.v1.CreateProjectRequest
-	23, // 47: workspace.v1.Projects.GetProject:input_type -> workspace.v1.GetProjectRequest
-	24, // 48: workspace.v1.Projects.UpdateProject:input_type -> workspace.v1.UpdateProjectRequest
-	25, // 49: workspace.v1.Projects.DeleteProject:input_type -> workspace.v1.DeleteProjectRequest
-	26, // 50: workspace.v1.Projects.ListProjects:input_type -> workspace.v1.ListProjectsRequest
-	28, // 51: workspace.v1.Projects.ListPublicProjects:input_type -> workspace.v1.ListPublicProjectsRequest
-	30, // 52: workspace.v1.Projects.ListProjectMembers:input_type -> workspace.v1.ListProjectMembersRequest
-	32, // 53: workspace.v1.Projects.AddProjectMember:input_type -> workspace.v1.AddProjectMemberRequest
-	33, // 54: workspace.v1.Projects.RemoveProjectMember:input_type -> workspace.v1.RemoveProjectMemberRequest
-	34, // 55: workspace.v1.Projects.UpdateProjectMemberRights:input_type -> workspace.v1.UpdateProjectMemberRightsRequest
-	35, // 56: workspace.v1.Projects.RequestJoinProject:input_type -> workspace.v1.RequestJoinProjectRequest
-	36, // 57: workspace.v1.Projects.CancelJoinProject:input_type -> workspace.v1.CancelJoinProjectRequest
-	37, // 58: workspace.v1.Projects.ListProjectJoinRequests:input_type -> workspace.v1.ListProjectJoinRequestsRequest
-	39, // 59: workspace.v1.Projects.ApproveProjectJoinRequest:input_type -> workspace.v1.ApproveProjectJoinRequestRequest
-	40, // 60: workspace.v1.Projects.RejectProjectJoinRequest:input_type -> workspace.v1.RejectProjectJoinRequestRequest
-	41, // 61: workspace.v1.Projects.SetProjectOpen:input_type -> workspace.v1.SetProjectOpenRequest
-	6,  // 62: workspace.v1.Teams.CreateTeam:output_type -> workspace.v1.Team
-	6,  // 63: workspace.v1.Teams.GetTeam:output_type -> workspace.v1.Team
-	6,  // 64: workspace.v1.Teams.UpdateTeam:output_type -> workspace.v1.Team
-	43, // 65: workspace.v1.Teams.DeleteTeam:output_type -> google.protobuf.Empty
-	17, // 66: workspace.v1.Teams.ListTeams:output_type -> workspace.v1.ListTeamsResponse
-	19, // 67: workspace.v1.Teams.ListTeamMembers:output_type -> workspace.v1.ListTeamMembersResponse
-	7,  // 68: workspace.v1.Teams.UpdateTeamMember:output_type -> workspace.v1.TeamMember
-	43, // 69: workspace.v1.Teams.RemoveTeamMember:output_type -> google.protobuf.Empty
-	8,  // 70: workspace.v1.Projects.CreateProject:output_type -> workspace.v1.Project
-	8,  // 71: workspace.v1.Projects.GetProject:output_type -> workspace.v1.Project
-	8,  // 72: workspace.v1.Projects.UpdateProject:output_type -> workspace.v1.Project
-	43, // 73: workspace.v1.Projects.DeleteProject:output_type -> google.protobuf.Empty
-	27, // 74: workspace.v1.Projects.ListProjects:output_type -> workspace.v1.ListProjectsResponse
-	29, // 75: workspace.v1.Projects.ListPublicProjects:output_type -> workspace.v1.ListPublicProjectsResponse
-	31, // 76: workspace.v1.Projects.ListProjectMembers:output_type -> workspace.v1.ListProjectMembersResponse
-	10, // 77: workspace.v1.Projects.AddProjectMember:output_type -> workspace.v1.ProjectMember
-	43, // 78: workspace.v1.Projects.RemoveProjectMember:output_type -> google.protobuf.Empty
-	10, // 79: workspace.v1.Projects.UpdateProjectMemberRights:output_type -> workspace.v1.ProjectMember
-	11, // 80: workspace.v1.Projects.RequestJoinProject:output_type -> workspace.v1.ProjectJoinRequest
-	11, // 81: workspace.v1.Projects.CancelJoinProject:output_type -> workspace.v1.ProjectJoinRequest
-	38, // 82: workspace.v1.Projects.ListProjectJoinRequests:output_type -> workspace.v1.ListProjectJoinRequestsResponse
-	11, // 83: workspace.v1.Projects.ApproveProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
-	11, // 84: workspace.v1.Projects.RejectProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
-	8,  // 85: workspace.v1.Projects.SetProjectOpen:output_type -> workspace.v1.Project
-	62, // [62:86] is the sub-list for method output_type
-	38, // [38:62] is the sub-list for method input_type
-	38, // [38:38] is the sub-list for extension type_name
-	38, // [38:38] is the sub-list for extension extendee
-	0,  // [0:38] is the sub-list for field type_name
+	3,  // 32: workspace.v1.ListPublicProjectsRequest.sort_by:type_name -> workspace.v1.ProjectPublicSortBy
+	4,  // 33: workspace.v1.ListPublicProjectsRequest.sort_order:type_name -> workspace.v1.SortOrder
+	11, // 34: workspace.v1.ListPublicProjectsResponse.projects:type_name -> workspace.v1.ProjectPublic
+	12, // 35: workspace.v1.ListProjectMembersResponse.members:type_name -> workspace.v1.ProjectMember
+	7,  // 36: workspace.v1.AddProjectMemberRequest.rights:type_name -> workspace.v1.ProjectRights
+	1,  // 37: workspace.v1.ListProjectJoinRequestsRequest.status:type_name -> workspace.v1.JoinRequestStatus
+	13, // 38: workspace.v1.ListProjectJoinRequestsResponse.requests:type_name -> workspace.v1.ProjectJoinRequest
+	7,  // 39: workspace.v1.ApproveProjectJoinRequestRequest.initial_rights:type_name -> workspace.v1.ProjectRights
+	14, // 40: workspace.v1.Teams.CreateTeam:input_type -> workspace.v1.CreateTeamRequest
+	15, // 41: workspace.v1.Teams.GetTeam:input_type -> workspace.v1.GetTeamRequest
+	16, // 42: workspace.v1.Teams.UpdateTeam:input_type -> workspace.v1.UpdateTeamRequest
+	17, // 43: workspace.v1.Teams.DeleteTeam:input_type -> workspace.v1.DeleteTeamRequest
+	18, // 44: workspace.v1.Teams.ListTeams:input_type -> workspace.v1.ListTeamsRequest
+	20, // 45: workspace.v1.Teams.ListTeamMembers:input_type -> workspace.v1.ListTeamMembersRequest
+	22, // 46: workspace.v1.Teams.UpdateTeamMember:input_type -> workspace.v1.UpdateTeamMemberRequest
+	23, // 47: workspace.v1.Teams.RemoveTeamMember:input_type -> workspace.v1.RemoveTeamMemberRequest
+	24, // 48: workspace.v1.Projects.CreateProject:input_type -> workspace.v1.CreateProjectRequest
+	25, // 49: workspace.v1.Projects.GetProject:input_type -> workspace.v1.GetProjectRequest
+	26, // 50: workspace.v1.Projects.UpdateProject:input_type -> workspace.v1.UpdateProjectRequest
+	27, // 51: workspace.v1.Projects.DeleteProject:input_type -> workspace.v1.DeleteProjectRequest
+	28, // 52: workspace.v1.Projects.ListProjects:input_type -> workspace.v1.ListProjectsRequest
+	30, // 53: workspace.v1.Projects.ListPublicProjects:input_type -> workspace.v1.ListPublicProjectsRequest
+	32, // 54: workspace.v1.Projects.ListProjectMembers:input_type -> workspace.v1.ListProjectMembersRequest
+	34, // 55: workspace.v1.Projects.AddProjectMember:input_type -> workspace.v1.AddProjectMemberRequest
+	35, // 56: workspace.v1.Projects.RemoveProjectMember:input_type -> workspace.v1.RemoveProjectMemberRequest
+	36, // 57: workspace.v1.Projects.UpdateProjectMemberRights:input_type -> workspace.v1.UpdateProjectMemberRightsRequest
+	37, // 58: workspace.v1.Projects.RequestJoinProject:input_type -> workspace.v1.RequestJoinProjectRequest
+	38, // 59: workspace.v1.Projects.CancelJoinProject:input_type -> workspace.v1.CancelJoinProjectRequest
+	39, // 60: workspace.v1.Projects.ListProjectJoinRequests:input_type -> workspace.v1.ListProjectJoinRequestsRequest
+	41, // 61: workspace.v1.Projects.ApproveProjectJoinRequest:input_type -> workspace.v1.ApproveProjectJoinRequestRequest
+	42, // 62: workspace.v1.Projects.RejectProjectJoinRequest:input_type -> workspace.v1.RejectProjectJoinRequestRequest
+	43, // 63: workspace.v1.Projects.SetProjectOpen:input_type -> workspace.v1.SetProjectOpenRequest
+	8,  // 64: workspace.v1.Teams.CreateTeam:output_type -> workspace.v1.Team
+	8,  // 65: workspace.v1.Teams.GetTeam:output_type -> workspace.v1.Team
+	8,  // 66: workspace.v1.Teams.UpdateTeam:output_type -> workspace.v1.Team
+	45, // 67: workspace.v1.Teams.DeleteTeam:output_type -> google.protobuf.Empty
+	19, // 68: workspace.v1.Teams.ListTeams:output_type -> workspace.v1.ListTeamsResponse
+	21, // 69: workspace.v1.Teams.ListTeamMembers:output_type -> workspace.v1.ListTeamMembersResponse
+	9,  // 70: workspace.v1.Teams.UpdateTeamMember:output_type -> workspace.v1.TeamMember
+	45, // 71: workspace.v1.Teams.RemoveTeamMember:output_type -> google.protobuf.Empty
+	10, // 72: workspace.v1.Projects.CreateProject:output_type -> workspace.v1.Project
+	10, // 73: workspace.v1.Projects.GetProject:output_type -> workspace.v1.Project
+	10, // 74: workspace.v1.Projects.UpdateProject:output_type -> workspace.v1.Project
+	45, // 75: workspace.v1.Projects.DeleteProject:output_type -> google.protobuf.Empty
+	29, // 76: workspace.v1.Projects.ListProjects:output_type -> workspace.v1.ListProjectsResponse
+	31, // 77: workspace.v1.Projects.ListPublicProjects:output_type -> workspace.v1.ListPublicProjectsResponse
+	33, // 78: workspace.v1.Projects.ListProjectMembers:output_type -> workspace.v1.ListProjectMembersResponse
+	12, // 79: workspace.v1.Projects.AddProjectMember:output_type -> workspace.v1.ProjectMember
+	45, // 80: workspace.v1.Projects.RemoveProjectMember:output_type -> google.protobuf.Empty
+	12, // 81: workspace.v1.Projects.UpdateProjectMemberRights:output_type -> workspace.v1.ProjectMember
+	13, // 82: workspace.v1.Projects.RequestJoinProject:output_type -> workspace.v1.ProjectJoinRequest
+	13, // 83: workspace.v1.Projects.CancelJoinProject:output_type -> workspace.v1.ProjectJoinRequest
+	40, // 84: workspace.v1.Projects.ListProjectJoinRequests:output_type -> workspace.v1.ListProjectJoinRequestsResponse
+	13, // 85: workspace.v1.Projects.ApproveProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
+	13, // 86: workspace.v1.Projects.RejectProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
+	10, // 87: workspace.v1.Projects.SetProjectOpen:output_type -> workspace.v1.Project
+	64, // [64:88] is the sub-list for method output_type
+	40, // [40:64] is the sub-list for method input_type
+	40, // [40:40] is the sub-list for extension type_name
+	40, // [40:40] is the sub-list for extension extendee
+	0,  // [0:40] is the sub-list for field type_name
 }
 
 func init() { file_teamAndProjects_teamAndProjects_proto_init() }
@@ -3375,7 +3518,7 @@ func file_teamAndProjects_teamAndProjects_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_teamAndProjects_teamAndProjects_proto_rawDesc), len(file_teamAndProjects_teamAndProjects_proto_rawDesc)),
-			NumEnums:      3,
+			NumEnums:      5,
 			NumMessages:   40,
 			NumExtensions: 0,
 			NumServices:   2,

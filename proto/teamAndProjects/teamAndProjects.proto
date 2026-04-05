@@ -37,6 +37,19 @@ enum ProjectSkillMatchMode {
   PROJECT_SKILL_MATCH_MODE_ALL = 2; // проект подходит, если есть все skill_ids
 }
 
+enum ProjectPublicSortBy {
+  PROJECT_PUBLIC_SORT_BY_UNSPECIFIED = 0;
+  PROJECT_PUBLIC_SORT_BY_CREATED_AT = 1;
+  PROJECT_PUBLIC_SORT_BY_STARTED_AT = 2;
+  PROJECT_PUBLIC_SORT_BY_PROFILE_SKILL_MATCH = 3;
+}
+
+enum SortOrder {
+  SORT_ORDER_UNSPECIFIED = 0;
+  SORT_ORDER_ASC = 1;
+  SORT_ORDER_DESC = 2;
+}
+
 // Для partial update skills у проекта
 message SkillIdsSelection {
   repeated string ids = 1; // полный итоговый набор skill_id, max 60
@@ -111,6 +124,7 @@ message ProjectPublic {
 
   repeated string skill_ids = 10; // skills проекта для публичного списка
   repeated ProjectSkill skills = 11;
+  optional int32 profile_skill_match_percent = 12;
 }
 
 message ProjectMember {
@@ -349,6 +363,8 @@ message ListPublicProjectsRequest {
   string page_token = 4;
   repeated string skill_ids = 5;
   ProjectSkillMatchMode skill_match_mode = 6;
+  ProjectPublicSortBy sort_by = 7;
+  SortOrder sort_order = 8;
 }
 
 message ListPublicProjectsResponse {
