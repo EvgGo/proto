@@ -398,22 +398,25 @@ var Teams_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	Projects_CreateProject_FullMethodName             = "/workspace.v1.Projects/CreateProject"
-	Projects_GetProject_FullMethodName                = "/workspace.v1.Projects/GetProject"
-	Projects_UpdateProject_FullMethodName             = "/workspace.v1.Projects/UpdateProject"
-	Projects_DeleteProject_FullMethodName             = "/workspace.v1.Projects/DeleteProject"
-	Projects_ListProjects_FullMethodName              = "/workspace.v1.Projects/ListProjects"
-	Projects_ListPublicProjects_FullMethodName        = "/workspace.v1.Projects/ListPublicProjects"
-	Projects_ListProjectMembers_FullMethodName        = "/workspace.v1.Projects/ListProjectMembers"
-	Projects_AddProjectMember_FullMethodName          = "/workspace.v1.Projects/AddProjectMember"
-	Projects_RemoveProjectMember_FullMethodName       = "/workspace.v1.Projects/RemoveProjectMember"
-	Projects_UpdateProjectMemberRights_FullMethodName = "/workspace.v1.Projects/UpdateProjectMemberRights"
-	Projects_RequestJoinProject_FullMethodName        = "/workspace.v1.Projects/RequestJoinProject"
-	Projects_CancelJoinProject_FullMethodName         = "/workspace.v1.Projects/CancelJoinProject"
-	Projects_ListProjectJoinRequests_FullMethodName   = "/workspace.v1.Projects/ListProjectJoinRequests"
-	Projects_ApproveProjectJoinRequest_FullMethodName = "/workspace.v1.Projects/ApproveProjectJoinRequest"
-	Projects_RejectProjectJoinRequest_FullMethodName  = "/workspace.v1.Projects/RejectProjectJoinRequest"
-	Projects_SetProjectOpen_FullMethodName            = "/workspace.v1.Projects/SetProjectOpen"
+	Projects_CreateProject_FullMethodName                           = "/workspace.v1.Projects/CreateProject"
+	Projects_GetProject_FullMethodName                              = "/workspace.v1.Projects/GetProject"
+	Projects_UpdateProject_FullMethodName                           = "/workspace.v1.Projects/UpdateProject"
+	Projects_DeleteProject_FullMethodName                           = "/workspace.v1.Projects/DeleteProject"
+	Projects_ListProjects_FullMethodName                            = "/workspace.v1.Projects/ListProjects"
+	Projects_ListPublicProjects_FullMethodName                      = "/workspace.v1.Projects/ListPublicProjects"
+	Projects_ListProjectMembers_FullMethodName                      = "/workspace.v1.Projects/ListProjectMembers"
+	Projects_ListManageableProjectJoinRequestBuckets_FullMethodName = "/workspace.v1.Projects/ListManageableProjectJoinRequestBuckets"
+	Projects_AddProjectMember_FullMethodName                        = "/workspace.v1.Projects/AddProjectMember"
+	Projects_RemoveProjectMember_FullMethodName                     = "/workspace.v1.Projects/RemoveProjectMember"
+	Projects_UpdateProjectMemberRights_FullMethodName               = "/workspace.v1.Projects/UpdateProjectMemberRights"
+	Projects_RequestJoinProject_FullMethodName                      = "/workspace.v1.Projects/RequestJoinProject"
+	Projects_CancelJoinProject_FullMethodName                       = "/workspace.v1.Projects/CancelJoinProject"
+	Projects_ListProjectJoinRequests_FullMethodName                 = "/workspace.v1.Projects/ListProjectJoinRequests"
+	Projects_ListProjectJoinRequestDetails_FullMethodName           = "/workspace.v1.Projects/ListProjectJoinRequestDetails"
+	Projects_ApproveProjectJoinRequest_FullMethodName               = "/workspace.v1.Projects/ApproveProjectJoinRequest"
+	Projects_RejectProjectJoinRequest_FullMethodName                = "/workspace.v1.Projects/RejectProjectJoinRequest"
+	Projects_SetProjectOpen_FullMethodName                          = "/workspace.v1.Projects/SetProjectOpen"
+	Projects_GetMyProjectJoinRequest_FullMethodName                 = "/workspace.v1.Projects/GetMyProjectJoinRequest"
 )
 
 // ProjectsClient is the client API for Projects service.
@@ -434,6 +437,7 @@ type ProjectsClient interface {
 	ListPublicProjects(ctx context.Context, in *ListPublicProjectsRequest, opts ...grpc.CallOption) (*ListPublicProjectsResponse, error)
 	// Участники проекта
 	ListProjectMembers(ctx context.Context, in *ListProjectMembersRequest, opts ...grpc.CallOption) (*ListProjectMembersResponse, error)
+	ListManageableProjectJoinRequestBuckets(ctx context.Context, in *ListManageableProjectJoinRequestBucketsRequest, opts ...grpc.CallOption) (*ListManageableProjectJoinRequestBucketsResponse, error)
 	// Прямое добавление участника в проект (для менеджеров проекта)
 	AddProjectMember(ctx context.Context, in *AddProjectMemberRequest, opts ...grpc.CallOption) (*ProjectMember, error)
 	// Удаление участника из проекта (для менеджеров проекта)
@@ -447,12 +451,14 @@ type ProjectsClient interface {
 	CancelJoinProject(ctx context.Context, in *CancelJoinProjectRequest, opts ...grpc.CallOption) (*ProjectJoinRequest, error)
 	// Менеджеры проекта смотрят заявки
 	ListProjectJoinRequests(ctx context.Context, in *ListProjectJoinRequestsRequest, opts ...grpc.CallOption) (*ListProjectJoinRequestsResponse, error)
+	ListProjectJoinRequestDetails(ctx context.Context, in *ListProjectJoinRequestDetailsRequest, opts ...grpc.CallOption) (*ListProjectJoinRequestDetailsResponse, error)
 	// Менеджер проекта одобряет заявку: создаём project_member и помечаем request approved
 	ApproveProjectJoinRequest(ctx context.Context, in *ApproveProjectJoinRequestRequest, opts ...grpc.CallOption) (*ProjectJoinRequest, error)
 	// Менеджер проекта отклоняет заявку
 	RejectProjectJoinRequest(ctx context.Context, in *RejectProjectJoinRequestRequest, opts ...grpc.CallOption) (*ProjectJoinRequest, error)
 	// SetOpen - меняет значение поля is_open у проекта
 	SetProjectOpen(ctx context.Context, in *SetProjectOpenRequest, opts ...grpc.CallOption) (*Project, error)
+	GetMyProjectJoinRequest(ctx context.Context, in *GetMyProjectJoinRequestRequest, opts ...grpc.CallOption) (*GetMyProjectJoinRequestResponse, error)
 }
 
 type projectsClient struct {
@@ -533,6 +539,16 @@ func (c *projectsClient) ListProjectMembers(ctx context.Context, in *ListProject
 	return out, nil
 }
 
+func (c *projectsClient) ListManageableProjectJoinRequestBuckets(ctx context.Context, in *ListManageableProjectJoinRequestBucketsRequest, opts ...grpc.CallOption) (*ListManageableProjectJoinRequestBucketsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListManageableProjectJoinRequestBucketsResponse)
+	err := c.cc.Invoke(ctx, Projects_ListManageableProjectJoinRequestBuckets_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *projectsClient) AddProjectMember(ctx context.Context, in *AddProjectMemberRequest, opts ...grpc.CallOption) (*ProjectMember, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ProjectMember)
@@ -593,6 +609,16 @@ func (c *projectsClient) ListProjectJoinRequests(ctx context.Context, in *ListPr
 	return out, nil
 }
 
+func (c *projectsClient) ListProjectJoinRequestDetails(ctx context.Context, in *ListProjectJoinRequestDetailsRequest, opts ...grpc.CallOption) (*ListProjectJoinRequestDetailsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListProjectJoinRequestDetailsResponse)
+	err := c.cc.Invoke(ctx, Projects_ListProjectJoinRequestDetails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *projectsClient) ApproveProjectJoinRequest(ctx context.Context, in *ApproveProjectJoinRequestRequest, opts ...grpc.CallOption) (*ProjectJoinRequest, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ProjectJoinRequest)
@@ -623,6 +649,16 @@ func (c *projectsClient) SetProjectOpen(ctx context.Context, in *SetProjectOpenR
 	return out, nil
 }
 
+func (c *projectsClient) GetMyProjectJoinRequest(ctx context.Context, in *GetMyProjectJoinRequestRequest, opts ...grpc.CallOption) (*GetMyProjectJoinRequestResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMyProjectJoinRequestResponse)
+	err := c.cc.Invoke(ctx, Projects_GetMyProjectJoinRequest_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectsServer is the server API for Projects service.
 // All implementations must embed UnimplementedProjectsServer
 // for forward compatibility.
@@ -641,6 +677,7 @@ type ProjectsServer interface {
 	ListPublicProjects(context.Context, *ListPublicProjectsRequest) (*ListPublicProjectsResponse, error)
 	// Участники проекта
 	ListProjectMembers(context.Context, *ListProjectMembersRequest) (*ListProjectMembersResponse, error)
+	ListManageableProjectJoinRequestBuckets(context.Context, *ListManageableProjectJoinRequestBucketsRequest) (*ListManageableProjectJoinRequestBucketsResponse, error)
 	// Прямое добавление участника в проект (для менеджеров проекта)
 	AddProjectMember(context.Context, *AddProjectMemberRequest) (*ProjectMember, error)
 	// Удаление участника из проекта (для менеджеров проекта)
@@ -654,12 +691,14 @@ type ProjectsServer interface {
 	CancelJoinProject(context.Context, *CancelJoinProjectRequest) (*ProjectJoinRequest, error)
 	// Менеджеры проекта смотрят заявки
 	ListProjectJoinRequests(context.Context, *ListProjectJoinRequestsRequest) (*ListProjectJoinRequestsResponse, error)
+	ListProjectJoinRequestDetails(context.Context, *ListProjectJoinRequestDetailsRequest) (*ListProjectJoinRequestDetailsResponse, error)
 	// Менеджер проекта одобряет заявку: создаём project_member и помечаем request approved
 	ApproveProjectJoinRequest(context.Context, *ApproveProjectJoinRequestRequest) (*ProjectJoinRequest, error)
 	// Менеджер проекта отклоняет заявку
 	RejectProjectJoinRequest(context.Context, *RejectProjectJoinRequestRequest) (*ProjectJoinRequest, error)
 	// SetOpen - меняет значение поля is_open у проекта
 	SetProjectOpen(context.Context, *SetProjectOpenRequest) (*Project, error)
+	GetMyProjectJoinRequest(context.Context, *GetMyProjectJoinRequestRequest) (*GetMyProjectJoinRequestResponse, error)
 	mustEmbedUnimplementedProjectsServer()
 }
 
@@ -691,6 +730,9 @@ func (UnimplementedProjectsServer) ListPublicProjects(context.Context, *ListPubl
 func (UnimplementedProjectsServer) ListProjectMembers(context.Context, *ListProjectMembersRequest) (*ListProjectMembersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProjectMembers not implemented")
 }
+func (UnimplementedProjectsServer) ListManageableProjectJoinRequestBuckets(context.Context, *ListManageableProjectJoinRequestBucketsRequest) (*ListManageableProjectJoinRequestBucketsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListManageableProjectJoinRequestBuckets not implemented")
+}
 func (UnimplementedProjectsServer) AddProjectMember(context.Context, *AddProjectMemberRequest) (*ProjectMember, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddProjectMember not implemented")
 }
@@ -709,6 +751,9 @@ func (UnimplementedProjectsServer) CancelJoinProject(context.Context, *CancelJoi
 func (UnimplementedProjectsServer) ListProjectJoinRequests(context.Context, *ListProjectJoinRequestsRequest) (*ListProjectJoinRequestsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProjectJoinRequests not implemented")
 }
+func (UnimplementedProjectsServer) ListProjectJoinRequestDetails(context.Context, *ListProjectJoinRequestDetailsRequest) (*ListProjectJoinRequestDetailsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectJoinRequestDetails not implemented")
+}
 func (UnimplementedProjectsServer) ApproveProjectJoinRequest(context.Context, *ApproveProjectJoinRequestRequest) (*ProjectJoinRequest, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApproveProjectJoinRequest not implemented")
 }
@@ -717,6 +762,9 @@ func (UnimplementedProjectsServer) RejectProjectJoinRequest(context.Context, *Re
 }
 func (UnimplementedProjectsServer) SetProjectOpen(context.Context, *SetProjectOpenRequest) (*Project, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetProjectOpen not implemented")
+}
+func (UnimplementedProjectsServer) GetMyProjectJoinRequest(context.Context, *GetMyProjectJoinRequestRequest) (*GetMyProjectJoinRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMyProjectJoinRequest not implemented")
 }
 func (UnimplementedProjectsServer) mustEmbedUnimplementedProjectsServer() {}
 func (UnimplementedProjectsServer) testEmbeddedByValue()                  {}
@@ -865,6 +913,24 @@ func _Projects_ListProjectMembers_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_ListManageableProjectJoinRequestBuckets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListManageableProjectJoinRequestBucketsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).ListManageableProjectJoinRequestBuckets(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_ListManageableProjectJoinRequestBuckets_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).ListManageableProjectJoinRequestBuckets(ctx, req.(*ListManageableProjectJoinRequestBucketsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Projects_AddProjectMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddProjectMemberRequest)
 	if err := dec(in); err != nil {
@@ -973,6 +1039,24 @@ func _Projects_ListProjectJoinRequests_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_ListProjectJoinRequestDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectJoinRequestDetailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).ListProjectJoinRequestDetails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_ListProjectJoinRequestDetails_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).ListProjectJoinRequestDetails(ctx, req.(*ListProjectJoinRequestDetailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Projects_ApproveProjectJoinRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ApproveProjectJoinRequestRequest)
 	if err := dec(in); err != nil {
@@ -1027,6 +1111,24 @@ func _Projects_SetProjectOpen_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_GetMyProjectJoinRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMyProjectJoinRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).GetMyProjectJoinRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_GetMyProjectJoinRequest_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).GetMyProjectJoinRequest(ctx, req.(*GetMyProjectJoinRequestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Projects_ServiceDesc is the grpc.ServiceDesc for Projects service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1063,6 +1165,10 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Projects_ListProjectMembers_Handler,
 		},
 		{
+			MethodName: "ListManageableProjectJoinRequestBuckets",
+			Handler:    _Projects_ListManageableProjectJoinRequestBuckets_Handler,
+		},
+		{
 			MethodName: "AddProjectMember",
 			Handler:    _Projects_AddProjectMember_Handler,
 		},
@@ -1087,6 +1193,10 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Projects_ListProjectJoinRequests_Handler,
 		},
 		{
+			MethodName: "ListProjectJoinRequestDetails",
+			Handler:    _Projects_ListProjectJoinRequestDetails_Handler,
+		},
+		{
 			MethodName: "ApproveProjectJoinRequest",
 			Handler:    _Projects_ApproveProjectJoinRequest_Handler,
 		},
@@ -1097,6 +1207,10 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetProjectOpen",
 			Handler:    _Projects_SetProjectOpen_Handler,
+		},
+		{
+			MethodName: "GetMyProjectJoinRequest",
+			Handler:    _Projects_GetMyProjectJoinRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

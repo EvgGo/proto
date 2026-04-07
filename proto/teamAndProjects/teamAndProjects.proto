@@ -146,6 +146,7 @@ message ProjectJoinRequest {
   optional Date decided_at = 7;
 
   Date created_at = 8;
+  optional string decision_reason = 9;
 }
 
 
@@ -256,6 +257,8 @@ service Projects {
   // Участники проекта
   rpc ListProjectMembers(ListProjectMembersRequest) returns (ListProjectMembersResponse);
 
+  rpc ListManageableProjectJoinRequestBuckets(ListManageableProjectJoinRequestBucketsRequest)
+      returns (ListManageableProjectJoinRequestBucketsResponse);
   // Прямое добавление участника в проект (для менеджеров проекта)
   rpc AddProjectMember(AddProjectMemberRequest) returns (ProjectMember);
 
@@ -275,6 +278,9 @@ service Projects {
   // Менеджеры проекта смотрят заявки
   rpc ListProjectJoinRequests(ListProjectJoinRequestsRequest) returns (ListProjectJoinRequestsResponse);
 
+  rpc ListProjectJoinRequestDetails(ListProjectJoinRequestDetailsRequest)
+      returns (ListProjectJoinRequestDetailsResponse);
+
   // Менеджер проекта одобряет заявку: создаём project_member и помечаем request approved
   rpc ApproveProjectJoinRequest(ApproveProjectJoinRequestRequest) returns (ProjectJoinRequest);
 
@@ -283,6 +289,9 @@ service Projects {
 
   // SetOpen - меняет значение поля is_open у проекта
   rpc SetProjectOpen(SetProjectOpenRequest) returns (Project);
+
+  rpc GetMyProjectJoinRequest(GetMyProjectJoinRequestRequest)
+      returns (GetMyProjectJoinRequestResponse);
 }
 
 message CreateProjectRequest {
@@ -330,6 +339,30 @@ message UpdateProjectRequest {
   // - если ids пустой => очищаем все skills проекта
   // - если ids заполнен => полностью заменяем набор skills проекта
   SkillIdsSelection skills = 8;
+}
+
+message ListManageableProjectJoinRequestBucketsRequest {
+  JoinRequestStatus status = 1; // обычно pending
+  string query = 2;             // поиск по названию проекта
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message ManageableProjectJoinRequestBucket {
+  string project_id = 1;
+  string project_name = 2;
+  ProjectStatus project_status = 3;
+  bool is_open = 4;
+
+  int32 pending_requests_count = 5;
+  optional Date last_request_created_at = 6;
+
+  ProjectRights my_rights = 7;
+}
+
+message ListManageableProjectJoinRequestBucketsResponse {
+  repeated ManageableProjectJoinRequestBucket items = 1;
+  string next_page_token = 2;
 }
 
 message DeleteProjectRequest {
@@ -448,4 +481,58 @@ message SetProjectOpenRequest {
 message ProjectSkill {
   string id = 1;
   string name = 2;
+}
+
+message ListProjectJoinRequestDetailsRequest {
+  string project_id = 1;
+  JoinRequestStatus status = 2; // pending / approved / rejected / all
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message CandidatePublicSummary {
+  string user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string about = 4;
+  repeated ProjectSkill skills = 5;
+}
+
+message SkillMatchSummary {
+  int32 match_percent = 1;
+  int32 matched_skills_count = 2;
+  int32 total_project_skills_count = 3;
+  repeated ProjectSkill matched_skills = 4;
+  repeated ProjectSkill missing_project_skills = 5;
+}
+
+message ProjectJoinRequestDetails {
+  string id = 1;
+  string project_id = 2;
+  string requester_id = 3;
+
+  string message = 4;
+  JoinRequestStatus status = 5;
+
+  optional string decided_by = 6;
+  optional Date decided_at = 7;
+  Date created_at = 8;
+
+  CandidatePublicSummary candidate = 9;
+  SkillMatchSummary skill_match = 10;
+
+  optional string rejection_reason = 11;
+}
+
+message ListProjectJoinRequestDetailsResponse {
+  repeated ProjectJoinRequestDetails requests = 1;
+  string next_page_token = 2;
+}
+
+message GetMyProjectJoinRequestRequest {
+  string project_id = 1;
+}
+
+message GetMyProjectJoinRequestResponse {
+  optional ProjectJoinRequest request = 1;
 }
