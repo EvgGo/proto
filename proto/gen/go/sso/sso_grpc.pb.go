@@ -398,10 +398,11 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	UserProfile_GetMe_FullMethodName      = "/auth.UserProfile/GetMe"
-	UserProfile_UpdateMe_FullMethodName   = "/auth.UserProfile/UpdateMe"
-	UserProfile_GetProfile_FullMethodName = "/auth.UserProfile/GetProfile"
-	UserProfile_ListUsers_FullMethodName  = "/auth.UserProfile/ListUsers"
+	UserProfile_GetMe_FullMethodName            = "/auth.UserProfile/GetMe"
+	UserProfile_UpdateMe_FullMethodName         = "/auth.UserProfile/UpdateMe"
+	UserProfile_GetProfile_FullMethodName       = "/auth.UserProfile/GetProfile"
+	UserProfile_ListUsers_FullMethodName        = "/auth.UserProfile/ListUsers"
+	UserProfile_GetProfilesByIds_FullMethodName = "/auth.UserProfile/GetProfilesByIds"
 )
 
 // UserProfileClient is the client API for UserProfile service.
@@ -416,6 +417,8 @@ type UserProfileClient interface {
 	GetProfile(ctx context.Context, in *GetProfileRequest, opts ...grpc.CallOption) (*PublicUser, error)
 	// Поиск/листинг пользователей
 	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
+	// Публичные профили по user_id ,
+	GetProfilesByIds(ctx context.Context, in *GetProfilesByIdsRequest, opts ...grpc.CallOption) (*GetProfilesByIdsResponse, error)
 }
 
 type userProfileClient struct {
@@ -466,6 +469,16 @@ func (c *userProfileClient) ListUsers(ctx context.Context, in *ListUsersRequest,
 	return out, nil
 }
 
+func (c *userProfileClient) GetProfilesByIds(ctx context.Context, in *GetProfilesByIdsRequest, opts ...grpc.CallOption) (*GetProfilesByIdsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetProfilesByIdsResponse)
+	err := c.cc.Invoke(ctx, UserProfile_GetProfilesByIds_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserProfileServer is the server API for UserProfile service.
 // All implementations must embed UnimplementedUserProfileServer
 // for forward compatibility.
@@ -478,6 +491,8 @@ type UserProfileServer interface {
 	GetProfile(context.Context, *GetProfileRequest) (*PublicUser, error)
 	// Поиск/листинг пользователей
 	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
+	// Публичные профили по user_id ,
+	GetProfilesByIds(context.Context, *GetProfilesByIdsRequest) (*GetProfilesByIdsResponse, error)
 	mustEmbedUnimplementedUserProfileServer()
 }
 
@@ -499,6 +514,9 @@ func (UnimplementedUserProfileServer) GetProfile(context.Context, *GetProfileReq
 }
 func (UnimplementedUserProfileServer) ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
+}
+func (UnimplementedUserProfileServer) GetProfilesByIds(context.Context, *GetProfilesByIdsRequest) (*GetProfilesByIdsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProfilesByIds not implemented")
 }
 func (UnimplementedUserProfileServer) mustEmbedUnimplementedUserProfileServer() {}
 func (UnimplementedUserProfileServer) testEmbeddedByValue()                     {}
@@ -593,6 +611,24 @@ func _UserProfile_ListUsers_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserProfile_GetProfilesByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProfilesByIdsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserProfileServer).GetProfilesByIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserProfile_GetProfilesByIds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserProfileServer).GetProfilesByIds(ctx, req.(*GetProfilesByIdsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserProfile_ServiceDesc is the grpc.ServiceDesc for UserProfile service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -615,6 +651,10 @@ var UserProfile_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListUsers",
 			Handler:    _UserProfile_ListUsers_Handler,
+		},
+		{
+			MethodName: "GetProfilesByIds",
+			Handler:    _UserProfile_GetProfilesByIds_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

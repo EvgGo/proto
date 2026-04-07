@@ -113,6 +113,9 @@ service UserProfile {
 
   // Поиск/листинг пользователей
   rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+
+  // Публичные профили по user_id ,
+  rpc GetProfilesByIds(GetProfilesByIdsRequest) returns (GetProfilesByIdsResponse);
 }
 
 message User {
@@ -143,6 +146,8 @@ message PublicUser {
   map<string, string> competence_levels = 5;
   string reviews = 6;
   bool is_user_open_suggestions = 7;
+
+  repeated Skill skills = 8;
 }
 
 message GetProfileRequest {
@@ -237,4 +242,12 @@ message GetSkillsByIdsRequest {
 
 message GetSkillsByIdsResponse {
   repeated Skill skills = 1;
+}
+
+message GetProfilesByIdsRequest {
+  repeated string user_ids = 1;
+}
+
+message GetProfilesByIdsResponse {
+  repeated PublicUser users = 1;
 }

@@ -887,6 +887,7 @@ type PublicUser struct {
 	CompetenceLevels      map[string]string      `protobuf:"bytes,5,rep,name=competence_levels,json=competenceLevels,proto3" json:"competence_levels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	Reviews               string                 `protobuf:"bytes,6,opt,name=reviews,proto3" json:"reviews,omitempty"`
 	IsUserOpenSuggestions bool                   `protobuf:"varint,7,opt,name=is_user_open_suggestions,json=isUserOpenSuggestions,proto3" json:"is_user_open_suggestions,omitempty"`
+	Skills                []*Skill               `protobuf:"bytes,8,rep,name=skills,proto3" json:"skills,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -968,6 +969,13 @@ func (x *PublicUser) GetIsUserOpenSuggestions() bool {
 		return x.IsUserOpenSuggestions
 	}
 	return false
+}
+
+func (x *PublicUser) GetSkills() []*Skill {
+	if x != nil {
+		return x.Skills
+	}
+	return nil
 }
 
 type GetProfileRequest struct {
@@ -1674,6 +1682,94 @@ func (x *GetSkillsByIdsResponse) GetSkills() []*Skill {
 	return nil
 }
 
+type GetProfilesByIdsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserIds       []string               `protobuf:"bytes,1,rep,name=user_ids,json=userIds,proto3" json:"user_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProfilesByIdsRequest) Reset() {
+	*x = GetProfilesByIdsRequest{}
+	mi := &file_sso_sso_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProfilesByIdsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProfilesByIdsRequest) ProtoMessage() {}
+
+func (x *GetProfilesByIdsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sso_sso_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProfilesByIdsRequest.ProtoReflect.Descriptor instead.
+func (*GetProfilesByIdsRequest) Descriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *GetProfilesByIdsRequest) GetUserIds() []string {
+	if x != nil {
+		return x.UserIds
+	}
+	return nil
+}
+
+type GetProfilesByIdsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Users         []*PublicUser          `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetProfilesByIdsResponse) Reset() {
+	*x = GetProfilesByIdsResponse{}
+	mi := &file_sso_sso_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetProfilesByIdsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetProfilesByIdsResponse) ProtoMessage() {}
+
+func (x *GetProfilesByIdsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sso_sso_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetProfilesByIdsResponse.ProtoReflect.Descriptor instead.
+func (*GetProfilesByIdsResponse) Descriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *GetProfilesByIdsResponse) GetUsers() []*PublicUser {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
 var File_sso_sso_proto protoreflect.FileDescriptor
 
 const file_sso_sso_proto_rawDesc = "" +
@@ -1751,7 +1847,7 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x06skills\x18\x0f \x03(\v2\v.auth.SkillR\x06skills\x1aC\n" +
 	"\x15CompetenceLevelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xdb\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x80\x03\n" +
 	"\n" +
 	"PublicUser\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
@@ -1761,7 +1857,8 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x05about\x18\x04 \x01(\tR\x05about\x12S\n" +
 	"\x11competence_levels\x18\x05 \x03(\v2&.auth.PublicUser.CompetenceLevelsEntryR\x10competenceLevels\x12\x18\n" +
 	"\areviews\x18\x06 \x01(\tR\areviews\x127\n" +
-	"\x18is_user_open_suggestions\x18\a \x01(\bR\x15isUserOpenSuggestions\x1aC\n" +
+	"\x18is_user_open_suggestions\x18\a \x01(\bR\x15isUserOpenSuggestions\x12#\n" +
+	"\x06skills\x18\b \x03(\v2\v.auth.SkillR\x06skills\x1aC\n" +
 	"\x15CompetenceLevelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\",\n" +
@@ -1819,7 +1916,11 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x15GetSkillsByIdsRequest\x12\x1b\n" +
 	"\tskill_ids\x18\x01 \x03(\tR\bskillIds\"=\n" +
 	"\x16GetSkillsByIdsResponse\x12#\n" +
-	"\x06skills\x18\x01 \x03(\v2\v.auth.SkillR\x06skills2\x84\x04\n" +
+	"\x06skills\x18\x01 \x03(\v2\v.auth.SkillR\x06skills\"4\n" +
+	"\x17GetProfilesByIdsRequest\x12\x19\n" +
+	"\buser_ids\x18\x01 \x03(\tR\auserIds\"B\n" +
+	"\x18GetProfilesByIdsResponse\x12&\n" +
+	"\x05users\x18\x01 \x03(\v2\x10.auth.PublicUserR\x05users2\x84\x04\n" +
 	"\x04Auth\x129\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\x120\n" +
 	"\x05Login\x12\x12.auth.LoginRequest\x1a\x13.auth.LoginResponse\x126\n" +
@@ -1828,7 +1929,7 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x0eChangePassword\x12\x1b.auth.ChangePasswordRequest\x1a\x16.google.protobuf.Empty\x12E\n" +
 	"\x0eForgotPassword\x12\x1b.auth.ForgotPasswordRequest\x1a\x16.google.protobuf.Empty\x12C\n" +
 	"\rResetPassword\x12\x1a.auth.ResetPasswordRequest\x1a\x16.google.protobuf.Empty\x12M\n" +
-	"\x12ResendVerification\x12\x1f.auth.ResendVerificationRequest\x1a\x16.google.protobuf.Empty2\xe0\x01\n" +
+	"\x12ResendVerification\x12\x1f.auth.ResendVerificationRequest\x1a\x16.google.protobuf.Empty2\xb3\x02\n" +
 	"\vUserProfile\x12+\n" +
 	"\x05GetMe\x12\x16.google.protobuf.Empty\x1a\n" +
 	".auth.User\x12-\n" +
@@ -1836,7 +1937,8 @@ const file_sso_sso_proto_rawDesc = "" +
 	".auth.User\x127\n" +
 	"\n" +
 	"GetProfile\x12\x17.auth.GetProfileRequest\x1a\x10.auth.PublicUser\x12<\n" +
-	"\tListUsers\x12\x16.auth.ListUsersRequest\x1a\x17.auth.ListUsersResponse2\xbd\x02\n" +
+	"\tListUsers\x12\x16.auth.ListUsersRequest\x1a\x17.auth.ListUsersResponse\x12Q\n" +
+	"\x10GetProfilesByIds\x12\x1d.auth.GetProfilesByIdsRequest\x1a\x1e.auth.GetProfilesByIdsResponse2\xbd\x02\n" +
 	"\x06Skills\x12?\n" +
 	"\n" +
 	"ListSkills\x12\x17.auth.ListSkillsRequest\x1a\x18.auth.ListSkillsResponse\x12.\n" +
@@ -1857,7 +1959,7 @@ func file_sso_sso_proto_rawDescGZIP() []byte {
 	return file_sso_sso_proto_rawDescData
 }
 
-var file_sso_sso_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
+var file_sso_sso_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
 var file_sso_sso_proto_goTypes = []any{
 	(*RegisterRequest)(nil),           // 0: auth.RegisterRequest
 	(*RegisterResponse)(nil),          // 1: auth.RegisterResponse
@@ -1886,65 +1988,71 @@ var file_sso_sso_proto_goTypes = []any{
 	(*ListSkillsResponse)(nil),        // 24: auth.ListSkillsResponse
 	(*GetSkillsByIdsRequest)(nil),     // 25: auth.GetSkillsByIdsRequest
 	(*GetSkillsByIdsResponse)(nil),    // 26: auth.GetSkillsByIdsResponse
-	nil,                               // 27: auth.User.CompetenceLevelsEntry
-	nil,                               // 28: auth.PublicUser.CompetenceLevelsEntry
-	nil,                               // 29: auth.UpdateMeRequest.CompetenceLevelsEntry
-	(*timestamppb.Timestamp)(nil),     // 30: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),             // 31: google.protobuf.Empty
+	(*GetProfilesByIdsRequest)(nil),   // 27: auth.GetProfilesByIdsRequest
+	(*GetProfilesByIdsResponse)(nil),  // 28: auth.GetProfilesByIdsResponse
+	nil,                               // 29: auth.User.CompetenceLevelsEntry
+	nil,                               // 30: auth.PublicUser.CompetenceLevelsEntry
+	nil,                               // 31: auth.UpdateMeRequest.CompetenceLevelsEntry
+	(*timestamppb.Timestamp)(nil),     // 32: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),             // 33: google.protobuf.Empty
 }
 var file_sso_sso_proto_depIdxs = []int32{
 	2,  // 0: auth.RegisterResponse.tokens:type_name -> auth.TokenPair
 	2,  // 1: auth.LoginResponse.tokens:type_name -> auth.TokenPair
-	27, // 2: auth.User.competence_levels:type_name -> auth.User.CompetenceLevelsEntry
-	30, // 3: auth.User.registered_at:type_name -> google.protobuf.Timestamp
-	30, // 4: auth.User.created_at:type_name -> google.protobuf.Timestamp
-	30, // 5: auth.User.updated_at:type_name -> google.protobuf.Timestamp
+	29, // 2: auth.User.competence_levels:type_name -> auth.User.CompetenceLevelsEntry
+	32, // 3: auth.User.registered_at:type_name -> google.protobuf.Timestamp
+	32, // 4: auth.User.created_at:type_name -> google.protobuf.Timestamp
+	32, // 5: auth.User.updated_at:type_name -> google.protobuf.Timestamp
 	18, // 6: auth.User.skills:type_name -> auth.Skill
-	28, // 7: auth.PublicUser.competence_levels:type_name -> auth.PublicUser.CompetenceLevelsEntry
-	29, // 8: auth.UpdateMeRequest.competence_levels:type_name -> auth.UpdateMeRequest.CompetenceLevelsEntry
-	19, // 9: auth.UpdateMeRequest.skills:type_name -> auth.SkillSelection
-	13, // 10: auth.ListUsersResponse.users:type_name -> auth.PublicUser
-	18, // 11: auth.ListSkillsResponse.skills:type_name -> auth.Skill
-	18, // 12: auth.GetSkillsByIdsResponse.skills:type_name -> auth.Skill
-	0,  // 13: auth.Auth.Register:input_type -> auth.RegisterRequest
-	3,  // 14: auth.Auth.Login:input_type -> auth.LoginRequest
-	5,  // 15: auth.Auth.Refresh:input_type -> auth.RefreshRequest
-	7,  // 16: auth.Auth.Logout:input_type -> auth.LogoutRequest
-	9,  // 17: auth.Auth.ChangePassword:input_type -> auth.ChangePasswordRequest
-	10, // 18: auth.Auth.ForgotPassword:input_type -> auth.ForgotPasswordRequest
-	11, // 19: auth.Auth.ResetPassword:input_type -> auth.ResetPasswordRequest
-	8,  // 20: auth.Auth.ResendVerification:input_type -> auth.ResendVerificationRequest
-	31, // 21: auth.UserProfile.GetMe:input_type -> google.protobuf.Empty
-	15, // 22: auth.UserProfile.UpdateMe:input_type -> auth.UpdateMeRequest
-	14, // 23: auth.UserProfile.GetProfile:input_type -> auth.GetProfileRequest
-	16, // 24: auth.UserProfile.ListUsers:input_type -> auth.ListUsersRequest
-	23, // 25: auth.Skills.ListSkills:input_type -> auth.ListSkillsRequest
-	20, // 26: auth.Skills.GetSkill:input_type -> auth.GetSkillRequest
-	25, // 27: auth.Skills.GetSkillsByIds:input_type -> auth.GetSkillsByIdsRequest
-	21, // 28: auth.Skills.CreateSkill:input_type -> auth.CreateSkillRequest
-	22, // 29: auth.Skills.DeleteSkill:input_type -> auth.DeleteSkillRequest
-	1,  // 30: auth.Auth.Register:output_type -> auth.RegisterResponse
-	4,  // 31: auth.Auth.Login:output_type -> auth.LoginResponse
-	6,  // 32: auth.Auth.Refresh:output_type -> auth.RefreshResponse
-	31, // 33: auth.Auth.Logout:output_type -> google.protobuf.Empty
-	31, // 34: auth.Auth.ChangePassword:output_type -> google.protobuf.Empty
-	31, // 35: auth.Auth.ForgotPassword:output_type -> google.protobuf.Empty
-	31, // 36: auth.Auth.ResetPassword:output_type -> google.protobuf.Empty
-	31, // 37: auth.Auth.ResendVerification:output_type -> google.protobuf.Empty
-	12, // 38: auth.UserProfile.GetMe:output_type -> auth.User
-	12, // 39: auth.UserProfile.UpdateMe:output_type -> auth.User
-	13, // 40: auth.UserProfile.GetProfile:output_type -> auth.PublicUser
-	17, // 41: auth.UserProfile.ListUsers:output_type -> auth.ListUsersResponse
-	24, // 42: auth.Skills.ListSkills:output_type -> auth.ListSkillsResponse
-	18, // 43: auth.Skills.GetSkill:output_type -> auth.Skill
-	26, // 44: auth.Skills.GetSkillsByIds:output_type -> auth.GetSkillsByIdsResponse
-	18, // 45: auth.Skills.CreateSkill:output_type -> auth.Skill
-	31, // 46: auth.Skills.DeleteSkill:output_type -> google.protobuf.Empty
-	30, // [30:47] is the sub-list for method output_type
-	13, // [13:30] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	30, // 7: auth.PublicUser.competence_levels:type_name -> auth.PublicUser.CompetenceLevelsEntry
+	18, // 8: auth.PublicUser.skills:type_name -> auth.Skill
+	31, // 9: auth.UpdateMeRequest.competence_levels:type_name -> auth.UpdateMeRequest.CompetenceLevelsEntry
+	19, // 10: auth.UpdateMeRequest.skills:type_name -> auth.SkillSelection
+	13, // 11: auth.ListUsersResponse.users:type_name -> auth.PublicUser
+	18, // 12: auth.ListSkillsResponse.skills:type_name -> auth.Skill
+	18, // 13: auth.GetSkillsByIdsResponse.skills:type_name -> auth.Skill
+	13, // 14: auth.GetProfilesByIdsResponse.users:type_name -> auth.PublicUser
+	0,  // 15: auth.Auth.Register:input_type -> auth.RegisterRequest
+	3,  // 16: auth.Auth.Login:input_type -> auth.LoginRequest
+	5,  // 17: auth.Auth.Refresh:input_type -> auth.RefreshRequest
+	7,  // 18: auth.Auth.Logout:input_type -> auth.LogoutRequest
+	9,  // 19: auth.Auth.ChangePassword:input_type -> auth.ChangePasswordRequest
+	10, // 20: auth.Auth.ForgotPassword:input_type -> auth.ForgotPasswordRequest
+	11, // 21: auth.Auth.ResetPassword:input_type -> auth.ResetPasswordRequest
+	8,  // 22: auth.Auth.ResendVerification:input_type -> auth.ResendVerificationRequest
+	33, // 23: auth.UserProfile.GetMe:input_type -> google.protobuf.Empty
+	15, // 24: auth.UserProfile.UpdateMe:input_type -> auth.UpdateMeRequest
+	14, // 25: auth.UserProfile.GetProfile:input_type -> auth.GetProfileRequest
+	16, // 26: auth.UserProfile.ListUsers:input_type -> auth.ListUsersRequest
+	27, // 27: auth.UserProfile.GetProfilesByIds:input_type -> auth.GetProfilesByIdsRequest
+	23, // 28: auth.Skills.ListSkills:input_type -> auth.ListSkillsRequest
+	20, // 29: auth.Skills.GetSkill:input_type -> auth.GetSkillRequest
+	25, // 30: auth.Skills.GetSkillsByIds:input_type -> auth.GetSkillsByIdsRequest
+	21, // 31: auth.Skills.CreateSkill:input_type -> auth.CreateSkillRequest
+	22, // 32: auth.Skills.DeleteSkill:input_type -> auth.DeleteSkillRequest
+	1,  // 33: auth.Auth.Register:output_type -> auth.RegisterResponse
+	4,  // 34: auth.Auth.Login:output_type -> auth.LoginResponse
+	6,  // 35: auth.Auth.Refresh:output_type -> auth.RefreshResponse
+	33, // 36: auth.Auth.Logout:output_type -> google.protobuf.Empty
+	33, // 37: auth.Auth.ChangePassword:output_type -> google.protobuf.Empty
+	33, // 38: auth.Auth.ForgotPassword:output_type -> google.protobuf.Empty
+	33, // 39: auth.Auth.ResetPassword:output_type -> google.protobuf.Empty
+	33, // 40: auth.Auth.ResendVerification:output_type -> google.protobuf.Empty
+	12, // 41: auth.UserProfile.GetMe:output_type -> auth.User
+	12, // 42: auth.UserProfile.UpdateMe:output_type -> auth.User
+	13, // 43: auth.UserProfile.GetProfile:output_type -> auth.PublicUser
+	17, // 44: auth.UserProfile.ListUsers:output_type -> auth.ListUsersResponse
+	28, // 45: auth.UserProfile.GetProfilesByIds:output_type -> auth.GetProfilesByIdsResponse
+	24, // 46: auth.Skills.ListSkills:output_type -> auth.ListSkillsResponse
+	18, // 47: auth.Skills.GetSkill:output_type -> auth.Skill
+	26, // 48: auth.Skills.GetSkillsByIds:output_type -> auth.GetSkillsByIdsResponse
+	18, // 49: auth.Skills.CreateSkill:output_type -> auth.Skill
+	33, // 50: auth.Skills.DeleteSkill:output_type -> google.protobuf.Empty
+	33, // [33:51] is the sub-list for method output_type
+	15, // [15:33] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_sso_sso_proto_init() }
@@ -1959,7 +2067,7 @@ func file_sso_sso_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sso_sso_proto_rawDesc), len(file_sso_sso_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   30,
+			NumMessages:   32,
 			NumExtensions: 0,
 			NumServices:   3,
 		},
