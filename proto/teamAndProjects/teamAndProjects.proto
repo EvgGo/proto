@@ -292,6 +292,9 @@ service Projects {
 
   rpc GetMyProjectJoinRequest(GetMyProjectJoinRequestRequest)
       returns (GetMyProjectJoinRequestResponse);
+
+  rpc ListMyProjectJoinRequests(ListMyProjectJoinRequestsRequest)
+      returns (ListMyProjectJoinRequestsResponse);
 }
 
 message CreateProjectRequest {
@@ -535,4 +538,24 @@ message GetMyProjectJoinRequestRequest {
 
 message GetMyProjectJoinRequestResponse {
   optional ProjectJoinRequest request = 1;
+}
+
+message ListMyProjectJoinRequestsRequest {
+  JoinRequestStatus status = 1; // optional filter
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message MyProjectJoinRequestItem {
+  string project_id = 1;
+  string project_name = 2;
+  ProjectStatus project_status = 3;
+  bool project_is_open = 4;
+
+  ProjectJoinRequest request = 5;
+}
+
+message ListMyProjectJoinRequestsResponse {
+  repeated MyProjectJoinRequestItem items = 1;
+  string next_page_token = 2;
 }

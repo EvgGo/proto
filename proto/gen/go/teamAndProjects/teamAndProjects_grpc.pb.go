@@ -417,6 +417,7 @@ const (
 	Projects_RejectProjectJoinRequest_FullMethodName                = "/workspace.v1.Projects/RejectProjectJoinRequest"
 	Projects_SetProjectOpen_FullMethodName                          = "/workspace.v1.Projects/SetProjectOpen"
 	Projects_GetMyProjectJoinRequest_FullMethodName                 = "/workspace.v1.Projects/GetMyProjectJoinRequest"
+	Projects_ListMyProjectJoinRequests_FullMethodName               = "/workspace.v1.Projects/ListMyProjectJoinRequests"
 )
 
 // ProjectsClient is the client API for Projects service.
@@ -459,6 +460,7 @@ type ProjectsClient interface {
 	// SetOpen - меняет значение поля is_open у проекта
 	SetProjectOpen(ctx context.Context, in *SetProjectOpenRequest, opts ...grpc.CallOption) (*Project, error)
 	GetMyProjectJoinRequest(ctx context.Context, in *GetMyProjectJoinRequestRequest, opts ...grpc.CallOption) (*GetMyProjectJoinRequestResponse, error)
+	ListMyProjectJoinRequests(ctx context.Context, in *ListMyProjectJoinRequestsRequest, opts ...grpc.CallOption) (*ListMyProjectJoinRequestsResponse, error)
 }
 
 type projectsClient struct {
@@ -659,6 +661,16 @@ func (c *projectsClient) GetMyProjectJoinRequest(ctx context.Context, in *GetMyP
 	return out, nil
 }
 
+func (c *projectsClient) ListMyProjectJoinRequests(ctx context.Context, in *ListMyProjectJoinRequestsRequest, opts ...grpc.CallOption) (*ListMyProjectJoinRequestsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyProjectJoinRequestsResponse)
+	err := c.cc.Invoke(ctx, Projects_ListMyProjectJoinRequests_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectsServer is the server API for Projects service.
 // All implementations must embed UnimplementedProjectsServer
 // for forward compatibility.
@@ -699,6 +711,7 @@ type ProjectsServer interface {
 	// SetOpen - меняет значение поля is_open у проекта
 	SetProjectOpen(context.Context, *SetProjectOpenRequest) (*Project, error)
 	GetMyProjectJoinRequest(context.Context, *GetMyProjectJoinRequestRequest) (*GetMyProjectJoinRequestResponse, error)
+	ListMyProjectJoinRequests(context.Context, *ListMyProjectJoinRequestsRequest) (*ListMyProjectJoinRequestsResponse, error)
 	mustEmbedUnimplementedProjectsServer()
 }
 
@@ -765,6 +778,9 @@ func (UnimplementedProjectsServer) SetProjectOpen(context.Context, *SetProjectOp
 }
 func (UnimplementedProjectsServer) GetMyProjectJoinRequest(context.Context, *GetMyProjectJoinRequestRequest) (*GetMyProjectJoinRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMyProjectJoinRequest not implemented")
+}
+func (UnimplementedProjectsServer) ListMyProjectJoinRequests(context.Context, *ListMyProjectJoinRequestsRequest) (*ListMyProjectJoinRequestsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMyProjectJoinRequests not implemented")
 }
 func (UnimplementedProjectsServer) mustEmbedUnimplementedProjectsServer() {}
 func (UnimplementedProjectsServer) testEmbeddedByValue()                  {}
@@ -1129,6 +1145,24 @@ func _Projects_GetMyProjectJoinRequest_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_ListMyProjectJoinRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyProjectJoinRequestsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).ListMyProjectJoinRequests(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_ListMyProjectJoinRequests_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).ListMyProjectJoinRequests(ctx, req.(*ListMyProjectJoinRequestsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Projects_ServiceDesc is the grpc.ServiceDesc for Projects service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1211,6 +1245,10 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMyProjectJoinRequest",
 			Handler:    _Projects_GetMyProjectJoinRequest_Handler,
+		},
+		{
+			MethodName: "ListMyProjectJoinRequests",
+			Handler:    _Projects_ListMyProjectJoinRequests_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
