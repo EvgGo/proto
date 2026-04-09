@@ -23,6 +23,156 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type UserSkillMatchMode int32
+
+const (
+	UserSkillMatchMode_USER_SKILL_MATCH_MODE_UNSPECIFIED UserSkillMatchMode = 0
+	UserSkillMatchMode_USER_SKILL_MATCH_MODE_ANY         UserSkillMatchMode = 1 // подходит, если есть хотя бы один выбранный skill
+	UserSkillMatchMode_USER_SKILL_MATCH_MODE_ALL         UserSkillMatchMode = 2 // подходит, если есть все выбранные skill_ids
+)
+
+// Enum value maps for UserSkillMatchMode.
+var (
+	UserSkillMatchMode_name = map[int32]string{
+		0: "USER_SKILL_MATCH_MODE_UNSPECIFIED",
+		1: "USER_SKILL_MATCH_MODE_ANY",
+		2: "USER_SKILL_MATCH_MODE_ALL",
+	}
+	UserSkillMatchMode_value = map[string]int32{
+		"USER_SKILL_MATCH_MODE_UNSPECIFIED": 0,
+		"USER_SKILL_MATCH_MODE_ANY":         1,
+		"USER_SKILL_MATCH_MODE_ALL":         2,
+	}
+)
+
+func (x UserSkillMatchMode) Enum() *UserSkillMatchMode {
+	p := new(UserSkillMatchMode)
+	*p = x
+	return p
+}
+
+func (x UserSkillMatchMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UserSkillMatchMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_sso_sso_proto_enumTypes[0].Descriptor()
+}
+
+func (UserSkillMatchMode) Type() protoreflect.EnumType {
+	return &file_sso_sso_proto_enumTypes[0]
+}
+
+func (x UserSkillMatchMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UserSkillMatchMode.Descriptor instead.
+func (UserSkillMatchMode) EnumDescriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{0}
+}
+
+type PublicUserSortBy int32
+
+const (
+	PublicUserSortBy_PUBLIC_USER_SORT_BY_UNSPECIFIED                 PublicUserSortBy = 0
+	PublicUserSortBy_PUBLIC_USER_SORT_BY_CREATED_AT                  PublicUserSortBy = 1
+	PublicUserSortBy_PUBLIC_USER_SORT_BY_PROFILE_SKILL_MATCH_PERCENT PublicUserSortBy = 2
+	PublicUserSortBy_PUBLIC_USER_SORT_BY_MATCHED_SKILLS_COUNT        PublicUserSortBy = 3
+)
+
+// Enum value maps for PublicUserSortBy.
+var (
+	PublicUserSortBy_name = map[int32]string{
+		0: "PUBLIC_USER_SORT_BY_UNSPECIFIED",
+		1: "PUBLIC_USER_SORT_BY_CREATED_AT",
+		2: "PUBLIC_USER_SORT_BY_PROFILE_SKILL_MATCH_PERCENT",
+		3: "PUBLIC_USER_SORT_BY_MATCHED_SKILLS_COUNT",
+	}
+	PublicUserSortBy_value = map[string]int32{
+		"PUBLIC_USER_SORT_BY_UNSPECIFIED":                 0,
+		"PUBLIC_USER_SORT_BY_CREATED_AT":                  1,
+		"PUBLIC_USER_SORT_BY_PROFILE_SKILL_MATCH_PERCENT": 2,
+		"PUBLIC_USER_SORT_BY_MATCHED_SKILLS_COUNT":        3,
+	}
+)
+
+func (x PublicUserSortBy) Enum() *PublicUserSortBy {
+	p := new(PublicUserSortBy)
+	*p = x
+	return p
+}
+
+func (x PublicUserSortBy) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PublicUserSortBy) Descriptor() protoreflect.EnumDescriptor {
+	return file_sso_sso_proto_enumTypes[1].Descriptor()
+}
+
+func (PublicUserSortBy) Type() protoreflect.EnumType {
+	return &file_sso_sso_proto_enumTypes[1]
+}
+
+func (x PublicUserSortBy) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PublicUserSortBy.Descriptor instead.
+func (PublicUserSortBy) EnumDescriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{1}
+}
+
+type SortOrder int32
+
+const (
+	SortOrder_SORT_ORDER_UNSPECIFIED SortOrder = 0
+	SortOrder_SORT_ORDER_ASC         SortOrder = 1
+	SortOrder_SORT_ORDER_DESC        SortOrder = 2
+)
+
+// Enum value maps for SortOrder.
+var (
+	SortOrder_name = map[int32]string{
+		0: "SORT_ORDER_UNSPECIFIED",
+		1: "SORT_ORDER_ASC",
+		2: "SORT_ORDER_DESC",
+	}
+	SortOrder_value = map[string]int32{
+		"SORT_ORDER_UNSPECIFIED": 0,
+		"SORT_ORDER_ASC":         1,
+		"SORT_ORDER_DESC":        2,
+	}
+)
+
+func (x SortOrder) Enum() *SortOrder {
+	p := new(SortOrder)
+	*p = x
+	return p
+}
+
+func (x SortOrder) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SortOrder) Descriptor() protoreflect.EnumDescriptor {
+	return file_sso_sso_proto_enumTypes[2].Descriptor()
+}
+
+func (SortOrder) Type() protoreflect.EnumType {
+	return &file_sso_sso_proto_enumTypes[2]
+}
+
+func (x SortOrder) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SortOrder.Descriptor instead.
+func (SortOrder) EnumDescriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{2}
+}
+
 type RegisterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
@@ -1253,6 +1403,305 @@ func (x *ListUsersResponse) GetNextPageToken() string {
 	return ""
 }
 
+type ListPublicCandidatesRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Query          string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`                          // поиск по имени/about/skills
+	PageSize       int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`   // 10..100
+	PageToken      string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"` // cursor
+	SkillIds       []string               `protobuf:"bytes,4,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"`
+	SkillMatchMode UserSkillMatchMode     `protobuf:"varint,5,opt,name=skill_match_mode,json=skillMatchMode,proto3,enum=auth.UserSkillMatchMode" json:"skill_match_mode,omitempty"`
+	// фильтр по дате создания публичного профиля
+	CreatedFrom *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_from,json=createdFrom,proto3" json:"created_from,omitempty"`
+	CreatedTo   *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_to,json=createdTo,proto3" json:"created_to,omitempty"`
+	// только пользователи, открытые к предложениям
+	OpenSuggestionsOnly bool `protobuf:"varint,8,opt,name=open_suggestions_only,json=openSuggestionsOnly,proto3" json:"open_suggestions_only,omitempty"`
+	// сортировка
+	SortBy        PublicUserSortBy `protobuf:"varint,9,opt,name=sort_by,json=sortBy,proto3,enum=auth.PublicUserSortBy" json:"sort_by,omitempty"`
+	SortOrder     SortOrder        `protobuf:"varint,10,opt,name=sort_order,json=sortOrder,proto3,enum=auth.SortOrder" json:"sort_order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPublicCandidatesRequest) Reset() {
+	*x = ListPublicCandidatesRequest{}
+	mi := &file_sso_sso_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPublicCandidatesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPublicCandidatesRequest) ProtoMessage() {}
+
+func (x *ListPublicCandidatesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sso_sso_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPublicCandidatesRequest.ProtoReflect.Descriptor instead.
+func (*ListPublicCandidatesRequest) Descriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *ListPublicCandidatesRequest) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
+}
+
+func (x *ListPublicCandidatesRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListPublicCandidatesRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListPublicCandidatesRequest) GetSkillIds() []string {
+	if x != nil {
+		return x.SkillIds
+	}
+	return nil
+}
+
+func (x *ListPublicCandidatesRequest) GetSkillMatchMode() UserSkillMatchMode {
+	if x != nil {
+		return x.SkillMatchMode
+	}
+	return UserSkillMatchMode_USER_SKILL_MATCH_MODE_UNSPECIFIED
+}
+
+func (x *ListPublicCandidatesRequest) GetCreatedFrom() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedFrom
+	}
+	return nil
+}
+
+func (x *ListPublicCandidatesRequest) GetCreatedTo() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedTo
+	}
+	return nil
+}
+
+func (x *ListPublicCandidatesRequest) GetOpenSuggestionsOnly() bool {
+	if x != nil {
+		return x.OpenSuggestionsOnly
+	}
+	return false
+}
+
+func (x *ListPublicCandidatesRequest) GetSortBy() PublicUserSortBy {
+	if x != nil {
+		return x.SortBy
+	}
+	return PublicUserSortBy_PUBLIC_USER_SORT_BY_UNSPECIFIED
+}
+
+func (x *ListPublicCandidatesRequest) GetSortOrder() SortOrder {
+	if x != nil {
+		return x.SortOrder
+	}
+	return SortOrder_SORT_ORDER_UNSPECIFIED
+}
+
+type UserSkillMatchSummary struct {
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	MatchPercent           int32                  `protobuf:"varint,1,opt,name=match_percent,json=matchPercent,proto3" json:"match_percent,omitempty"`                                   // 0..100
+	MatchedSkillsCount     int32                  `protobuf:"varint,2,opt,name=matched_skills_count,json=matchedSkillsCount,proto3" json:"matched_skills_count,omitempty"`               // сколько выбранных skill_ids найдено у пользователя
+	TotalFilterSkillsCount int32                  `protobuf:"varint,3,opt,name=total_filter_skills_count,json=totalFilterSkillsCount,proto3" json:"total_filter_skills_count,omitempty"` // сколько skill_ids было передано в фильтр
+	MatchedSkills          []*Skill               `protobuf:"bytes,4,rep,name=matched_skills,json=matchedSkills,proto3" json:"matched_skills,omitempty"`                                 // какие из выбранных совпали
+	MissingFilterSkills    []*Skill               `protobuf:"bytes,5,rep,name=missing_filter_skills,json=missingFilterSkills,proto3" json:"missing_filter_skills,omitempty"`             // каких из выбранных не хватает
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *UserSkillMatchSummary) Reset() {
+	*x = UserSkillMatchSummary{}
+	mi := &file_sso_sso_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserSkillMatchSummary) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserSkillMatchSummary) ProtoMessage() {}
+
+func (x *UserSkillMatchSummary) ProtoReflect() protoreflect.Message {
+	mi := &file_sso_sso_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserSkillMatchSummary.ProtoReflect.Descriptor instead.
+func (*UserSkillMatchSummary) Descriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *UserSkillMatchSummary) GetMatchPercent() int32 {
+	if x != nil {
+		return x.MatchPercent
+	}
+	return 0
+}
+
+func (x *UserSkillMatchSummary) GetMatchedSkillsCount() int32 {
+	if x != nil {
+		return x.MatchedSkillsCount
+	}
+	return 0
+}
+
+func (x *UserSkillMatchSummary) GetTotalFilterSkillsCount() int32 {
+	if x != nil {
+		return x.TotalFilterSkillsCount
+	}
+	return 0
+}
+
+func (x *UserSkillMatchSummary) GetMatchedSkills() []*Skill {
+	if x != nil {
+		return x.MatchedSkills
+	}
+	return nil
+}
+
+func (x *UserSkillMatchSummary) GetMissingFilterSkills() []*Skill {
+	if x != nil {
+		return x.MissingFilterSkills
+	}
+	return nil
+}
+
+type PublicCandidate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *PublicUser            `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	SkillMatch    *UserSkillMatchSummary `protobuf:"bytes,2,opt,name=skill_match,json=skillMatch,proto3" json:"skill_match,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PublicCandidate) Reset() {
+	*x = PublicCandidate{}
+	mi := &file_sso_sso_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PublicCandidate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PublicCandidate) ProtoMessage() {}
+
+func (x *PublicCandidate) ProtoReflect() protoreflect.Message {
+	mi := &file_sso_sso_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PublicCandidate.ProtoReflect.Descriptor instead.
+func (*PublicCandidate) Descriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *PublicCandidate) GetUser() *PublicUser {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+func (x *PublicCandidate) GetSkillMatch() *UserSkillMatchSummary {
+	if x != nil {
+		return x.SkillMatch
+	}
+	return nil
+}
+
+type ListPublicCandidatesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Candidates    []*PublicCandidate     `protobuf:"bytes,1,rep,name=candidates,proto3" json:"candidates,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPublicCandidatesResponse) Reset() {
+	*x = ListPublicCandidatesResponse{}
+	mi := &file_sso_sso_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPublicCandidatesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPublicCandidatesResponse) ProtoMessage() {}
+
+func (x *ListPublicCandidatesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sso_sso_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPublicCandidatesResponse.ProtoReflect.Descriptor instead.
+func (*ListPublicCandidatesResponse) Descriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ListPublicCandidatesResponse) GetCandidates() []*PublicCandidate {
+	if x != nil {
+		return x.Candidates
+	}
+	return nil
+}
+
+func (x *ListPublicCandidatesResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
 type Skill struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -1263,7 +1712,7 @@ type Skill struct {
 
 func (x *Skill) Reset() {
 	*x = Skill{}
-	mi := &file_sso_sso_proto_msgTypes[18]
+	mi := &file_sso_sso_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1275,7 +1724,7 @@ func (x *Skill) String() string {
 func (*Skill) ProtoMessage() {}
 
 func (x *Skill) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[18]
+	mi := &file_sso_sso_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1288,7 +1737,7 @@ func (x *Skill) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Skill.ProtoReflect.Descriptor instead.
 func (*Skill) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{18}
+	return file_sso_sso_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *Skill) GetId() string {
@@ -1314,7 +1763,7 @@ type SkillSelection struct {
 
 func (x *SkillSelection) Reset() {
 	*x = SkillSelection{}
-	mi := &file_sso_sso_proto_msgTypes[19]
+	mi := &file_sso_sso_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1326,7 +1775,7 @@ func (x *SkillSelection) String() string {
 func (*SkillSelection) ProtoMessage() {}
 
 func (x *SkillSelection) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[19]
+	mi := &file_sso_sso_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1339,7 +1788,7 @@ func (x *SkillSelection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SkillSelection.ProtoReflect.Descriptor instead.
 func (*SkillSelection) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{19}
+	return file_sso_sso_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *SkillSelection) GetIds() []string {
@@ -1358,7 +1807,7 @@ type GetSkillRequest struct {
 
 func (x *GetSkillRequest) Reset() {
 	*x = GetSkillRequest{}
-	mi := &file_sso_sso_proto_msgTypes[20]
+	mi := &file_sso_sso_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1370,7 +1819,7 @@ func (x *GetSkillRequest) String() string {
 func (*GetSkillRequest) ProtoMessage() {}
 
 func (x *GetSkillRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[20]
+	mi := &file_sso_sso_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1383,7 +1832,7 @@ func (x *GetSkillRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSkillRequest.ProtoReflect.Descriptor instead.
 func (*GetSkillRequest) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{20}
+	return file_sso_sso_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *GetSkillRequest) GetSkillId() string {
@@ -1402,7 +1851,7 @@ type CreateSkillRequest struct {
 
 func (x *CreateSkillRequest) Reset() {
 	*x = CreateSkillRequest{}
-	mi := &file_sso_sso_proto_msgTypes[21]
+	mi := &file_sso_sso_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1414,7 +1863,7 @@ func (x *CreateSkillRequest) String() string {
 func (*CreateSkillRequest) ProtoMessage() {}
 
 func (x *CreateSkillRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[21]
+	mi := &file_sso_sso_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1427,7 +1876,7 @@ func (x *CreateSkillRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSkillRequest.ProtoReflect.Descriptor instead.
 func (*CreateSkillRequest) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{21}
+	return file_sso_sso_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *CreateSkillRequest) GetName() string {
@@ -1446,7 +1895,7 @@ type DeleteSkillRequest struct {
 
 func (x *DeleteSkillRequest) Reset() {
 	*x = DeleteSkillRequest{}
-	mi := &file_sso_sso_proto_msgTypes[22]
+	mi := &file_sso_sso_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1458,7 +1907,7 @@ func (x *DeleteSkillRequest) String() string {
 func (*DeleteSkillRequest) ProtoMessage() {}
 
 func (x *DeleteSkillRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[22]
+	mi := &file_sso_sso_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1471,7 +1920,7 @@ func (x *DeleteSkillRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSkillRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSkillRequest) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{22}
+	return file_sso_sso_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *DeleteSkillRequest) GetSkillId() string {
@@ -1493,7 +1942,7 @@ type ListSkillsRequest struct {
 
 func (x *ListSkillsRequest) Reset() {
 	*x = ListSkillsRequest{}
-	mi := &file_sso_sso_proto_msgTypes[23]
+	mi := &file_sso_sso_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1505,7 +1954,7 @@ func (x *ListSkillsRequest) String() string {
 func (*ListSkillsRequest) ProtoMessage() {}
 
 func (x *ListSkillsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[23]
+	mi := &file_sso_sso_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1518,7 +1967,7 @@ func (x *ListSkillsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSkillsRequest.ProtoReflect.Descriptor instead.
 func (*ListSkillsRequest) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{23}
+	return file_sso_sso_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ListSkillsRequest) GetQuery() string {
@@ -1552,7 +2001,7 @@ type ListSkillsResponse struct {
 
 func (x *ListSkillsResponse) Reset() {
 	*x = ListSkillsResponse{}
-	mi := &file_sso_sso_proto_msgTypes[24]
+	mi := &file_sso_sso_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1564,7 +2013,7 @@ func (x *ListSkillsResponse) String() string {
 func (*ListSkillsResponse) ProtoMessage() {}
 
 func (x *ListSkillsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[24]
+	mi := &file_sso_sso_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1577,7 +2026,7 @@ func (x *ListSkillsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSkillsResponse.ProtoReflect.Descriptor instead.
 func (*ListSkillsResponse) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{24}
+	return file_sso_sso_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ListSkillsResponse) GetSkills() []*Skill {
@@ -1603,7 +2052,7 @@ type GetSkillsByIdsRequest struct {
 
 func (x *GetSkillsByIdsRequest) Reset() {
 	*x = GetSkillsByIdsRequest{}
-	mi := &file_sso_sso_proto_msgTypes[25]
+	mi := &file_sso_sso_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1615,7 +2064,7 @@ func (x *GetSkillsByIdsRequest) String() string {
 func (*GetSkillsByIdsRequest) ProtoMessage() {}
 
 func (x *GetSkillsByIdsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[25]
+	mi := &file_sso_sso_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1628,7 +2077,7 @@ func (x *GetSkillsByIdsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSkillsByIdsRequest.ProtoReflect.Descriptor instead.
 func (*GetSkillsByIdsRequest) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{25}
+	return file_sso_sso_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *GetSkillsByIdsRequest) GetSkillIds() []string {
@@ -1647,7 +2096,7 @@ type GetSkillsByIdsResponse struct {
 
 func (x *GetSkillsByIdsResponse) Reset() {
 	*x = GetSkillsByIdsResponse{}
-	mi := &file_sso_sso_proto_msgTypes[26]
+	mi := &file_sso_sso_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1659,7 +2108,7 @@ func (x *GetSkillsByIdsResponse) String() string {
 func (*GetSkillsByIdsResponse) ProtoMessage() {}
 
 func (x *GetSkillsByIdsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[26]
+	mi := &file_sso_sso_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1672,7 +2121,7 @@ func (x *GetSkillsByIdsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSkillsByIdsResponse.ProtoReflect.Descriptor instead.
 func (*GetSkillsByIdsResponse) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{26}
+	return file_sso_sso_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *GetSkillsByIdsResponse) GetSkills() []*Skill {
@@ -1691,7 +2140,7 @@ type GetProfilesByIdsRequest struct {
 
 func (x *GetProfilesByIdsRequest) Reset() {
 	*x = GetProfilesByIdsRequest{}
-	mi := &file_sso_sso_proto_msgTypes[27]
+	mi := &file_sso_sso_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1703,7 +2152,7 @@ func (x *GetProfilesByIdsRequest) String() string {
 func (*GetProfilesByIdsRequest) ProtoMessage() {}
 
 func (x *GetProfilesByIdsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[27]
+	mi := &file_sso_sso_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1716,7 +2165,7 @@ func (x *GetProfilesByIdsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetProfilesByIdsRequest.ProtoReflect.Descriptor instead.
 func (*GetProfilesByIdsRequest) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{27}
+	return file_sso_sso_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *GetProfilesByIdsRequest) GetUserIds() []string {
@@ -1735,7 +2184,7 @@ type GetProfilesByIdsResponse struct {
 
 func (x *GetProfilesByIdsResponse) Reset() {
 	*x = GetProfilesByIdsResponse{}
-	mi := &file_sso_sso_proto_msgTypes[28]
+	mi := &file_sso_sso_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1747,7 +2196,7 @@ func (x *GetProfilesByIdsResponse) String() string {
 func (*GetProfilesByIdsResponse) ProtoMessage() {}
 
 func (x *GetProfilesByIdsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sso_sso_proto_msgTypes[28]
+	mi := &file_sso_sso_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1760,7 +2209,7 @@ func (x *GetProfilesByIdsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetProfilesByIdsResponse.ProtoReflect.Descriptor instead.
 func (*GetProfilesByIdsResponse) Descriptor() ([]byte, []int) {
-	return file_sso_sso_proto_rawDescGZIP(), []int{28}
+	return file_sso_sso_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *GetProfilesByIdsResponse) GetUsers() []*PublicUser {
@@ -1893,6 +2342,36 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x15open_suggestions_only\x18\x05 \x01(\bR\x13openSuggestionsOnly\"c\n" +
 	"\x11ListUsersResponse\x12&\n" +
 	"\x05users\x18\x01 \x03(\v2\x10.auth.PublicUserR\x05users\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xdf\x03\n" +
+	"\x1bListPublicCandidatesRequest\x12\x14\n" +
+	"\x05query\x18\x01 \x01(\tR\x05query\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x1b\n" +
+	"\tskill_ids\x18\x04 \x03(\tR\bskillIds\x12B\n" +
+	"\x10skill_match_mode\x18\x05 \x01(\x0e2\x18.auth.UserSkillMatchModeR\x0eskillMatchMode\x12=\n" +
+	"\fcreated_from\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\vcreatedFrom\x129\n" +
+	"\n" +
+	"created_to\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedTo\x122\n" +
+	"\x15open_suggestions_only\x18\b \x01(\bR\x13openSuggestionsOnly\x12/\n" +
+	"\asort_by\x18\t \x01(\x0e2\x16.auth.PublicUserSortByR\x06sortBy\x12.\n" +
+	"\n" +
+	"sort_order\x18\n" +
+	" \x01(\x0e2\x0f.auth.SortOrderR\tsortOrder\"\x9e\x02\n" +
+	"\x15UserSkillMatchSummary\x12#\n" +
+	"\rmatch_percent\x18\x01 \x01(\x05R\fmatchPercent\x120\n" +
+	"\x14matched_skills_count\x18\x02 \x01(\x05R\x12matchedSkillsCount\x129\n" +
+	"\x19total_filter_skills_count\x18\x03 \x01(\x05R\x16totalFilterSkillsCount\x122\n" +
+	"\x0ematched_skills\x18\x04 \x03(\v2\v.auth.SkillR\rmatchedSkills\x12?\n" +
+	"\x15missing_filter_skills\x18\x05 \x03(\v2\v.auth.SkillR\x13missingFilterSkills\"u\n" +
+	"\x0fPublicCandidate\x12$\n" +
+	"\x04user\x18\x01 \x01(\v2\x10.auth.PublicUserR\x04user\x12<\n" +
+	"\vskill_match\x18\x02 \x01(\v2\x1b.auth.UserSkillMatchSummaryR\n" +
+	"skillMatch\"}\n" +
+	"\x1cListPublicCandidatesResponse\x125\n" +
+	"\n" +
+	"candidates\x18\x01 \x03(\v2\x15.auth.PublicCandidateR\n" +
+	"candidates\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"+\n" +
 	"\x05Skill\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
@@ -1920,7 +2399,20 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x17GetProfilesByIdsRequest\x12\x19\n" +
 	"\buser_ids\x18\x01 \x03(\tR\auserIds\"B\n" +
 	"\x18GetProfilesByIdsResponse\x12&\n" +
-	"\x05users\x18\x01 \x03(\v2\x10.auth.PublicUserR\x05users2\x84\x04\n" +
+	"\x05users\x18\x01 \x03(\v2\x10.auth.PublicUserR\x05users*y\n" +
+	"\x12UserSkillMatchMode\x12%\n" +
+	"!USER_SKILL_MATCH_MODE_UNSPECIFIED\x10\x00\x12\x1d\n" +
+	"\x19USER_SKILL_MATCH_MODE_ANY\x10\x01\x12\x1d\n" +
+	"\x19USER_SKILL_MATCH_MODE_ALL\x10\x02*\xbe\x01\n" +
+	"\x10PublicUserSortBy\x12#\n" +
+	"\x1fPUBLIC_USER_SORT_BY_UNSPECIFIED\x10\x00\x12\"\n" +
+	"\x1ePUBLIC_USER_SORT_BY_CREATED_AT\x10\x01\x123\n" +
+	"/PUBLIC_USER_SORT_BY_PROFILE_SKILL_MATCH_PERCENT\x10\x02\x12,\n" +
+	"(PUBLIC_USER_SORT_BY_MATCHED_SKILLS_COUNT\x10\x03*P\n" +
+	"\tSortOrder\x12\x1a\n" +
+	"\x16SORT_ORDER_UNSPECIFIED\x10\x00\x12\x12\n" +
+	"\x0eSORT_ORDER_ASC\x10\x01\x12\x13\n" +
+	"\x0fSORT_ORDER_DESC\x10\x022\x84\x04\n" +
 	"\x04Auth\x129\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\x120\n" +
 	"\x05Login\x12\x12.auth.LoginRequest\x1a\x13.auth.LoginResponse\x126\n" +
@@ -1929,7 +2421,7 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x0eChangePassword\x12\x1b.auth.ChangePasswordRequest\x1a\x16.google.protobuf.Empty\x12E\n" +
 	"\x0eForgotPassword\x12\x1b.auth.ForgotPasswordRequest\x1a\x16.google.protobuf.Empty\x12C\n" +
 	"\rResetPassword\x12\x1a.auth.ResetPasswordRequest\x1a\x16.google.protobuf.Empty\x12M\n" +
-	"\x12ResendVerification\x12\x1f.auth.ResendVerificationRequest\x1a\x16.google.protobuf.Empty2\xb3\x02\n" +
+	"\x12ResendVerification\x12\x1f.auth.ResendVerificationRequest\x1a\x16.google.protobuf.Empty2\x92\x03\n" +
 	"\vUserProfile\x12+\n" +
 	"\x05GetMe\x12\x16.google.protobuf.Empty\x1a\n" +
 	".auth.User\x12-\n" +
@@ -1938,7 +2430,8 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\n" +
 	"GetProfile\x12\x17.auth.GetProfileRequest\x1a\x10.auth.PublicUser\x12<\n" +
 	"\tListUsers\x12\x16.auth.ListUsersRequest\x1a\x17.auth.ListUsersResponse\x12Q\n" +
-	"\x10GetProfilesByIds\x12\x1d.auth.GetProfilesByIdsRequest\x1a\x1e.auth.GetProfilesByIdsResponse2\xbd\x02\n" +
+	"\x10GetProfilesByIds\x12\x1d.auth.GetProfilesByIdsRequest\x1a\x1e.auth.GetProfilesByIdsResponse\x12]\n" +
+	"\x14ListPublicCandidates\x12!.auth.ListPublicCandidatesRequest\x1a\".auth.ListPublicCandidatesResponse2\xbd\x02\n" +
 	"\x06Skills\x12?\n" +
 	"\n" +
 	"ListSkills\x12\x17.auth.ListSkillsRequest\x1a\x18.auth.ListSkillsResponse\x12.\n" +
@@ -1959,100 +2452,120 @@ func file_sso_sso_proto_rawDescGZIP() []byte {
 	return file_sso_sso_proto_rawDescData
 }
 
-var file_sso_sso_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
+var file_sso_sso_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_sso_sso_proto_msgTypes = make([]protoimpl.MessageInfo, 36)
 var file_sso_sso_proto_goTypes = []any{
-	(*RegisterRequest)(nil),           // 0: auth.RegisterRequest
-	(*RegisterResponse)(nil),          // 1: auth.RegisterResponse
-	(*TokenPair)(nil),                 // 2: auth.TokenPair
-	(*LoginRequest)(nil),              // 3: auth.LoginRequest
-	(*LoginResponse)(nil),             // 4: auth.LoginResponse
-	(*RefreshRequest)(nil),            // 5: auth.RefreshRequest
-	(*RefreshResponse)(nil),           // 6: auth.RefreshResponse
-	(*LogoutRequest)(nil),             // 7: auth.LogoutRequest
-	(*ResendVerificationRequest)(nil), // 8: auth.ResendVerificationRequest
-	(*ChangePasswordRequest)(nil),     // 9: auth.ChangePasswordRequest
-	(*ForgotPasswordRequest)(nil),     // 10: auth.ForgotPasswordRequest
-	(*ResetPasswordRequest)(nil),      // 11: auth.ResetPasswordRequest
-	(*User)(nil),                      // 12: auth.User
-	(*PublicUser)(nil),                // 13: auth.PublicUser
-	(*GetProfileRequest)(nil),         // 14: auth.GetProfileRequest
-	(*UpdateMeRequest)(nil),           // 15: auth.UpdateMeRequest
-	(*ListUsersRequest)(nil),          // 16: auth.ListUsersRequest
-	(*ListUsersResponse)(nil),         // 17: auth.ListUsersResponse
-	(*Skill)(nil),                     // 18: auth.Skill
-	(*SkillSelection)(nil),            // 19: auth.SkillSelection
-	(*GetSkillRequest)(nil),           // 20: auth.GetSkillRequest
-	(*CreateSkillRequest)(nil),        // 21: auth.CreateSkillRequest
-	(*DeleteSkillRequest)(nil),        // 22: auth.DeleteSkillRequest
-	(*ListSkillsRequest)(nil),         // 23: auth.ListSkillsRequest
-	(*ListSkillsResponse)(nil),        // 24: auth.ListSkillsResponse
-	(*GetSkillsByIdsRequest)(nil),     // 25: auth.GetSkillsByIdsRequest
-	(*GetSkillsByIdsResponse)(nil),    // 26: auth.GetSkillsByIdsResponse
-	(*GetProfilesByIdsRequest)(nil),   // 27: auth.GetProfilesByIdsRequest
-	(*GetProfilesByIdsResponse)(nil),  // 28: auth.GetProfilesByIdsResponse
-	nil,                               // 29: auth.User.CompetenceLevelsEntry
-	nil,                               // 30: auth.PublicUser.CompetenceLevelsEntry
-	nil,                               // 31: auth.UpdateMeRequest.CompetenceLevelsEntry
-	(*timestamppb.Timestamp)(nil),     // 32: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),             // 33: google.protobuf.Empty
+	(UserSkillMatchMode)(0),              // 0: auth.UserSkillMatchMode
+	(PublicUserSortBy)(0),                // 1: auth.PublicUserSortBy
+	(SortOrder)(0),                       // 2: auth.SortOrder
+	(*RegisterRequest)(nil),              // 3: auth.RegisterRequest
+	(*RegisterResponse)(nil),             // 4: auth.RegisterResponse
+	(*TokenPair)(nil),                    // 5: auth.TokenPair
+	(*LoginRequest)(nil),                 // 6: auth.LoginRequest
+	(*LoginResponse)(nil),                // 7: auth.LoginResponse
+	(*RefreshRequest)(nil),               // 8: auth.RefreshRequest
+	(*RefreshResponse)(nil),              // 9: auth.RefreshResponse
+	(*LogoutRequest)(nil),                // 10: auth.LogoutRequest
+	(*ResendVerificationRequest)(nil),    // 11: auth.ResendVerificationRequest
+	(*ChangePasswordRequest)(nil),        // 12: auth.ChangePasswordRequest
+	(*ForgotPasswordRequest)(nil),        // 13: auth.ForgotPasswordRequest
+	(*ResetPasswordRequest)(nil),         // 14: auth.ResetPasswordRequest
+	(*User)(nil),                         // 15: auth.User
+	(*PublicUser)(nil),                   // 16: auth.PublicUser
+	(*GetProfileRequest)(nil),            // 17: auth.GetProfileRequest
+	(*UpdateMeRequest)(nil),              // 18: auth.UpdateMeRequest
+	(*ListUsersRequest)(nil),             // 19: auth.ListUsersRequest
+	(*ListUsersResponse)(nil),            // 20: auth.ListUsersResponse
+	(*ListPublicCandidatesRequest)(nil),  // 21: auth.ListPublicCandidatesRequest
+	(*UserSkillMatchSummary)(nil),        // 22: auth.UserSkillMatchSummary
+	(*PublicCandidate)(nil),              // 23: auth.PublicCandidate
+	(*ListPublicCandidatesResponse)(nil), // 24: auth.ListPublicCandidatesResponse
+	(*Skill)(nil),                        // 25: auth.Skill
+	(*SkillSelection)(nil),               // 26: auth.SkillSelection
+	(*GetSkillRequest)(nil),              // 27: auth.GetSkillRequest
+	(*CreateSkillRequest)(nil),           // 28: auth.CreateSkillRequest
+	(*DeleteSkillRequest)(nil),           // 29: auth.DeleteSkillRequest
+	(*ListSkillsRequest)(nil),            // 30: auth.ListSkillsRequest
+	(*ListSkillsResponse)(nil),           // 31: auth.ListSkillsResponse
+	(*GetSkillsByIdsRequest)(nil),        // 32: auth.GetSkillsByIdsRequest
+	(*GetSkillsByIdsResponse)(nil),       // 33: auth.GetSkillsByIdsResponse
+	(*GetProfilesByIdsRequest)(nil),      // 34: auth.GetProfilesByIdsRequest
+	(*GetProfilesByIdsResponse)(nil),     // 35: auth.GetProfilesByIdsResponse
+	nil,                                  // 36: auth.User.CompetenceLevelsEntry
+	nil,                                  // 37: auth.PublicUser.CompetenceLevelsEntry
+	nil,                                  // 38: auth.UpdateMeRequest.CompetenceLevelsEntry
+	(*timestamppb.Timestamp)(nil),        // 39: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),                // 40: google.protobuf.Empty
 }
 var file_sso_sso_proto_depIdxs = []int32{
-	2,  // 0: auth.RegisterResponse.tokens:type_name -> auth.TokenPair
-	2,  // 1: auth.LoginResponse.tokens:type_name -> auth.TokenPair
-	29, // 2: auth.User.competence_levels:type_name -> auth.User.CompetenceLevelsEntry
-	32, // 3: auth.User.registered_at:type_name -> google.protobuf.Timestamp
-	32, // 4: auth.User.created_at:type_name -> google.protobuf.Timestamp
-	32, // 5: auth.User.updated_at:type_name -> google.protobuf.Timestamp
-	18, // 6: auth.User.skills:type_name -> auth.Skill
-	30, // 7: auth.PublicUser.competence_levels:type_name -> auth.PublicUser.CompetenceLevelsEntry
-	18, // 8: auth.PublicUser.skills:type_name -> auth.Skill
-	31, // 9: auth.UpdateMeRequest.competence_levels:type_name -> auth.UpdateMeRequest.CompetenceLevelsEntry
-	19, // 10: auth.UpdateMeRequest.skills:type_name -> auth.SkillSelection
-	13, // 11: auth.ListUsersResponse.users:type_name -> auth.PublicUser
-	18, // 12: auth.ListSkillsResponse.skills:type_name -> auth.Skill
-	18, // 13: auth.GetSkillsByIdsResponse.skills:type_name -> auth.Skill
-	13, // 14: auth.GetProfilesByIdsResponse.users:type_name -> auth.PublicUser
-	0,  // 15: auth.Auth.Register:input_type -> auth.RegisterRequest
-	3,  // 16: auth.Auth.Login:input_type -> auth.LoginRequest
-	5,  // 17: auth.Auth.Refresh:input_type -> auth.RefreshRequest
-	7,  // 18: auth.Auth.Logout:input_type -> auth.LogoutRequest
-	9,  // 19: auth.Auth.ChangePassword:input_type -> auth.ChangePasswordRequest
-	10, // 20: auth.Auth.ForgotPassword:input_type -> auth.ForgotPasswordRequest
-	11, // 21: auth.Auth.ResetPassword:input_type -> auth.ResetPasswordRequest
-	8,  // 22: auth.Auth.ResendVerification:input_type -> auth.ResendVerificationRequest
-	33, // 23: auth.UserProfile.GetMe:input_type -> google.protobuf.Empty
-	15, // 24: auth.UserProfile.UpdateMe:input_type -> auth.UpdateMeRequest
-	14, // 25: auth.UserProfile.GetProfile:input_type -> auth.GetProfileRequest
-	16, // 26: auth.UserProfile.ListUsers:input_type -> auth.ListUsersRequest
-	27, // 27: auth.UserProfile.GetProfilesByIds:input_type -> auth.GetProfilesByIdsRequest
-	23, // 28: auth.Skills.ListSkills:input_type -> auth.ListSkillsRequest
-	20, // 29: auth.Skills.GetSkill:input_type -> auth.GetSkillRequest
-	25, // 30: auth.Skills.GetSkillsByIds:input_type -> auth.GetSkillsByIdsRequest
-	21, // 31: auth.Skills.CreateSkill:input_type -> auth.CreateSkillRequest
-	22, // 32: auth.Skills.DeleteSkill:input_type -> auth.DeleteSkillRequest
-	1,  // 33: auth.Auth.Register:output_type -> auth.RegisterResponse
-	4,  // 34: auth.Auth.Login:output_type -> auth.LoginResponse
-	6,  // 35: auth.Auth.Refresh:output_type -> auth.RefreshResponse
-	33, // 36: auth.Auth.Logout:output_type -> google.protobuf.Empty
-	33, // 37: auth.Auth.ChangePassword:output_type -> google.protobuf.Empty
-	33, // 38: auth.Auth.ForgotPassword:output_type -> google.protobuf.Empty
-	33, // 39: auth.Auth.ResetPassword:output_type -> google.protobuf.Empty
-	33, // 40: auth.Auth.ResendVerification:output_type -> google.protobuf.Empty
-	12, // 41: auth.UserProfile.GetMe:output_type -> auth.User
-	12, // 42: auth.UserProfile.UpdateMe:output_type -> auth.User
-	13, // 43: auth.UserProfile.GetProfile:output_type -> auth.PublicUser
-	17, // 44: auth.UserProfile.ListUsers:output_type -> auth.ListUsersResponse
-	28, // 45: auth.UserProfile.GetProfilesByIds:output_type -> auth.GetProfilesByIdsResponse
-	24, // 46: auth.Skills.ListSkills:output_type -> auth.ListSkillsResponse
-	18, // 47: auth.Skills.GetSkill:output_type -> auth.Skill
-	26, // 48: auth.Skills.GetSkillsByIds:output_type -> auth.GetSkillsByIdsResponse
-	18, // 49: auth.Skills.CreateSkill:output_type -> auth.Skill
-	33, // 50: auth.Skills.DeleteSkill:output_type -> google.protobuf.Empty
-	33, // [33:51] is the sub-list for method output_type
-	15, // [15:33] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	5,  // 0: auth.RegisterResponse.tokens:type_name -> auth.TokenPair
+	5,  // 1: auth.LoginResponse.tokens:type_name -> auth.TokenPair
+	36, // 2: auth.User.competence_levels:type_name -> auth.User.CompetenceLevelsEntry
+	39, // 3: auth.User.registered_at:type_name -> google.protobuf.Timestamp
+	39, // 4: auth.User.created_at:type_name -> google.protobuf.Timestamp
+	39, // 5: auth.User.updated_at:type_name -> google.protobuf.Timestamp
+	25, // 6: auth.User.skills:type_name -> auth.Skill
+	37, // 7: auth.PublicUser.competence_levels:type_name -> auth.PublicUser.CompetenceLevelsEntry
+	25, // 8: auth.PublicUser.skills:type_name -> auth.Skill
+	38, // 9: auth.UpdateMeRequest.competence_levels:type_name -> auth.UpdateMeRequest.CompetenceLevelsEntry
+	26, // 10: auth.UpdateMeRequest.skills:type_name -> auth.SkillSelection
+	16, // 11: auth.ListUsersResponse.users:type_name -> auth.PublicUser
+	0,  // 12: auth.ListPublicCandidatesRequest.skill_match_mode:type_name -> auth.UserSkillMatchMode
+	39, // 13: auth.ListPublicCandidatesRequest.created_from:type_name -> google.protobuf.Timestamp
+	39, // 14: auth.ListPublicCandidatesRequest.created_to:type_name -> google.protobuf.Timestamp
+	1,  // 15: auth.ListPublicCandidatesRequest.sort_by:type_name -> auth.PublicUserSortBy
+	2,  // 16: auth.ListPublicCandidatesRequest.sort_order:type_name -> auth.SortOrder
+	25, // 17: auth.UserSkillMatchSummary.matched_skills:type_name -> auth.Skill
+	25, // 18: auth.UserSkillMatchSummary.missing_filter_skills:type_name -> auth.Skill
+	16, // 19: auth.PublicCandidate.user:type_name -> auth.PublicUser
+	22, // 20: auth.PublicCandidate.skill_match:type_name -> auth.UserSkillMatchSummary
+	23, // 21: auth.ListPublicCandidatesResponse.candidates:type_name -> auth.PublicCandidate
+	25, // 22: auth.ListSkillsResponse.skills:type_name -> auth.Skill
+	25, // 23: auth.GetSkillsByIdsResponse.skills:type_name -> auth.Skill
+	16, // 24: auth.GetProfilesByIdsResponse.users:type_name -> auth.PublicUser
+	3,  // 25: auth.Auth.Register:input_type -> auth.RegisterRequest
+	6,  // 26: auth.Auth.Login:input_type -> auth.LoginRequest
+	8,  // 27: auth.Auth.Refresh:input_type -> auth.RefreshRequest
+	10, // 28: auth.Auth.Logout:input_type -> auth.LogoutRequest
+	12, // 29: auth.Auth.ChangePassword:input_type -> auth.ChangePasswordRequest
+	13, // 30: auth.Auth.ForgotPassword:input_type -> auth.ForgotPasswordRequest
+	14, // 31: auth.Auth.ResetPassword:input_type -> auth.ResetPasswordRequest
+	11, // 32: auth.Auth.ResendVerification:input_type -> auth.ResendVerificationRequest
+	40, // 33: auth.UserProfile.GetMe:input_type -> google.protobuf.Empty
+	18, // 34: auth.UserProfile.UpdateMe:input_type -> auth.UpdateMeRequest
+	17, // 35: auth.UserProfile.GetProfile:input_type -> auth.GetProfileRequest
+	19, // 36: auth.UserProfile.ListUsers:input_type -> auth.ListUsersRequest
+	34, // 37: auth.UserProfile.GetProfilesByIds:input_type -> auth.GetProfilesByIdsRequest
+	21, // 38: auth.UserProfile.ListPublicCandidates:input_type -> auth.ListPublicCandidatesRequest
+	30, // 39: auth.Skills.ListSkills:input_type -> auth.ListSkillsRequest
+	27, // 40: auth.Skills.GetSkill:input_type -> auth.GetSkillRequest
+	32, // 41: auth.Skills.GetSkillsByIds:input_type -> auth.GetSkillsByIdsRequest
+	28, // 42: auth.Skills.CreateSkill:input_type -> auth.CreateSkillRequest
+	29, // 43: auth.Skills.DeleteSkill:input_type -> auth.DeleteSkillRequest
+	4,  // 44: auth.Auth.Register:output_type -> auth.RegisterResponse
+	7,  // 45: auth.Auth.Login:output_type -> auth.LoginResponse
+	9,  // 46: auth.Auth.Refresh:output_type -> auth.RefreshResponse
+	40, // 47: auth.Auth.Logout:output_type -> google.protobuf.Empty
+	40, // 48: auth.Auth.ChangePassword:output_type -> google.protobuf.Empty
+	40, // 49: auth.Auth.ForgotPassword:output_type -> google.protobuf.Empty
+	40, // 50: auth.Auth.ResetPassword:output_type -> google.protobuf.Empty
+	40, // 51: auth.Auth.ResendVerification:output_type -> google.protobuf.Empty
+	15, // 52: auth.UserProfile.GetMe:output_type -> auth.User
+	15, // 53: auth.UserProfile.UpdateMe:output_type -> auth.User
+	16, // 54: auth.UserProfile.GetProfile:output_type -> auth.PublicUser
+	20, // 55: auth.UserProfile.ListUsers:output_type -> auth.ListUsersResponse
+	35, // 56: auth.UserProfile.GetProfilesByIds:output_type -> auth.GetProfilesByIdsResponse
+	24, // 57: auth.UserProfile.ListPublicCandidates:output_type -> auth.ListPublicCandidatesResponse
+	31, // 58: auth.Skills.ListSkills:output_type -> auth.ListSkillsResponse
+	25, // 59: auth.Skills.GetSkill:output_type -> auth.Skill
+	33, // 60: auth.Skills.GetSkillsByIds:output_type -> auth.GetSkillsByIdsResponse
+	25, // 61: auth.Skills.CreateSkill:output_type -> auth.Skill
+	40, // 62: auth.Skills.DeleteSkill:output_type -> google.protobuf.Empty
+	44, // [44:63] is the sub-list for method output_type
+	25, // [25:44] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_sso_sso_proto_init() }
@@ -2066,13 +2579,14 @@ func file_sso_sso_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sso_sso_proto_rawDesc), len(file_sso_sso_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   32,
+			NumEnums:      3,
+			NumMessages:   36,
 			NumExtensions: 0,
 			NumServices:   3,
 		},
 		GoTypes:           file_sso_sso_proto_goTypes,
 		DependencyIndexes: file_sso_sso_proto_depIdxs,
+		EnumInfos:         file_sso_sso_proto_enumTypes,
 		MessageInfos:      file_sso_sso_proto_msgTypes,
 	}.Build()
 	File_sso_sso_proto = out.File

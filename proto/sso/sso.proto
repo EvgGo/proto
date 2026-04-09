@@ -116,6 +116,9 @@ service UserProfile {
 
   // Публичные профили по user_id ,
   rpc GetProfilesByIds(GetProfilesByIdsRequest) returns (GetProfilesByIdsResponse);
+
+  // Публичный поиск кандидатов для страницы подбора участников
+  rpc ListPublicCandidates(ListPublicCandidatesRequest) returns (ListPublicCandidatesResponse);
 }
 
 message User {
@@ -182,6 +185,64 @@ message ListUsersRequest {
 
 message ListUsersResponse {
   repeated PublicUser users = 1;
+  string next_page_token = 2;
+}
+
+enum UserSkillMatchMode {
+  USER_SKILL_MATCH_MODE_UNSPECIFIED = 0;
+  USER_SKILL_MATCH_MODE_ANY = 1; // подходит, если есть хотя бы один выбранный skill
+  USER_SKILL_MATCH_MODE_ALL = 2; // подходит, если есть все выбранные skill_ids
+}
+
+enum PublicUserSortBy {
+  PUBLIC_USER_SORT_BY_UNSPECIFIED = 0;
+  PUBLIC_USER_SORT_BY_CREATED_AT = 1;
+  PUBLIC_USER_SORT_BY_PROFILE_SKILL_MATCH_PERCENT = 2;
+  PUBLIC_USER_SORT_BY_MATCHED_SKILLS_COUNT = 3;
+}
+
+enum SortOrder {
+  SORT_ORDER_UNSPECIFIED = 0;
+  SORT_ORDER_ASC = 1;
+  SORT_ORDER_DESC = 2;
+}
+
+message ListPublicCandidatesRequest {
+  string query = 1;       // поиск по имени/about/skills
+  int32 page_size = 2;    // 10..100
+  string page_token = 3;  // cursor
+
+  repeated string skill_ids = 4;
+  UserSkillMatchMode skill_match_mode = 5;
+
+  // фильтр по дате создания публичного профиля
+  google.protobuf.Timestamp created_from = 6;
+  google.protobuf.Timestamp created_to = 7;
+
+  // только пользователи, открытые к предложениям
+  bool open_suggestions_only = 8;
+
+  // сортировка
+  PublicUserSortBy sort_by = 9;
+  SortOrder sort_order = 10;
+}
+
+message UserSkillMatchSummary {
+  int32 match_percent = 1;             // 0..100
+  int32 matched_skills_count = 2;      // сколько выбранных skill_ids найдено у пользователя
+  int32 total_filter_skills_count = 3; // сколько skill_ids было передано в фильтр
+
+  repeated Skill matched_skills = 4;         // какие из выбранных совпали
+  repeated Skill missing_filter_skills = 5;  // каких из выбранных не хватает
+}
+
+message PublicCandidate {
+  PublicUser user = 1;
+  UserSkillMatchSummary skill_match = 2;
+}
+
+message ListPublicCandidatesResponse {
+  repeated PublicCandidate candidates = 1;
   string next_page_token = 2;
 }
 

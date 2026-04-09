@@ -398,11 +398,12 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	UserProfile_GetMe_FullMethodName            = "/auth.UserProfile/GetMe"
-	UserProfile_UpdateMe_FullMethodName         = "/auth.UserProfile/UpdateMe"
-	UserProfile_GetProfile_FullMethodName       = "/auth.UserProfile/GetProfile"
-	UserProfile_ListUsers_FullMethodName        = "/auth.UserProfile/ListUsers"
-	UserProfile_GetProfilesByIds_FullMethodName = "/auth.UserProfile/GetProfilesByIds"
+	UserProfile_GetMe_FullMethodName                = "/auth.UserProfile/GetMe"
+	UserProfile_UpdateMe_FullMethodName             = "/auth.UserProfile/UpdateMe"
+	UserProfile_GetProfile_FullMethodName           = "/auth.UserProfile/GetProfile"
+	UserProfile_ListUsers_FullMethodName            = "/auth.UserProfile/ListUsers"
+	UserProfile_GetProfilesByIds_FullMethodName     = "/auth.UserProfile/GetProfilesByIds"
+	UserProfile_ListPublicCandidates_FullMethodName = "/auth.UserProfile/ListPublicCandidates"
 )
 
 // UserProfileClient is the client API for UserProfile service.
@@ -419,6 +420,8 @@ type UserProfileClient interface {
 	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
 	// Публичные профили по user_id ,
 	GetProfilesByIds(ctx context.Context, in *GetProfilesByIdsRequest, opts ...grpc.CallOption) (*GetProfilesByIdsResponse, error)
+	// Публичный поиск кандидатов для страницы подбора участников
+	ListPublicCandidates(ctx context.Context, in *ListPublicCandidatesRequest, opts ...grpc.CallOption) (*ListPublicCandidatesResponse, error)
 }
 
 type userProfileClient struct {
@@ -479,6 +482,16 @@ func (c *userProfileClient) GetProfilesByIds(ctx context.Context, in *GetProfile
 	return out, nil
 }
 
+func (c *userProfileClient) ListPublicCandidates(ctx context.Context, in *ListPublicCandidatesRequest, opts ...grpc.CallOption) (*ListPublicCandidatesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPublicCandidatesResponse)
+	err := c.cc.Invoke(ctx, UserProfile_ListPublicCandidates_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserProfileServer is the server API for UserProfile service.
 // All implementations must embed UnimplementedUserProfileServer
 // for forward compatibility.
@@ -493,6 +506,8 @@ type UserProfileServer interface {
 	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
 	// Публичные профили по user_id ,
 	GetProfilesByIds(context.Context, *GetProfilesByIdsRequest) (*GetProfilesByIdsResponse, error)
+	// Публичный поиск кандидатов для страницы подбора участников
+	ListPublicCandidates(context.Context, *ListPublicCandidatesRequest) (*ListPublicCandidatesResponse, error)
 	mustEmbedUnimplementedUserProfileServer()
 }
 
@@ -517,6 +532,9 @@ func (UnimplementedUserProfileServer) ListUsers(context.Context, *ListUsersReque
 }
 func (UnimplementedUserProfileServer) GetProfilesByIds(context.Context, *GetProfilesByIdsRequest) (*GetProfilesByIdsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProfilesByIds not implemented")
+}
+func (UnimplementedUserProfileServer) ListPublicCandidates(context.Context, *ListPublicCandidatesRequest) (*ListPublicCandidatesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPublicCandidates not implemented")
 }
 func (UnimplementedUserProfileServer) mustEmbedUnimplementedUserProfileServer() {}
 func (UnimplementedUserProfileServer) testEmbeddedByValue()                     {}
@@ -629,6 +647,24 @@ func _UserProfile_GetProfilesByIds_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserProfile_ListPublicCandidates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPublicCandidatesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserProfileServer).ListPublicCandidates(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserProfile_ListPublicCandidates_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserProfileServer).ListPublicCandidates(ctx, req.(*ListPublicCandidatesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserProfile_ServiceDesc is the grpc.ServiceDesc for UserProfile service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -655,6 +691,10 @@ var UserProfile_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProfilesByIds",
 			Handler:    _UserProfile_GetProfilesByIds_Handler,
+		},
+		{
+			MethodName: "ListPublicCandidates",
+			Handler:    _UserProfile_ListPublicCandidates_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
