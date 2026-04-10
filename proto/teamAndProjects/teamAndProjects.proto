@@ -13,7 +13,13 @@ message Date {
   int32 day = 3;    // 1..31
 }
 
-
+enum ProjectInvitationStatus {
+  PROJECT_INVITATION_STATUS_UNSPECIFIED = 0;
+  PROJECT_INVITATION_STATUS_PENDING = 1;
+  PROJECT_INVITATION_STATUS_ACCEPTED = 2;
+  PROJECT_INVITATION_STATUS_REJECTED = 3;
+  PROJECT_INVITATION_STATUS_REVOKED = 4; // менеджер проекта отозвал приглашение
+}
 
 enum ProjectStatus {
   PROJECT_STATUS_UNSPECIFIED = 0;
@@ -149,6 +155,22 @@ message ProjectJoinRequest {
   optional string decision_reason = 9;
 }
 
+// Invitation в проект: проект приглашает пользователя вступить в проект
+message ProjectInvitation {
+  string id = 1;                 // UUID
+  string project_id = 2;         // UUID
+  string invited_user_id = 3;    // UUID
+  string invited_by = 4;         // UUID - кто отправил приглашение
+
+  string message = 5;
+  ProjectInvitationStatus status = 6;
+
+  optional string decided_by = 7;         // UUID
+  optional Date decided_at = 8;
+
+  Date created_at = 9;
+  optional string decision_reason = 10;
+}
 
 
 service Teams {
@@ -295,6 +317,38 @@ service Projects {
 
   rpc ListMyProjectJoinRequests(ListMyProjectJoinRequestsRequest)
       returns (ListMyProjectJoinRequestsResponse);
+
+  // для приглашений кандидатов
+  // Менеджер проекта приглашает пользователя в конкретный проект
+  rpc InviteUserToProject(InviteUserToProjectRequest) returns (ProjectInvitation);
+
+  // Менеджеры проекта смотрят приглашения по проекту
+  rpc ListProjectInvitations(ListProjectInvitationsRequest) returns (ListProjectInvitationsResponse);
+
+  rpc ListProjectInvitationDetails(ListProjectInvitationDetailsRequest)
+      returns (ListProjectInvitationDetailsResponse);
+
+  // Менеджер проекта отзывает pending приглашение
+  rpc RevokeProjectInvitation(RevokeProjectInvitationRequest) returns (ProjectInvitation);
+
+  // Кандидат смотрит своё приглашение в конкретный проект
+  rpc GetMyProjectInvitation(GetMyProjectInvitationRequest)
+      returns (GetMyProjectInvitationResponse);
+
+  // Кандидат смотрит все свои приглашения
+  rpc ListMyProjectInvitations(ListMyProjectInvitationsRequest)
+      returns (ListMyProjectInvitationsResponse);
+
+  // Кандидат принимает приглашение:
+  // создаём project_member и помечаем invitation accepted
+  rpc AcceptProjectInvitation(AcceptProjectInvitationRequest) returns (ProjectInvitation);
+
+  // Кандидат отклоняет приглашение
+  rpc RejectProjectInvitation(RejectProjectInvitationRequest) returns (ProjectInvitation);
+
+  // Список проектов, в которые текущий пользователь может приглашать кандидатов
+  rpc ListMyInvitableProjects(ListMyInvitableProjectsRequest)
+      returns (ListMyInvitableProjectsResponse);
 }
 
 message CreateProjectRequest {
@@ -557,5 +611,119 @@ message MyProjectJoinRequestItem {
 
 message ListMyProjectJoinRequestsResponse {
   repeated MyProjectJoinRequestItem items = 1;
+  string next_page_token = 2;
+}
+
+message InviteUserToProjectRequest {
+  string project_id = 1;
+  string user_id = 2;      // кого приглашаем
+  string message = 3;      // optional
+}
+
+message ListProjectInvitationsRequest {
+  string project_id = 1;
+  ProjectInvitationStatus status = 2; // UNSPECIFIED => все
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message ListProjectInvitationsResponse {
+  repeated ProjectInvitation invitations = 1;
+  string next_page_token = 2;
+}
+
+message ListProjectInvitationDetailsRequest {
+  string project_id = 1;
+  ProjectInvitationStatus status = 2; // pending / accepted / rejected / revoked / all
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message ProjectInvitationDetails {
+  string id = 1;
+  string project_id = 2;
+  string invited_user_id = 3;
+  string invited_by = 4;
+
+  string message = 5;
+  ProjectInvitationStatus status = 6;
+
+  optional string decided_by = 7;
+  optional Date decided_at = 8;
+  Date created_at = 9;
+
+  CandidatePublicSummary candidate = 10;
+  SkillMatchSummary skill_match = 11;
+
+  optional string decision_reason = 12;
+}
+
+message ListProjectInvitationDetailsResponse {
+  repeated ProjectInvitationDetails invitations = 1;
+  string next_page_token = 2;
+}
+
+message RevokeProjectInvitationRequest {
+  string invitation_id = 1;
+  string reason = 2; // optional
+}
+
+message GetMyProjectInvitationRequest {
+  string project_id = 1;
+}
+
+message GetMyProjectInvitationResponse {
+  optional ProjectInvitation invitation = 1;
+}
+
+message ListMyProjectInvitationsRequest {
+  ProjectInvitationStatus status = 1; // optional filter
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message MyProjectInvitationItem {
+  string project_id = 1;
+  string project_name = 2;
+  ProjectStatus project_status = 3;
+  bool project_is_open = 4;
+
+  ProjectInvitation invitation = 5;
+}
+
+message ListMyProjectInvitationsResponse {
+  repeated MyProjectInvitationItem items = 1;
+  string next_page_token = 2;
+}
+
+message AcceptProjectInvitationRequest {
+  string invitation_id = 1;
+
+  // Если позже захочешь, сюда можно добавить optional payload
+  // например подтверждение роли или дополнительные настройки.
+}
+
+message RejectProjectInvitationRequest {
+  string invitation_id = 1;
+  string reason = 2; // optional
+}
+
+message ListMyInvitableProjectsRequest {
+  string query = 1;      // поиск по названию проекта
+  bool only_open = 2;    // обычно true для сценария приглашения
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message InvitableProjectItem {
+  string project_id = 1;
+  string project_name = 2;
+  ProjectStatus project_status = 3;
+  bool is_open = 4;
+  ProjectRights my_rights = 5;
+}
+
+message ListMyInvitableProjectsResponse {
+  repeated InvitableProjectItem items = 1;
   string next_page_token = 2;
 }

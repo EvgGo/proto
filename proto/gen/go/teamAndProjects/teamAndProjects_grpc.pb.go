@@ -418,6 +418,15 @@ const (
 	Projects_SetProjectOpen_FullMethodName                          = "/workspace.v1.Projects/SetProjectOpen"
 	Projects_GetMyProjectJoinRequest_FullMethodName                 = "/workspace.v1.Projects/GetMyProjectJoinRequest"
 	Projects_ListMyProjectJoinRequests_FullMethodName               = "/workspace.v1.Projects/ListMyProjectJoinRequests"
+	Projects_InviteUserToProject_FullMethodName                     = "/workspace.v1.Projects/InviteUserToProject"
+	Projects_ListProjectInvitations_FullMethodName                  = "/workspace.v1.Projects/ListProjectInvitations"
+	Projects_ListProjectInvitationDetails_FullMethodName            = "/workspace.v1.Projects/ListProjectInvitationDetails"
+	Projects_RevokeProjectInvitation_FullMethodName                 = "/workspace.v1.Projects/RevokeProjectInvitation"
+	Projects_GetMyProjectInvitation_FullMethodName                  = "/workspace.v1.Projects/GetMyProjectInvitation"
+	Projects_ListMyProjectInvitations_FullMethodName                = "/workspace.v1.Projects/ListMyProjectInvitations"
+	Projects_AcceptProjectInvitation_FullMethodName                 = "/workspace.v1.Projects/AcceptProjectInvitation"
+	Projects_RejectProjectInvitation_FullMethodName                 = "/workspace.v1.Projects/RejectProjectInvitation"
+	Projects_ListMyInvitableProjects_FullMethodName                 = "/workspace.v1.Projects/ListMyInvitableProjects"
 )
 
 // ProjectsClient is the client API for Projects service.
@@ -461,6 +470,25 @@ type ProjectsClient interface {
 	SetProjectOpen(ctx context.Context, in *SetProjectOpenRequest, opts ...grpc.CallOption) (*Project, error)
 	GetMyProjectJoinRequest(ctx context.Context, in *GetMyProjectJoinRequestRequest, opts ...grpc.CallOption) (*GetMyProjectJoinRequestResponse, error)
 	ListMyProjectJoinRequests(ctx context.Context, in *ListMyProjectJoinRequestsRequest, opts ...grpc.CallOption) (*ListMyProjectJoinRequestsResponse, error)
+	// для приглашений кандидатов
+	// Менеджер проекта приглашает пользователя в конкретный проект
+	InviteUserToProject(ctx context.Context, in *InviteUserToProjectRequest, opts ...grpc.CallOption) (*ProjectInvitation, error)
+	// Менеджеры проекта смотрят приглашения по проекту
+	ListProjectInvitations(ctx context.Context, in *ListProjectInvitationsRequest, opts ...grpc.CallOption) (*ListProjectInvitationsResponse, error)
+	ListProjectInvitationDetails(ctx context.Context, in *ListProjectInvitationDetailsRequest, opts ...grpc.CallOption) (*ListProjectInvitationDetailsResponse, error)
+	// Менеджер проекта отзывает pending приглашение
+	RevokeProjectInvitation(ctx context.Context, in *RevokeProjectInvitationRequest, opts ...grpc.CallOption) (*ProjectInvitation, error)
+	// Кандидат смотрит своё приглашение в конкретный проект
+	GetMyProjectInvitation(ctx context.Context, in *GetMyProjectInvitationRequest, opts ...grpc.CallOption) (*GetMyProjectInvitationResponse, error)
+	// Кандидат смотрит все свои приглашения
+	ListMyProjectInvitations(ctx context.Context, in *ListMyProjectInvitationsRequest, opts ...grpc.CallOption) (*ListMyProjectInvitationsResponse, error)
+	// Кандидат принимает приглашение:
+	// создаём project_member и помечаем invitation accepted
+	AcceptProjectInvitation(ctx context.Context, in *AcceptProjectInvitationRequest, opts ...grpc.CallOption) (*ProjectInvitation, error)
+	// Кандидат отклоняет приглашение
+	RejectProjectInvitation(ctx context.Context, in *RejectProjectInvitationRequest, opts ...grpc.CallOption) (*ProjectInvitation, error)
+	// Список проектов, в которые текущий пользователь может приглашать кандидатов
+	ListMyInvitableProjects(ctx context.Context, in *ListMyInvitableProjectsRequest, opts ...grpc.CallOption) (*ListMyInvitableProjectsResponse, error)
 }
 
 type projectsClient struct {
@@ -671,6 +699,96 @@ func (c *projectsClient) ListMyProjectJoinRequests(ctx context.Context, in *List
 	return out, nil
 }
 
+func (c *projectsClient) InviteUserToProject(ctx context.Context, in *InviteUserToProjectRequest, opts ...grpc.CallOption) (*ProjectInvitation, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectInvitation)
+	err := c.cc.Invoke(ctx, Projects_InviteUserToProject_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) ListProjectInvitations(ctx context.Context, in *ListProjectInvitationsRequest, opts ...grpc.CallOption) (*ListProjectInvitationsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListProjectInvitationsResponse)
+	err := c.cc.Invoke(ctx, Projects_ListProjectInvitations_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) ListProjectInvitationDetails(ctx context.Context, in *ListProjectInvitationDetailsRequest, opts ...grpc.CallOption) (*ListProjectInvitationDetailsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListProjectInvitationDetailsResponse)
+	err := c.cc.Invoke(ctx, Projects_ListProjectInvitationDetails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) RevokeProjectInvitation(ctx context.Context, in *RevokeProjectInvitationRequest, opts ...grpc.CallOption) (*ProjectInvitation, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectInvitation)
+	err := c.cc.Invoke(ctx, Projects_RevokeProjectInvitation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) GetMyProjectInvitation(ctx context.Context, in *GetMyProjectInvitationRequest, opts ...grpc.CallOption) (*GetMyProjectInvitationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMyProjectInvitationResponse)
+	err := c.cc.Invoke(ctx, Projects_GetMyProjectInvitation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) ListMyProjectInvitations(ctx context.Context, in *ListMyProjectInvitationsRequest, opts ...grpc.CallOption) (*ListMyProjectInvitationsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyProjectInvitationsResponse)
+	err := c.cc.Invoke(ctx, Projects_ListMyProjectInvitations_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) AcceptProjectInvitation(ctx context.Context, in *AcceptProjectInvitationRequest, opts ...grpc.CallOption) (*ProjectInvitation, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectInvitation)
+	err := c.cc.Invoke(ctx, Projects_AcceptProjectInvitation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) RejectProjectInvitation(ctx context.Context, in *RejectProjectInvitationRequest, opts ...grpc.CallOption) (*ProjectInvitation, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectInvitation)
+	err := c.cc.Invoke(ctx, Projects_RejectProjectInvitation_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) ListMyInvitableProjects(ctx context.Context, in *ListMyInvitableProjectsRequest, opts ...grpc.CallOption) (*ListMyInvitableProjectsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyInvitableProjectsResponse)
+	err := c.cc.Invoke(ctx, Projects_ListMyInvitableProjects_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectsServer is the server API for Projects service.
 // All implementations must embed UnimplementedProjectsServer
 // for forward compatibility.
@@ -712,6 +830,25 @@ type ProjectsServer interface {
 	SetProjectOpen(context.Context, *SetProjectOpenRequest) (*Project, error)
 	GetMyProjectJoinRequest(context.Context, *GetMyProjectJoinRequestRequest) (*GetMyProjectJoinRequestResponse, error)
 	ListMyProjectJoinRequests(context.Context, *ListMyProjectJoinRequestsRequest) (*ListMyProjectJoinRequestsResponse, error)
+	// для приглашений кандидатов
+	// Менеджер проекта приглашает пользователя в конкретный проект
+	InviteUserToProject(context.Context, *InviteUserToProjectRequest) (*ProjectInvitation, error)
+	// Менеджеры проекта смотрят приглашения по проекту
+	ListProjectInvitations(context.Context, *ListProjectInvitationsRequest) (*ListProjectInvitationsResponse, error)
+	ListProjectInvitationDetails(context.Context, *ListProjectInvitationDetailsRequest) (*ListProjectInvitationDetailsResponse, error)
+	// Менеджер проекта отзывает pending приглашение
+	RevokeProjectInvitation(context.Context, *RevokeProjectInvitationRequest) (*ProjectInvitation, error)
+	// Кандидат смотрит своё приглашение в конкретный проект
+	GetMyProjectInvitation(context.Context, *GetMyProjectInvitationRequest) (*GetMyProjectInvitationResponse, error)
+	// Кандидат смотрит все свои приглашения
+	ListMyProjectInvitations(context.Context, *ListMyProjectInvitationsRequest) (*ListMyProjectInvitationsResponse, error)
+	// Кандидат принимает приглашение:
+	// создаём project_member и помечаем invitation accepted
+	AcceptProjectInvitation(context.Context, *AcceptProjectInvitationRequest) (*ProjectInvitation, error)
+	// Кандидат отклоняет приглашение
+	RejectProjectInvitation(context.Context, *RejectProjectInvitationRequest) (*ProjectInvitation, error)
+	// Список проектов, в которые текущий пользователь может приглашать кандидатов
+	ListMyInvitableProjects(context.Context, *ListMyInvitableProjectsRequest) (*ListMyInvitableProjectsResponse, error)
 	mustEmbedUnimplementedProjectsServer()
 }
 
@@ -781,6 +918,33 @@ func (UnimplementedProjectsServer) GetMyProjectJoinRequest(context.Context, *Get
 }
 func (UnimplementedProjectsServer) ListMyProjectJoinRequests(context.Context, *ListMyProjectJoinRequestsRequest) (*ListMyProjectJoinRequestsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMyProjectJoinRequests not implemented")
+}
+func (UnimplementedProjectsServer) InviteUserToProject(context.Context, *InviteUserToProjectRequest) (*ProjectInvitation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InviteUserToProject not implemented")
+}
+func (UnimplementedProjectsServer) ListProjectInvitations(context.Context, *ListProjectInvitationsRequest) (*ListProjectInvitationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectInvitations not implemented")
+}
+func (UnimplementedProjectsServer) ListProjectInvitationDetails(context.Context, *ListProjectInvitationDetailsRequest) (*ListProjectInvitationDetailsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectInvitationDetails not implemented")
+}
+func (UnimplementedProjectsServer) RevokeProjectInvitation(context.Context, *RevokeProjectInvitationRequest) (*ProjectInvitation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeProjectInvitation not implemented")
+}
+func (UnimplementedProjectsServer) GetMyProjectInvitation(context.Context, *GetMyProjectInvitationRequest) (*GetMyProjectInvitationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMyProjectInvitation not implemented")
+}
+func (UnimplementedProjectsServer) ListMyProjectInvitations(context.Context, *ListMyProjectInvitationsRequest) (*ListMyProjectInvitationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMyProjectInvitations not implemented")
+}
+func (UnimplementedProjectsServer) AcceptProjectInvitation(context.Context, *AcceptProjectInvitationRequest) (*ProjectInvitation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AcceptProjectInvitation not implemented")
+}
+func (UnimplementedProjectsServer) RejectProjectInvitation(context.Context, *RejectProjectInvitationRequest) (*ProjectInvitation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RejectProjectInvitation not implemented")
+}
+func (UnimplementedProjectsServer) ListMyInvitableProjects(context.Context, *ListMyInvitableProjectsRequest) (*ListMyInvitableProjectsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMyInvitableProjects not implemented")
 }
 func (UnimplementedProjectsServer) mustEmbedUnimplementedProjectsServer() {}
 func (UnimplementedProjectsServer) testEmbeddedByValue()                  {}
@@ -1163,6 +1327,168 @@ func _Projects_ListMyProjectJoinRequests_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_InviteUserToProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InviteUserToProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).InviteUserToProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_InviteUserToProject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).InviteUserToProject(ctx, req.(*InviteUserToProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_ListProjectInvitations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectInvitationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).ListProjectInvitations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_ListProjectInvitations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).ListProjectInvitations(ctx, req.(*ListProjectInvitationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_ListProjectInvitationDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectInvitationDetailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).ListProjectInvitationDetails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_ListProjectInvitationDetails_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).ListProjectInvitationDetails(ctx, req.(*ListProjectInvitationDetailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_RevokeProjectInvitation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeProjectInvitationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).RevokeProjectInvitation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_RevokeProjectInvitation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).RevokeProjectInvitation(ctx, req.(*RevokeProjectInvitationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_GetMyProjectInvitation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMyProjectInvitationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).GetMyProjectInvitation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_GetMyProjectInvitation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).GetMyProjectInvitation(ctx, req.(*GetMyProjectInvitationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_ListMyProjectInvitations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyProjectInvitationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).ListMyProjectInvitations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_ListMyProjectInvitations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).ListMyProjectInvitations(ctx, req.(*ListMyProjectInvitationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_AcceptProjectInvitation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AcceptProjectInvitationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).AcceptProjectInvitation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_AcceptProjectInvitation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).AcceptProjectInvitation(ctx, req.(*AcceptProjectInvitationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_RejectProjectInvitation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RejectProjectInvitationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).RejectProjectInvitation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_RejectProjectInvitation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).RejectProjectInvitation(ctx, req.(*RejectProjectInvitationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_ListMyInvitableProjects_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyInvitableProjectsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).ListMyInvitableProjects(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_ListMyInvitableProjects_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).ListMyInvitableProjects(ctx, req.(*ListMyInvitableProjectsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Projects_ServiceDesc is the grpc.ServiceDesc for Projects service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1249,6 +1575,42 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListMyProjectJoinRequests",
 			Handler:    _Projects_ListMyProjectJoinRequests_Handler,
+		},
+		{
+			MethodName: "InviteUserToProject",
+			Handler:    _Projects_InviteUserToProject_Handler,
+		},
+		{
+			MethodName: "ListProjectInvitations",
+			Handler:    _Projects_ListProjectInvitations_Handler,
+		},
+		{
+			MethodName: "ListProjectInvitationDetails",
+			Handler:    _Projects_ListProjectInvitationDetails_Handler,
+		},
+		{
+			MethodName: "RevokeProjectInvitation",
+			Handler:    _Projects_RevokeProjectInvitation_Handler,
+		},
+		{
+			MethodName: "GetMyProjectInvitation",
+			Handler:    _Projects_GetMyProjectInvitation_Handler,
+		},
+		{
+			MethodName: "ListMyProjectInvitations",
+			Handler:    _Projects_ListMyProjectInvitations_Handler,
+		},
+		{
+			MethodName: "AcceptProjectInvitation",
+			Handler:    _Projects_AcceptProjectInvitation_Handler,
+		},
+		{
+			MethodName: "RejectProjectInvitation",
+			Handler:    _Projects_RejectProjectInvitation_Handler,
+		},
+		{
+			MethodName: "ListMyInvitableProjects",
+			Handler:    _Projects_ListMyInvitableProjects_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
