@@ -423,6 +423,7 @@ const (
 	Projects_ListProjectInvitationDetails_FullMethodName            = "/workspace.v1.Projects/ListProjectInvitationDetails"
 	Projects_RevokeProjectInvitation_FullMethodName                 = "/workspace.v1.Projects/RevokeProjectInvitation"
 	Projects_GetMyProjectInvitation_FullMethodName                  = "/workspace.v1.Projects/GetMyProjectInvitation"
+	Projects_GetMyProjectInvitationDetails_FullMethodName           = "/workspace.v1.Projects/GetMyProjectInvitationDetails"
 	Projects_ListMyProjectInvitations_FullMethodName                = "/workspace.v1.Projects/ListMyProjectInvitations"
 	Projects_AcceptProjectInvitation_FullMethodName                 = "/workspace.v1.Projects/AcceptProjectInvitation"
 	Projects_RejectProjectInvitation_FullMethodName                 = "/workspace.v1.Projects/RejectProjectInvitation"
@@ -480,6 +481,8 @@ type ProjectsClient interface {
 	RevokeProjectInvitation(ctx context.Context, in *RevokeProjectInvitationRequest, opts ...grpc.CallOption) (*ProjectInvitation, error)
 	// Кандидат смотрит своё приглашение в конкретный проект
 	GetMyProjectInvitation(ctx context.Context, in *GetMyProjectInvitationRequest, opts ...grpc.CallOption) (*GetMyProjectInvitationResponse, error)
+	// Кандидат смотрит детали приглашения в проект
+	GetMyProjectInvitationDetails(ctx context.Context, in *GetMyProjectInvitationDetailsRequest, opts ...grpc.CallOption) (*GetMyProjectInvitationDetailsResponse, error)
 	// Кандидат смотрит все свои приглашения
 	ListMyProjectInvitations(ctx context.Context, in *ListMyProjectInvitationsRequest, opts ...grpc.CallOption) (*ListMyProjectInvitationsResponse, error)
 	// Кандидат принимает приглашение:
@@ -749,6 +752,16 @@ func (c *projectsClient) GetMyProjectInvitation(ctx context.Context, in *GetMyPr
 	return out, nil
 }
 
+func (c *projectsClient) GetMyProjectInvitationDetails(ctx context.Context, in *GetMyProjectInvitationDetailsRequest, opts ...grpc.CallOption) (*GetMyProjectInvitationDetailsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMyProjectInvitationDetailsResponse)
+	err := c.cc.Invoke(ctx, Projects_GetMyProjectInvitationDetails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *projectsClient) ListMyProjectInvitations(ctx context.Context, in *ListMyProjectInvitationsRequest, opts ...grpc.CallOption) (*ListMyProjectInvitationsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListMyProjectInvitationsResponse)
@@ -840,6 +853,8 @@ type ProjectsServer interface {
 	RevokeProjectInvitation(context.Context, *RevokeProjectInvitationRequest) (*ProjectInvitation, error)
 	// Кандидат смотрит своё приглашение в конкретный проект
 	GetMyProjectInvitation(context.Context, *GetMyProjectInvitationRequest) (*GetMyProjectInvitationResponse, error)
+	// Кандидат смотрит детали приглашения в проект
+	GetMyProjectInvitationDetails(context.Context, *GetMyProjectInvitationDetailsRequest) (*GetMyProjectInvitationDetailsResponse, error)
 	// Кандидат смотрит все свои приглашения
 	ListMyProjectInvitations(context.Context, *ListMyProjectInvitationsRequest) (*ListMyProjectInvitationsResponse, error)
 	// Кандидат принимает приглашение:
@@ -933,6 +948,9 @@ func (UnimplementedProjectsServer) RevokeProjectInvitation(context.Context, *Rev
 }
 func (UnimplementedProjectsServer) GetMyProjectInvitation(context.Context, *GetMyProjectInvitationRequest) (*GetMyProjectInvitationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMyProjectInvitation not implemented")
+}
+func (UnimplementedProjectsServer) GetMyProjectInvitationDetails(context.Context, *GetMyProjectInvitationDetailsRequest) (*GetMyProjectInvitationDetailsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMyProjectInvitationDetails not implemented")
 }
 func (UnimplementedProjectsServer) ListMyProjectInvitations(context.Context, *ListMyProjectInvitationsRequest) (*ListMyProjectInvitationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMyProjectInvitations not implemented")
@@ -1417,6 +1435,24 @@ func _Projects_GetMyProjectInvitation_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_GetMyProjectInvitationDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMyProjectInvitationDetailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).GetMyProjectInvitationDetails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_GetMyProjectInvitationDetails_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).GetMyProjectInvitationDetails(ctx, req.(*GetMyProjectInvitationDetailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Projects_ListMyProjectInvitations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListMyProjectInvitationsRequest)
 	if err := dec(in); err != nil {
@@ -1595,6 +1631,10 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMyProjectInvitation",
 			Handler:    _Projects_GetMyProjectInvitation_Handler,
+		},
+		{
+			MethodName: "GetMyProjectInvitationDetails",
+			Handler:    _Projects_GetMyProjectInvitationDetails_Handler,
 		},
 		{
 			MethodName: "ListMyProjectInvitations",

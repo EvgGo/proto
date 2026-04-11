@@ -335,6 +335,10 @@ service Projects {
   rpc GetMyProjectInvitation(GetMyProjectInvitationRequest)
       returns (GetMyProjectInvitationResponse);
 
+  // Кандидат смотрит детали приглашения в проект
+  rpc GetMyProjectInvitationDetails(GetMyProjectInvitationDetailsRequest)
+      returns (GetMyProjectInvitationDetailsResponse);
+
   // Кандидат смотрит все свои приглашения
   rpc ListMyProjectInvitations(ListMyProjectInvitationsRequest)
       returns (ListMyProjectInvitationsResponse);
@@ -689,6 +693,8 @@ message MyProjectInvitationItem {
   bool project_is_open = 4;
 
   ProjectInvitation invitation = 5;
+  UserPublicSummary invited_by_user = 6;
+  SkillMatchSummary skill_match = 7;
 }
 
 message ListMyProjectInvitationsResponse {
@@ -726,4 +732,42 @@ message InvitableProjectItem {
 message ListMyInvitableProjectsResponse {
   repeated InvitableProjectItem items = 1;
   string next_page_token = 2;
+}
+
+message UserPublicSummary {
+  string user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+}
+
+message ProjectInvitationProjectSummary {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+
+  ProjectStatus status = 4;
+  bool is_open = 5;
+
+  Date started_at = 6;
+  optional Date finished_at = 7;
+
+  Date created_at = 8;
+  Date updated_at = 9;
+
+  repeated ProjectSkill skills = 10;
+}
+
+message GetMyProjectInvitationDetailsRequest {
+  string invitation_id = 1;
+}
+
+message MyProjectInvitationDetails {
+  ProjectInvitation invitation = 1;
+  ProjectInvitationProjectSummary project = 2;
+  UserPublicSummary invited_by_user = 3;
+  SkillMatchSummary skill_match = 4;
+}
+
+message GetMyProjectInvitationDetailsResponse {
+  optional MyProjectInvitationDetails item = 1;
 }
