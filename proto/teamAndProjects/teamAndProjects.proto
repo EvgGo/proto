@@ -279,13 +279,25 @@ service Projects {
   // Участники проекта
   rpc ListProjectMembers(ListProjectMembersRequest) returns (ListProjectMembersResponse);
 
+  // Детальный список участников проекта для страницы управления участниками
+  rpc ListProjectMemberDetails(ListProjectMemberDetailsRequest) returns (ListProjectMemberDetailsResponse);
+
   rpc ListManageableProjectJoinRequestBuckets(ListManageableProjectJoinRequestBucketsRequest)
       returns (ListManageableProjectJoinRequestBucketsResponse);
   // Прямое добавление участника в проект (для менеджеров проекта)
   rpc AddProjectMember(AddProjectMemberRequest) returns (ProjectMember);
 
-  // Удаление участника из проекта (для менеджеров проекта)
-  // БД-триггер может удалить team_member, если у пользователя не осталось проектов этой команды
+  // Удаление участника из проекта
+  //
+  // Если remove_from_team=false:
+  // - удаляем только участника из текущего проекта
+  //
+  // Если remove_from_team=true:
+  // - удаляем пользователя из команды проекта
+  // - удаляем пользователя из всех проектов этой команды
+  //
+  // Это team-level операция и должна быть доступна только тому,
+  // кто имеет право управлять участниками команды
   rpc RemoveProjectMember(RemoveProjectMemberRequest) returns (google.protobuf.Empty);
 
   // Выдача/обновление прав участника проекта (только manager_rights)
@@ -486,6 +498,13 @@ message AddProjectMemberRequest {
 message RemoveProjectMemberRequest {
   string project_id = 1;
   string user_id = 2;
+
+  // Если true:
+  // - удалить пользователя из команды проекта
+  // - удалить пользователя из всех проектов этой команды
+  // Если false:
+  // - удалить только из текущего проекта
+  bool remove_from_team = 3;
 }
 
 message UpdateProjectMemberRightsRequest {
@@ -770,4 +789,54 @@ message MyProjectInvitationDetails {
 
 message GetMyProjectInvitationDetailsResponse {
   optional MyProjectInvitationDetails item = 1;
+}
+
+message ProjectMemberUserSummary {
+  string user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string about = 4;
+
+  repeated ProjectSkill skills = 5;
+}
+
+message ProjectMemberCapabilities {
+  bool can_edit_rights = 1;
+  bool can_remove_from_project = 2;
+  bool can_remove_from_team = 3;
+}
+
+message ProjectMemberDetails {
+  string project_id = 1;
+  string user_id = 2;
+
+  ProjectRights rights = 3;
+  ProjectMemberUserSummary user = 4;
+
+  bool is_team_member = 5;
+  optional string team_duties = 6;
+
+  bool is_project_creator = 7;
+  bool is_team_founder = 8;
+  bool is_team_lead = 9;
+  bool is_me = 10;
+
+  ProjectMemberCapabilities capabilities = 11;
+}
+
+message ListProjectMemberDetailsRequest {
+  string project_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListProjectMemberDetailsResponse {
+  repeated ProjectMemberDetails members = 1;
+  string next_page_token = 2;
+
+  // права текущего пользователя в этом проекте
+  ProjectRights my_rights = 3;
+
+  // может ли текущий пользователь удалять участников из команды
+  bool can_manage_team_members = 4;
 }
