@@ -111,6 +111,8 @@ message Project {
 
   repeated string skill_ids = 12; // требуемые проекту skills, max 60
   repeated ProjectSkill skills = 13;
+
+  ProjectRights my_rights = 14;
 }
 
 
