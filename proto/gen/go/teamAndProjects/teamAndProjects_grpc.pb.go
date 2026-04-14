@@ -20,14 +20,19 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Teams_CreateTeam_FullMethodName       = "/workspace.v1.Teams/CreateTeam"
-	Teams_GetTeam_FullMethodName          = "/workspace.v1.Teams/GetTeam"
-	Teams_UpdateTeam_FullMethodName       = "/workspace.v1.Teams/UpdateTeam"
-	Teams_DeleteTeam_FullMethodName       = "/workspace.v1.Teams/DeleteTeam"
-	Teams_ListTeams_FullMethodName        = "/workspace.v1.Teams/ListTeams"
-	Teams_ListTeamMembers_FullMethodName  = "/workspace.v1.Teams/ListTeamMembers"
-	Teams_UpdateTeamMember_FullMethodName = "/workspace.v1.Teams/UpdateTeamMember"
-	Teams_RemoveTeamMember_FullMethodName = "/workspace.v1.Teams/RemoveTeamMember"
+	Teams_CreateTeam_FullMethodName                    = "/workspace.v1.Teams/CreateTeam"
+	Teams_GetTeam_FullMethodName                       = "/workspace.v1.Teams/GetTeam"
+	Teams_UpdateTeam_FullMethodName                    = "/workspace.v1.Teams/UpdateTeam"
+	Teams_DeleteTeam_FullMethodName                    = "/workspace.v1.Teams/DeleteTeam"
+	Teams_ListTeams_FullMethodName                     = "/workspace.v1.Teams/ListTeams"
+	Teams_ListTeamMembers_FullMethodName               = "/workspace.v1.Teams/ListTeamMembers"
+	Teams_UpdateTeamMember_FullMethodName              = "/workspace.v1.Teams/UpdateTeamMember"
+	Teams_RemoveTeamMember_FullMethodName              = "/workspace.v1.Teams/RemoveTeamMember"
+	Teams_ListTeamMemberDetails_FullMethodName         = "/workspace.v1.Teams/ListTeamMemberDetails"
+	Teams_UpdateTeamMemberDuties_FullMethodName        = "/workspace.v1.Teams/UpdateTeamMemberDuties"
+	Teams_UpdateTeamMemberRights_FullMethodName        = "/workspace.v1.Teams/UpdateTeamMemberRights"
+	Teams_AssignTeamMemberToProject_FullMethodName     = "/workspace.v1.Teams/AssignTeamMemberToProject"
+	Teams_ListTeamProjectsForAssignment_FullMethodName = "/workspace.v1.Teams/ListTeamProjectsForAssignment"
 )
 
 // TeamsClient is the client API for Teams service.
@@ -47,6 +52,11 @@ type TeamsClient interface {
 	// Обновление duties участника команды (частично)
 	UpdateTeamMember(ctx context.Context, in *UpdateTeamMemberRequest, opts ...grpc.CallOption) (*TeamMember, error)
 	RemoveTeamMember(ctx context.Context, in *RemoveTeamMemberRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListTeamMemberDetails(ctx context.Context, in *ListTeamMemberDetailsRequest, opts ...grpc.CallOption) (*ListTeamMemberDetailsResponse, error)
+	UpdateTeamMemberDuties(ctx context.Context, in *UpdateTeamMemberDutiesRequest, opts ...grpc.CallOption) (*TeamMember, error)
+	UpdateTeamMemberRights(ctx context.Context, in *UpdateTeamMemberRightsRequest, opts ...grpc.CallOption) (*TeamMember, error)
+	AssignTeamMemberToProject(ctx context.Context, in *AssignTeamMemberToProjectRequest, opts ...grpc.CallOption) (*ProjectMember, error)
+	ListTeamProjectsForAssignment(ctx context.Context, in *ListTeamProjectsForAssignmentRequest, opts ...grpc.CallOption) (*ListTeamProjectsForAssignmentResponse, error)
 }
 
 type teamsClient struct {
@@ -137,6 +147,56 @@ func (c *teamsClient) RemoveTeamMember(ctx context.Context, in *RemoveTeamMember
 	return out, nil
 }
 
+func (c *teamsClient) ListTeamMemberDetails(ctx context.Context, in *ListTeamMemberDetailsRequest, opts ...grpc.CallOption) (*ListTeamMemberDetailsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListTeamMemberDetailsResponse)
+	err := c.cc.Invoke(ctx, Teams_ListTeamMemberDetails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *teamsClient) UpdateTeamMemberDuties(ctx context.Context, in *UpdateTeamMemberDutiesRequest, opts ...grpc.CallOption) (*TeamMember, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TeamMember)
+	err := c.cc.Invoke(ctx, Teams_UpdateTeamMemberDuties_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *teamsClient) UpdateTeamMemberRights(ctx context.Context, in *UpdateTeamMemberRightsRequest, opts ...grpc.CallOption) (*TeamMember, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TeamMember)
+	err := c.cc.Invoke(ctx, Teams_UpdateTeamMemberRights_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *teamsClient) AssignTeamMemberToProject(ctx context.Context, in *AssignTeamMemberToProjectRequest, opts ...grpc.CallOption) (*ProjectMember, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectMember)
+	err := c.cc.Invoke(ctx, Teams_AssignTeamMemberToProject_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *teamsClient) ListTeamProjectsForAssignment(ctx context.Context, in *ListTeamProjectsForAssignmentRequest, opts ...grpc.CallOption) (*ListTeamProjectsForAssignmentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListTeamProjectsForAssignmentResponse)
+	err := c.cc.Invoke(ctx, Teams_ListTeamProjectsForAssignment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TeamsServer is the server API for Teams service.
 // All implementations must embed UnimplementedTeamsServer
 // for forward compatibility.
@@ -154,6 +214,11 @@ type TeamsServer interface {
 	// Обновление duties участника команды (частично)
 	UpdateTeamMember(context.Context, *UpdateTeamMemberRequest) (*TeamMember, error)
 	RemoveTeamMember(context.Context, *RemoveTeamMemberRequest) (*emptypb.Empty, error)
+	ListTeamMemberDetails(context.Context, *ListTeamMemberDetailsRequest) (*ListTeamMemberDetailsResponse, error)
+	UpdateTeamMemberDuties(context.Context, *UpdateTeamMemberDutiesRequest) (*TeamMember, error)
+	UpdateTeamMemberRights(context.Context, *UpdateTeamMemberRightsRequest) (*TeamMember, error)
+	AssignTeamMemberToProject(context.Context, *AssignTeamMemberToProjectRequest) (*ProjectMember, error)
+	ListTeamProjectsForAssignment(context.Context, *ListTeamProjectsForAssignmentRequest) (*ListTeamProjectsForAssignmentResponse, error)
 	mustEmbedUnimplementedTeamsServer()
 }
 
@@ -187,6 +252,21 @@ func (UnimplementedTeamsServer) UpdateTeamMember(context.Context, *UpdateTeamMem
 }
 func (UnimplementedTeamsServer) RemoveTeamMember(context.Context, *RemoveTeamMemberRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveTeamMember not implemented")
+}
+func (UnimplementedTeamsServer) ListTeamMemberDetails(context.Context, *ListTeamMemberDetailsRequest) (*ListTeamMemberDetailsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListTeamMemberDetails not implemented")
+}
+func (UnimplementedTeamsServer) UpdateTeamMemberDuties(context.Context, *UpdateTeamMemberDutiesRequest) (*TeamMember, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTeamMemberDuties not implemented")
+}
+func (UnimplementedTeamsServer) UpdateTeamMemberRights(context.Context, *UpdateTeamMemberRightsRequest) (*TeamMember, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTeamMemberRights not implemented")
+}
+func (UnimplementedTeamsServer) AssignTeamMemberToProject(context.Context, *AssignTeamMemberToProjectRequest) (*ProjectMember, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AssignTeamMemberToProject not implemented")
+}
+func (UnimplementedTeamsServer) ListTeamProjectsForAssignment(context.Context, *ListTeamProjectsForAssignmentRequest) (*ListTeamProjectsForAssignmentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListTeamProjectsForAssignment not implemented")
 }
 func (UnimplementedTeamsServer) mustEmbedUnimplementedTeamsServer() {}
 func (UnimplementedTeamsServer) testEmbeddedByValue()               {}
@@ -353,6 +433,96 @@ func _Teams_RemoveTeamMember_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Teams_ListTeamMemberDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTeamMemberDetailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TeamsServer).ListTeamMemberDetails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Teams_ListTeamMemberDetails_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TeamsServer).ListTeamMemberDetails(ctx, req.(*ListTeamMemberDetailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Teams_UpdateTeamMemberDuties_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateTeamMemberDutiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TeamsServer).UpdateTeamMemberDuties(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Teams_UpdateTeamMemberDuties_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TeamsServer).UpdateTeamMemberDuties(ctx, req.(*UpdateTeamMemberDutiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Teams_UpdateTeamMemberRights_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateTeamMemberRightsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TeamsServer).UpdateTeamMemberRights(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Teams_UpdateTeamMemberRights_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TeamsServer).UpdateTeamMemberRights(ctx, req.(*UpdateTeamMemberRightsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Teams_AssignTeamMemberToProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignTeamMemberToProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TeamsServer).AssignTeamMemberToProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Teams_AssignTeamMemberToProject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TeamsServer).AssignTeamMemberToProject(ctx, req.(*AssignTeamMemberToProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Teams_ListTeamProjectsForAssignment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTeamProjectsForAssignmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TeamsServer).ListTeamProjectsForAssignment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Teams_ListTeamProjectsForAssignment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TeamsServer).ListTeamProjectsForAssignment(ctx, req.(*ListTeamProjectsForAssignmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Teams_ServiceDesc is the grpc.ServiceDesc for Teams service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -391,6 +561,26 @@ var Teams_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveTeamMember",
 			Handler:    _Teams_RemoveTeamMember_Handler,
+		},
+		{
+			MethodName: "ListTeamMemberDetails",
+			Handler:    _Teams_ListTeamMemberDetails_Handler,
+		},
+		{
+			MethodName: "UpdateTeamMemberDuties",
+			Handler:    _Teams_UpdateTeamMemberDuties_Handler,
+		},
+		{
+			MethodName: "UpdateTeamMemberRights",
+			Handler:    _Teams_UpdateTeamMemberRights_Handler,
+		},
+		{
+			MethodName: "AssignTeamMemberToProject",
+			Handler:    _Teams_AssignTeamMemberToProject_Handler,
+		},
+		{
+			MethodName: "ListTeamProjectsForAssignment",
+			Handler:    _Teams_ListTeamProjectsForAssignment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

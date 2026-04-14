@@ -82,6 +82,9 @@ message Team {
 
   Date created_at = 8;
   Date updated_at = 9;
+
+  TeamRights my_rights = 10;
+  TeamCapabilities capabilities = 11;
 }
 
 message TeamMember {
@@ -90,6 +93,7 @@ message TeamMember {
   string duties = 3;
 
   Date joined_at = 4;
+  TeamRights rights = 5;
 }
 
 message Project {
@@ -196,6 +200,19 @@ service Teams {
   rpc UpdateTeamMember(UpdateTeamMemberRequest) returns (TeamMember);
 
   rpc RemoveTeamMember(RemoveTeamMemberRequest) returns (google.protobuf.Empty);
+
+  rpc ListTeamMemberDetails(ListTeamMemberDetailsRequest)
+      returns (ListTeamMemberDetailsResponse);
+
+  rpc UpdateTeamMemberDuties(UpdateTeamMemberDutiesRequest) returns (TeamMember);
+
+  rpc UpdateTeamMemberRights(UpdateTeamMemberRightsRequest) returns (TeamMember);
+
+  rpc AssignTeamMemberToProject(AssignTeamMemberToProjectRequest)
+      returns (ProjectMember);
+
+  rpc ListTeamProjectsForAssignment(ListTeamProjectsForAssignmentRequest)
+      returns (ListTeamProjectsForAssignmentResponse);
 }
 
 message CreateTeamRequest {
@@ -841,4 +858,133 @@ message ListProjectMemberDetailsResponse {
 
   // может ли текущий пользователь удалять участников из команды
   bool can_manage_team_members = 4;
+}
+
+message TeamRights {
+  bool root_rights = 1;
+  bool manager_team = 2;
+  bool manager_members = 3;
+  bool manager_member_duties = 4;
+  bool manager_project_assignment = 5;
+  bool manager_project_rights = 6;
+  bool manager_projects = 7;
+}
+
+message TeamCapabilities {
+  bool can_update_team = 1;
+  bool can_delete_team = 2;
+  bool can_manage_members = 3;
+  bool can_update_member_duties = 4;
+  bool can_update_member_rights = 5;
+  bool can_assign_members_to_projects = 6;
+  bool can_manage_projects = 7;
+}
+
+message TeamMemberUserSummary {
+  string user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string about = 4;
+
+  repeated ProjectSkill skills = 5;
+}
+
+message TeamMemberCapabilities {
+  bool can_update_duties = 1;
+  bool can_update_rights = 2;
+  bool can_remove_from_team = 3;
+  bool can_assign_to_project = 4;
+}
+
+message TeamMemberProjectSummary {
+  string project_id = 1;
+  string project_name = 2;
+  ProjectStatus project_status = 3;
+}
+
+message TeamMemberDetails {
+  string team_id = 1;
+  string user_id = 2;
+
+  string duties = 3;
+  Date joined_at = 4;
+
+  TeamRights rights = 5;
+  TeamMemberUserSummary user = 6;
+
+  bool is_me = 7;
+  bool is_founder = 8;
+  bool is_lead = 9;
+
+  repeated TeamMemberProjectSummary projects = 10;
+
+  TeamMemberCapabilities capabilities = 11;
+}
+
+message ListTeamMemberDetailsRequest {
+  string team_id = 1;
+  string query = 2;
+  repeated string skill_ids = 3;
+
+  int32 page_size = 4;
+  string page_token = 5;
+}
+
+message ListTeamMemberDetailsResponse {
+  repeated TeamMemberDetails members = 1;
+  string next_page_token = 2;
+
+  TeamRights my_rights = 3;
+  TeamCapabilities capabilities = 4;
+}
+
+message UpdateTeamMemberDutiesRequest {
+  string team_id = 1;
+  string user_id = 2;
+  string duties = 3;
+}
+
+message UpdateTeamMemberRightsRequest {
+  string team_id = 1;
+  string user_id = 2;
+
+  optional bool root_rights = 3;
+  optional bool manager_team = 4;
+  optional bool manager_members = 5;
+  optional bool manager_member_duties = 6;
+  optional bool manager_project_assignment = 7;
+  optional bool manager_project_rights = 8;
+  optional bool manager_projects = 9;
+}
+
+message AssignTeamMemberToProjectRequest {
+  string team_id = 1;
+  string project_id = 2;
+  string user_id = 3;
+
+  ProjectRights initial_rights = 4;
+}
+
+message ListTeamProjectsForAssignmentRequest {
+  string team_id = 1;
+  string user_id = 2;
+  string query = 3;
+
+  int32 page_size = 4;
+  string page_token = 5;
+}
+
+message TeamProjectAssignmentItem {
+  string project_id = 1;
+  string project_name = 2;
+  ProjectStatus project_status = 3;
+  bool is_open = 4;
+
+  bool is_already_member = 5;
+  ProjectRights current_rights = 6;
+}
+
+message ListTeamProjectsForAssignmentResponse {
+  repeated TeamProjectAssignmentItem items = 1;
+  string next_page_token = 2;
 }
