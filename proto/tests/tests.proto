@@ -301,6 +301,11 @@ message GetAssessmentRequest {
 
 message StartAttemptRequest {
   int64 assessment_id = 1;
+
+  // Если false и уже есть in_progress попытка по assessment_id,
+  // сервер может вернуть AlreadyExists
+  // Если true - сервер отменит старую in_progress попытку и начнет новую
+  bool restart_if_in_progress = 2;
 }
 
 message StartAttemptResponse {
