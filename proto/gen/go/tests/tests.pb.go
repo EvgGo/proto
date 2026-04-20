@@ -233,6 +233,55 @@ func (FinishReason) EnumDescriptor() ([]byte, []int) {
 	return file_tests_tests_proto_rawDescGZIP(), []int{3}
 }
 
+type AssessmentMode int32
+
+const (
+	AssessmentMode_ASSESSMENT_MODE_UNSPECIFIED AssessmentMode = 0
+	AssessmentMode_ASSESSMENT_MODE_SUBTOPIC    AssessmentMode = 1
+	AssessmentMode_ASSESSMENT_MODE_GLOBAL      AssessmentMode = 2
+)
+
+// Enum value maps for AssessmentMode.
+var (
+	AssessmentMode_name = map[int32]string{
+		0: "ASSESSMENT_MODE_UNSPECIFIED",
+		1: "ASSESSMENT_MODE_SUBTOPIC",
+		2: "ASSESSMENT_MODE_GLOBAL",
+	}
+	AssessmentMode_value = map[string]int32{
+		"ASSESSMENT_MODE_UNSPECIFIED": 0,
+		"ASSESSMENT_MODE_SUBTOPIC":    1,
+		"ASSESSMENT_MODE_GLOBAL":      2,
+	}
+)
+
+func (x AssessmentMode) Enum() *AssessmentMode {
+	p := new(AssessmentMode)
+	*p = x
+	return p
+}
+
+func (x AssessmentMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AssessmentMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_tests_tests_proto_enumTypes[4].Descriptor()
+}
+
+func (AssessmentMode) Type() protoreflect.EnumType {
+	return &file_tests_tests_proto_enumTypes[4]
+}
+
+func (x AssessmentMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AssessmentMode.Descriptor instead.
+func (AssessmentMode) EnumDescriptor() ([]byte, []int) {
+	return file_tests_tests_proto_rawDescGZIP(), []int{4}
+}
+
 // Предмет: верхний уровень (Golang, Git, PostgreSQL, ...)
 type Subject struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -505,6 +554,7 @@ type Assessment struct {
 	UpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	// Какие подтемы входят в тест
 	Subtopics     []*AssessmentSubtopicConfig `protobuf:"bytes,16,rep,name=subtopics,proto3" json:"subtopics,omitempty"`
+	Mode          AssessmentMode              `protobuf:"varint,17,opt,name=mode,proto3,enum=assessment.v1.AssessmentMode" json:"mode,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -651,6 +701,13 @@ func (x *Assessment) GetSubtopics() []*AssessmentSubtopicConfig {
 	return nil
 }
 
+func (x *Assessment) GetMode() AssessmentMode {
+	if x != nil {
+		return x.Mode
+	}
+	return AssessmentMode_ASSESSMENT_MODE_UNSPECIFIED
+}
+
 // Короткая карточка теста для списков
 type AssessmentSummary struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
@@ -661,6 +718,7 @@ type AssessmentSummary struct {
 	Description     string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
 	Status          AssessmentStatus       `protobuf:"varint,6,opt,name=status,proto3,enum=assessment.v1.AssessmentStatus" json:"status,omitempty"`
 	DurationSeconds int32                  `protobuf:"varint,7,opt,name=duration_seconds,json=durationSeconds,proto3" json:"duration_seconds,omitempty"`
+	Mode            AssessmentMode         `protobuf:"varint,8,opt,name=mode,proto3,enum=assessment.v1.AssessmentMode" json:"mode,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -742,6 +800,13 @@ func (x *AssessmentSummary) GetDurationSeconds() int32 {
 		return x.DurationSeconds
 	}
 	return 0
+}
+
+func (x *AssessmentSummary) GetMode() AssessmentMode {
+	if x != nil {
+		return x.Mode
+	}
+	return AssessmentMode_ASSESSMENT_MODE_UNSPECIFIED
 }
 
 type QuestionOption struct {
@@ -2401,7 +2466,7 @@ const file_tests_tests_proto_rawDesc = "" +
 	"\n" +
 	"_max_itemsB\x13\n" +
 	"\x11_start_difficultyB\x12\n" +
-	"\x10_stop_confidence\"\x84\x05\n" +
+	"\x10_stop_confidence\"\xb7\x05\n" +
 	"\n" +
 	"Assessment\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
@@ -2423,7 +2488,8 @@ const file_tests_tests_proto_rawDesc = "" +
 	"created_at\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12E\n" +
-	"\tsubtopics\x18\x10 \x03(\v2'.assessment.v1.AssessmentSubtopicConfigR\tsubtopics\"\xf2\x01\n" +
+	"\tsubtopics\x18\x10 \x03(\v2'.assessment.v1.AssessmentSubtopicConfigR\tsubtopics\x121\n" +
+	"\x04mode\x18\x11 \x01(\x0e2\x1d.assessment.v1.AssessmentModeR\x04mode\"\xa5\x02\n" +
 	"\x11AssessmentSummary\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
@@ -2432,7 +2498,8 @@ const file_tests_tests_proto_rawDesc = "" +
 	"\x05title\x18\x04 \x01(\tR\x05title\x12 \n" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x127\n" +
 	"\x06status\x18\x06 \x01(\x0e2\x1f.assessment.v1.AssessmentStatusR\x06status\x12)\n" +
-	"\x10duration_seconds\x18\a \x01(\x05R\x0fdurationSeconds\"q\n" +
+	"\x10duration_seconds\x18\a \x01(\x05R\x0fdurationSeconds\x121\n" +
+	"\x04mode\x18\b \x01(\x0e2\x1d.assessment.v1.AssessmentModeR\x04mode\"q\n" +
 	"\x0eQuestionOption\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1f\n" +
 	"\vquestion_id\x18\x02 \x01(\x03R\n" +
@@ -2609,7 +2676,11 @@ const file_tests_tests_proto_rawDesc = "" +
 	"\x19FINISH_REASON_USER_FINISH\x10\x01\x12\x1e\n" +
 	"\x1aFINISH_REASON_USER_ABANDON\x10\x02\x12\x19\n" +
 	"\x15FINISH_REASON_TIMEOUT\x10\x03\x12\x18\n" +
-	"\x14FINISH_REASON_SYSTEM\x10\x042\xe2\a\n" +
+	"\x14FINISH_REASON_SYSTEM\x10\x04*k\n" +
+	"\x0eAssessmentMode\x12\x1f\n" +
+	"\x1bASSESSMENT_MODE_UNSPECIFIED\x10\x00\x12\x1c\n" +
+	"\x18ASSESSMENT_MODE_SUBTOPIC\x10\x01\x12\x1a\n" +
+	"\x16ASSESSMENT_MODE_GLOBAL\x10\x022\xe2\a\n" +
 	"\x0fAdaptiveTesting\x12W\n" +
 	"\fListSubjects\x12\".assessment.v1.ListSubjectsRequest\x1a#.assessment.v1.ListSubjectsResponse\x12Z\n" +
 	"\rListSubtopics\x12#.assessment.v1.ListSubtopicsRequest\x1a$.assessment.v1.ListSubtopicsResponse\x12`\n" +
@@ -2636,102 +2707,105 @@ func file_tests_tests_proto_rawDescGZIP() []byte {
 	return file_tests_tests_proto_rawDescData
 }
 
-var file_tests_tests_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_tests_tests_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
 var file_tests_tests_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
 var file_tests_tests_proto_goTypes = []any{
 	(AssessmentStatus)(0),             // 0: assessment.v1.AssessmentStatus
 	(AttemptStatus)(0),                // 1: assessment.v1.AttemptStatus
 	(FinishAction)(0),                 // 2: assessment.v1.FinishAction
 	(FinishReason)(0),                 // 3: assessment.v1.FinishReason
-	(*Subject)(nil),                   // 4: assessment.v1.Subject
-	(*Subtopic)(nil),                  // 5: assessment.v1.Subtopic
-	(*AssessmentSubtopicConfig)(nil),  // 6: assessment.v1.AssessmentSubtopicConfig
-	(*Assessment)(nil),                // 7: assessment.v1.Assessment
-	(*AssessmentSummary)(nil),         // 8: assessment.v1.AssessmentSummary
-	(*QuestionOption)(nil),            // 9: assessment.v1.QuestionOption
-	(*Question)(nil),                  // 10: assessment.v1.Question
-	(*AttemptSubtopicState)(nil),      // 11: assessment.v1.AttemptSubtopicState
-	(*Attempt)(nil),                   // 12: assessment.v1.Attempt
-	(*AttemptProgress)(nil),           // 13: assessment.v1.AttemptProgress
-	(*ListSubjectsRequest)(nil),       // 14: assessment.v1.ListSubjectsRequest
-	(*ListSubjectsResponse)(nil),      // 15: assessment.v1.ListSubjectsResponse
-	(*ListSubtopicsRequest)(nil),      // 16: assessment.v1.ListSubtopicsRequest
-	(*ListSubtopicsResponse)(nil),     // 17: assessment.v1.ListSubtopicsResponse
-	(*ListAssessmentsRequest)(nil),    // 18: assessment.v1.ListAssessmentsRequest
-	(*ListAssessmentsResponse)(nil),   // 19: assessment.v1.ListAssessmentsResponse
-	(*GetAssessmentRequest)(nil),      // 20: assessment.v1.GetAssessmentRequest
-	(*StartAttemptRequest)(nil),       // 21: assessment.v1.StartAttemptRequest
-	(*StartAttemptResponse)(nil),      // 22: assessment.v1.StartAttemptResponse
-	(*GetAttemptRequest)(nil),         // 23: assessment.v1.GetAttemptRequest
-	(*GetAttemptProgressRequest)(nil), // 24: assessment.v1.GetAttemptProgressRequest
-	(*GetNextQuestionRequest)(nil),    // 25: assessment.v1.GetNextQuestionRequest
-	(*GetNextQuestionResponse)(nil),   // 26: assessment.v1.GetNextQuestionResponse
-	(*SubmitAnswerRequest)(nil),       // 27: assessment.v1.SubmitAnswerRequest
-	(*SubmitAnswerResponse)(nil),      // 28: assessment.v1.SubmitAnswerResponse
-	(*FinishAttemptRequest)(nil),      // 29: assessment.v1.FinishAttemptRequest
-	(*ListMyAttemptsRequest)(nil),     // 30: assessment.v1.ListMyAttemptsRequest
-	(*ListMyAttemptsResponse)(nil),    // 31: assessment.v1.ListMyAttemptsResponse
-	(*timestamppb.Timestamp)(nil),     // 32: google.protobuf.Timestamp
+	(AssessmentMode)(0),               // 4: assessment.v1.AssessmentMode
+	(*Subject)(nil),                   // 5: assessment.v1.Subject
+	(*Subtopic)(nil),                  // 6: assessment.v1.Subtopic
+	(*AssessmentSubtopicConfig)(nil),  // 7: assessment.v1.AssessmentSubtopicConfig
+	(*Assessment)(nil),                // 8: assessment.v1.Assessment
+	(*AssessmentSummary)(nil),         // 9: assessment.v1.AssessmentSummary
+	(*QuestionOption)(nil),            // 10: assessment.v1.QuestionOption
+	(*Question)(nil),                  // 11: assessment.v1.Question
+	(*AttemptSubtopicState)(nil),      // 12: assessment.v1.AttemptSubtopicState
+	(*Attempt)(nil),                   // 13: assessment.v1.Attempt
+	(*AttemptProgress)(nil),           // 14: assessment.v1.AttemptProgress
+	(*ListSubjectsRequest)(nil),       // 15: assessment.v1.ListSubjectsRequest
+	(*ListSubjectsResponse)(nil),      // 16: assessment.v1.ListSubjectsResponse
+	(*ListSubtopicsRequest)(nil),      // 17: assessment.v1.ListSubtopicsRequest
+	(*ListSubtopicsResponse)(nil),     // 18: assessment.v1.ListSubtopicsResponse
+	(*ListAssessmentsRequest)(nil),    // 19: assessment.v1.ListAssessmentsRequest
+	(*ListAssessmentsResponse)(nil),   // 20: assessment.v1.ListAssessmentsResponse
+	(*GetAssessmentRequest)(nil),      // 21: assessment.v1.GetAssessmentRequest
+	(*StartAttemptRequest)(nil),       // 22: assessment.v1.StartAttemptRequest
+	(*StartAttemptResponse)(nil),      // 23: assessment.v1.StartAttemptResponse
+	(*GetAttemptRequest)(nil),         // 24: assessment.v1.GetAttemptRequest
+	(*GetAttemptProgressRequest)(nil), // 25: assessment.v1.GetAttemptProgressRequest
+	(*GetNextQuestionRequest)(nil),    // 26: assessment.v1.GetNextQuestionRequest
+	(*GetNextQuestionResponse)(nil),   // 27: assessment.v1.GetNextQuestionResponse
+	(*SubmitAnswerRequest)(nil),       // 28: assessment.v1.SubmitAnswerRequest
+	(*SubmitAnswerResponse)(nil),      // 29: assessment.v1.SubmitAnswerResponse
+	(*FinishAttemptRequest)(nil),      // 30: assessment.v1.FinishAttemptRequest
+	(*ListMyAttemptsRequest)(nil),     // 31: assessment.v1.ListMyAttemptsRequest
+	(*ListMyAttemptsResponse)(nil),    // 32: assessment.v1.ListMyAttemptsResponse
+	(*timestamppb.Timestamp)(nil),     // 33: google.protobuf.Timestamp
 }
 var file_tests_tests_proto_depIdxs = []int32{
-	32, // 0: assessment.v1.Subject.created_at:type_name -> google.protobuf.Timestamp
-	32, // 1: assessment.v1.Subtopic.created_at:type_name -> google.protobuf.Timestamp
+	33, // 0: assessment.v1.Subject.created_at:type_name -> google.protobuf.Timestamp
+	33, // 1: assessment.v1.Subtopic.created_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: assessment.v1.Assessment.status:type_name -> assessment.v1.AssessmentStatus
-	32, // 3: assessment.v1.Assessment.created_at:type_name -> google.protobuf.Timestamp
-	32, // 4: assessment.v1.Assessment.updated_at:type_name -> google.protobuf.Timestamp
-	6,  // 5: assessment.v1.Assessment.subtopics:type_name -> assessment.v1.AssessmentSubtopicConfig
-	0,  // 6: assessment.v1.AssessmentSummary.status:type_name -> assessment.v1.AssessmentStatus
-	9,  // 7: assessment.v1.Question.options:type_name -> assessment.v1.QuestionOption
-	1,  // 8: assessment.v1.Attempt.status:type_name -> assessment.v1.AttemptStatus
-	3,  // 9: assessment.v1.Attempt.finish_reason:type_name -> assessment.v1.FinishReason
-	32, // 10: assessment.v1.Attempt.started_at:type_name -> google.protobuf.Timestamp
-	32, // 11: assessment.v1.Attempt.expires_at:type_name -> google.protobuf.Timestamp
-	32, // 12: assessment.v1.Attempt.completed_at:type_name -> google.protobuf.Timestamp
-	11, // 13: assessment.v1.Attempt.subtopic_states:type_name -> assessment.v1.AttemptSubtopicState
-	1,  // 14: assessment.v1.AttemptProgress.status:type_name -> assessment.v1.AttemptStatus
-	32, // 15: assessment.v1.AttemptProgress.started_at:type_name -> google.protobuf.Timestamp
-	32, // 16: assessment.v1.AttemptProgress.expires_at:type_name -> google.protobuf.Timestamp
-	4,  // 17: assessment.v1.ListSubjectsResponse.subjects:type_name -> assessment.v1.Subject
-	5,  // 18: assessment.v1.ListSubtopicsResponse.subtopics:type_name -> assessment.v1.Subtopic
-	0,  // 19: assessment.v1.ListAssessmentsRequest.status:type_name -> assessment.v1.AssessmentStatus
-	8,  // 20: assessment.v1.ListAssessmentsResponse.assessments:type_name -> assessment.v1.AssessmentSummary
-	12, // 21: assessment.v1.StartAttemptResponse.attempt:type_name -> assessment.v1.Attempt
-	10, // 22: assessment.v1.StartAttemptResponse.first_question:type_name -> assessment.v1.Question
-	13, // 23: assessment.v1.StartAttemptResponse.progress:type_name -> assessment.v1.AttemptProgress
-	13, // 24: assessment.v1.GetNextQuestionResponse.progress:type_name -> assessment.v1.AttemptProgress
-	10, // 25: assessment.v1.GetNextQuestionResponse.next_question:type_name -> assessment.v1.Question
-	13, // 26: assessment.v1.SubmitAnswerResponse.progress:type_name -> assessment.v1.AttemptProgress
-	10, // 27: assessment.v1.SubmitAnswerResponse.next_question:type_name -> assessment.v1.Question
-	2,  // 28: assessment.v1.FinishAttemptRequest.action:type_name -> assessment.v1.FinishAction
-	1,  // 29: assessment.v1.ListMyAttemptsRequest.status:type_name -> assessment.v1.AttemptStatus
-	12, // 30: assessment.v1.ListMyAttemptsResponse.attempts:type_name -> assessment.v1.Attempt
-	14, // 31: assessment.v1.AdaptiveTesting.ListSubjects:input_type -> assessment.v1.ListSubjectsRequest
-	16, // 32: assessment.v1.AdaptiveTesting.ListSubtopics:input_type -> assessment.v1.ListSubtopicsRequest
-	18, // 33: assessment.v1.AdaptiveTesting.ListAssessments:input_type -> assessment.v1.ListAssessmentsRequest
-	20, // 34: assessment.v1.AdaptiveTesting.GetAssessment:input_type -> assessment.v1.GetAssessmentRequest
-	21, // 35: assessment.v1.AdaptiveTesting.StartAttempt:input_type -> assessment.v1.StartAttemptRequest
-	23, // 36: assessment.v1.AdaptiveTesting.GetAttempt:input_type -> assessment.v1.GetAttemptRequest
-	24, // 37: assessment.v1.AdaptiveTesting.GetAttemptProgress:input_type -> assessment.v1.GetAttemptProgressRequest
-	25, // 38: assessment.v1.AdaptiveTesting.GetNextQuestion:input_type -> assessment.v1.GetNextQuestionRequest
-	27, // 39: assessment.v1.AdaptiveTesting.SubmitAnswer:input_type -> assessment.v1.SubmitAnswerRequest
-	29, // 40: assessment.v1.AdaptiveTesting.FinishAttempt:input_type -> assessment.v1.FinishAttemptRequest
-	30, // 41: assessment.v1.AdaptiveTesting.ListMyAttempts:input_type -> assessment.v1.ListMyAttemptsRequest
-	15, // 42: assessment.v1.AdaptiveTesting.ListSubjects:output_type -> assessment.v1.ListSubjectsResponse
-	17, // 43: assessment.v1.AdaptiveTesting.ListSubtopics:output_type -> assessment.v1.ListSubtopicsResponse
-	19, // 44: assessment.v1.AdaptiveTesting.ListAssessments:output_type -> assessment.v1.ListAssessmentsResponse
-	7,  // 45: assessment.v1.AdaptiveTesting.GetAssessment:output_type -> assessment.v1.Assessment
-	22, // 46: assessment.v1.AdaptiveTesting.StartAttempt:output_type -> assessment.v1.StartAttemptResponse
-	12, // 47: assessment.v1.AdaptiveTesting.GetAttempt:output_type -> assessment.v1.Attempt
-	13, // 48: assessment.v1.AdaptiveTesting.GetAttemptProgress:output_type -> assessment.v1.AttemptProgress
-	26, // 49: assessment.v1.AdaptiveTesting.GetNextQuestion:output_type -> assessment.v1.GetNextQuestionResponse
-	28, // 50: assessment.v1.AdaptiveTesting.SubmitAnswer:output_type -> assessment.v1.SubmitAnswerResponse
-	12, // 51: assessment.v1.AdaptiveTesting.FinishAttempt:output_type -> assessment.v1.Attempt
-	31, // 52: assessment.v1.AdaptiveTesting.ListMyAttempts:output_type -> assessment.v1.ListMyAttemptsResponse
-	42, // [42:53] is the sub-list for method output_type
-	31, // [31:42] is the sub-list for method input_type
-	31, // [31:31] is the sub-list for extension type_name
-	31, // [31:31] is the sub-list for extension extendee
-	0,  // [0:31] is the sub-list for field type_name
+	33, // 3: assessment.v1.Assessment.created_at:type_name -> google.protobuf.Timestamp
+	33, // 4: assessment.v1.Assessment.updated_at:type_name -> google.protobuf.Timestamp
+	7,  // 5: assessment.v1.Assessment.subtopics:type_name -> assessment.v1.AssessmentSubtopicConfig
+	4,  // 6: assessment.v1.Assessment.mode:type_name -> assessment.v1.AssessmentMode
+	0,  // 7: assessment.v1.AssessmentSummary.status:type_name -> assessment.v1.AssessmentStatus
+	4,  // 8: assessment.v1.AssessmentSummary.mode:type_name -> assessment.v1.AssessmentMode
+	10, // 9: assessment.v1.Question.options:type_name -> assessment.v1.QuestionOption
+	1,  // 10: assessment.v1.Attempt.status:type_name -> assessment.v1.AttemptStatus
+	3,  // 11: assessment.v1.Attempt.finish_reason:type_name -> assessment.v1.FinishReason
+	33, // 12: assessment.v1.Attempt.started_at:type_name -> google.protobuf.Timestamp
+	33, // 13: assessment.v1.Attempt.expires_at:type_name -> google.protobuf.Timestamp
+	33, // 14: assessment.v1.Attempt.completed_at:type_name -> google.protobuf.Timestamp
+	12, // 15: assessment.v1.Attempt.subtopic_states:type_name -> assessment.v1.AttemptSubtopicState
+	1,  // 16: assessment.v1.AttemptProgress.status:type_name -> assessment.v1.AttemptStatus
+	33, // 17: assessment.v1.AttemptProgress.started_at:type_name -> google.protobuf.Timestamp
+	33, // 18: assessment.v1.AttemptProgress.expires_at:type_name -> google.protobuf.Timestamp
+	5,  // 19: assessment.v1.ListSubjectsResponse.subjects:type_name -> assessment.v1.Subject
+	6,  // 20: assessment.v1.ListSubtopicsResponse.subtopics:type_name -> assessment.v1.Subtopic
+	0,  // 21: assessment.v1.ListAssessmentsRequest.status:type_name -> assessment.v1.AssessmentStatus
+	9,  // 22: assessment.v1.ListAssessmentsResponse.assessments:type_name -> assessment.v1.AssessmentSummary
+	13, // 23: assessment.v1.StartAttemptResponse.attempt:type_name -> assessment.v1.Attempt
+	11, // 24: assessment.v1.StartAttemptResponse.first_question:type_name -> assessment.v1.Question
+	14, // 25: assessment.v1.StartAttemptResponse.progress:type_name -> assessment.v1.AttemptProgress
+	14, // 26: assessment.v1.GetNextQuestionResponse.progress:type_name -> assessment.v1.AttemptProgress
+	11, // 27: assessment.v1.GetNextQuestionResponse.next_question:type_name -> assessment.v1.Question
+	14, // 28: assessment.v1.SubmitAnswerResponse.progress:type_name -> assessment.v1.AttemptProgress
+	11, // 29: assessment.v1.SubmitAnswerResponse.next_question:type_name -> assessment.v1.Question
+	2,  // 30: assessment.v1.FinishAttemptRequest.action:type_name -> assessment.v1.FinishAction
+	1,  // 31: assessment.v1.ListMyAttemptsRequest.status:type_name -> assessment.v1.AttemptStatus
+	13, // 32: assessment.v1.ListMyAttemptsResponse.attempts:type_name -> assessment.v1.Attempt
+	15, // 33: assessment.v1.AdaptiveTesting.ListSubjects:input_type -> assessment.v1.ListSubjectsRequest
+	17, // 34: assessment.v1.AdaptiveTesting.ListSubtopics:input_type -> assessment.v1.ListSubtopicsRequest
+	19, // 35: assessment.v1.AdaptiveTesting.ListAssessments:input_type -> assessment.v1.ListAssessmentsRequest
+	21, // 36: assessment.v1.AdaptiveTesting.GetAssessment:input_type -> assessment.v1.GetAssessmentRequest
+	22, // 37: assessment.v1.AdaptiveTesting.StartAttempt:input_type -> assessment.v1.StartAttemptRequest
+	24, // 38: assessment.v1.AdaptiveTesting.GetAttempt:input_type -> assessment.v1.GetAttemptRequest
+	25, // 39: assessment.v1.AdaptiveTesting.GetAttemptProgress:input_type -> assessment.v1.GetAttemptProgressRequest
+	26, // 40: assessment.v1.AdaptiveTesting.GetNextQuestion:input_type -> assessment.v1.GetNextQuestionRequest
+	28, // 41: assessment.v1.AdaptiveTesting.SubmitAnswer:input_type -> assessment.v1.SubmitAnswerRequest
+	30, // 42: assessment.v1.AdaptiveTesting.FinishAttempt:input_type -> assessment.v1.FinishAttemptRequest
+	31, // 43: assessment.v1.AdaptiveTesting.ListMyAttempts:input_type -> assessment.v1.ListMyAttemptsRequest
+	16, // 44: assessment.v1.AdaptiveTesting.ListSubjects:output_type -> assessment.v1.ListSubjectsResponse
+	18, // 45: assessment.v1.AdaptiveTesting.ListSubtopics:output_type -> assessment.v1.ListSubtopicsResponse
+	20, // 46: assessment.v1.AdaptiveTesting.ListAssessments:output_type -> assessment.v1.ListAssessmentsResponse
+	8,  // 47: assessment.v1.AdaptiveTesting.GetAssessment:output_type -> assessment.v1.Assessment
+	23, // 48: assessment.v1.AdaptiveTesting.StartAttempt:output_type -> assessment.v1.StartAttemptResponse
+	13, // 49: assessment.v1.AdaptiveTesting.GetAttempt:output_type -> assessment.v1.Attempt
+	14, // 50: assessment.v1.AdaptiveTesting.GetAttemptProgress:output_type -> assessment.v1.AttemptProgress
+	27, // 51: assessment.v1.AdaptiveTesting.GetNextQuestion:output_type -> assessment.v1.GetNextQuestionResponse
+	29, // 52: assessment.v1.AdaptiveTesting.SubmitAnswer:output_type -> assessment.v1.SubmitAnswerResponse
+	13, // 53: assessment.v1.AdaptiveTesting.FinishAttempt:output_type -> assessment.v1.Attempt
+	32, // 54: assessment.v1.AdaptiveTesting.ListMyAttempts:output_type -> assessment.v1.ListMyAttemptsResponse
+	44, // [44:55] is the sub-list for method output_type
+	33, // [33:44] is the sub-list for method input_type
+	33, // [33:33] is the sub-list for extension type_name
+	33, // [33:33] is the sub-list for extension extendee
+	0,  // [0:33] is the sub-list for field type_name
 }
 
 func init() { file_tests_tests_proto_init() }
@@ -2750,7 +2824,7 @@ func file_tests_tests_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tests_tests_proto_rawDesc), len(file_tests_tests_proto_rawDesc)),
-			NumEnums:      4,
+			NumEnums:      5,
 			NumMessages:   28,
 			NumExtensions: 0,
 			NumServices:   1,

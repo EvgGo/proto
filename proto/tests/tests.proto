@@ -37,6 +37,11 @@ enum FinishReason {
   FINISH_REASON_SYSTEM = 4;          // системное завершение
 }
 
+enum AssessmentMode {
+  ASSESSMENT_MODE_UNSPECIFIED = 0;
+  ASSESSMENT_MODE_SUBTOPIC = 1;
+  ASSESSMENT_MODE_GLOBAL = 2;
+}
 
 // Предмет: верхний уровень (Golang, Git, PostgreSQL, ...)
 message Subject {
@@ -101,6 +106,7 @@ message Assessment {
 
   // Какие подтемы входят в тест
   repeated AssessmentSubtopicConfig subtopics = 16;
+  AssessmentMode mode = 17;
 }
 
 // Короткая карточка теста для списков
@@ -112,6 +118,7 @@ message AssessmentSummary {
   string description = 5;
   AssessmentStatus status = 6;
   int32 duration_seconds = 7;
+  AssessmentMode mode = 8;
 }
 
 message QuestionOption {
