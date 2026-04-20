@@ -199,6 +199,8 @@ message Attempt {
 
   // По желанию: вернуть состояния подтем (для дебага)
   repeated AttemptSubtopicState subtopic_states = 13;
+
+  AttemptAssessmentSummary assessment_summary = 14;
 }
 
 message AttemptProgress {
@@ -383,4 +385,16 @@ message ListMyAttemptsRequest {
 message ListMyAttemptsResponse {
   repeated Attempt attempts = 1;
   string next_page_token = 2;
+}
+
+message AttemptAssessmentSummary {
+  int64 assessment_id = 1;
+  string assessment_code = 2;
+  string assessment_title = 3;
+
+  int64 subject_id = 4;
+  string subject_code = 5;
+  string subject_title = 6;
+
+  AssessmentMode mode = 7;
 }
