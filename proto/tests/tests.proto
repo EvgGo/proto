@@ -294,6 +294,9 @@ message ListAssessmentsRequest {
 
   int32 page_size = 4;
   string page_token = 5;
+
+  // UNSPECIFIED - любые, GLOBAL / SUBTOPIC по выбору
+  AssessmentMode mode = 6;
 }
 
 message ListAssessmentsResponse {
