@@ -398,12 +398,14 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	UserProfile_GetMe_FullMethodName                = "/auth.UserProfile/GetMe"
-	UserProfile_UpdateMe_FullMethodName             = "/auth.UserProfile/UpdateMe"
-	UserProfile_GetProfile_FullMethodName           = "/auth.UserProfile/GetProfile"
-	UserProfile_ListUsers_FullMethodName            = "/auth.UserProfile/ListUsers"
-	UserProfile_GetProfilesByIds_FullMethodName     = "/auth.UserProfile/GetProfilesByIds"
-	UserProfile_ListPublicCandidates_FullMethodName = "/auth.UserProfile/ListPublicCandidates"
+	UserProfile_GetMe_FullMethodName                             = "/auth.UserProfile/GetMe"
+	UserProfile_UpdateMe_FullMethodName                          = "/auth.UserProfile/UpdateMe"
+	UserProfile_GetProfile_FullMethodName                        = "/auth.UserProfile/GetProfile"
+	UserProfile_SaveMyAssessmentResultFromAttempt_FullMethodName = "/auth.UserProfile/SaveMyAssessmentResultFromAttempt"
+	UserProfile_DeleteMySavedAssessmentResult_FullMethodName     = "/auth.UserProfile/DeleteMySavedAssessmentResult"
+	UserProfile_ListUsers_FullMethodName                         = "/auth.UserProfile/ListUsers"
+	UserProfile_GetProfilesByIds_FullMethodName                  = "/auth.UserProfile/GetProfilesByIds"
+	UserProfile_ListPublicCandidates_FullMethodName              = "/auth.UserProfile/ListPublicCandidates"
 )
 
 // UserProfileClient is the client API for UserProfile service.
@@ -416,6 +418,10 @@ type UserProfileClient interface {
 	UpdateMe(ctx context.Context, in *UpdateMeRequest, opts ...grpc.CallOption) (*User, error)
 	// Публичный профиль по user_id , скрытые поля не возвращаем
 	GetProfile(ctx context.Context, in *GetProfileRequest, opts ...grpc.CallOption) (*PublicUser, error)
+	// Сохранить в профиль результат завершенной попытки
+	SaveMyAssessmentResultFromAttempt(ctx context.Context, in *SaveMyAssessmentResultFromAttemptRequest, opts ...grpc.CallOption) (*SavedAssessmentResult, error)
+	// Удалить сохраненный результат теста из профиля
+	DeleteMySavedAssessmentResult(ctx context.Context, in *DeleteMySavedAssessmentResultRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Поиск/листинг пользователей
 	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
 	// Публичные профили по user_id ,
@@ -462,6 +468,26 @@ func (c *userProfileClient) GetProfile(ctx context.Context, in *GetProfileReques
 	return out, nil
 }
 
+func (c *userProfileClient) SaveMyAssessmentResultFromAttempt(ctx context.Context, in *SaveMyAssessmentResultFromAttemptRequest, opts ...grpc.CallOption) (*SavedAssessmentResult, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SavedAssessmentResult)
+	err := c.cc.Invoke(ctx, UserProfile_SaveMyAssessmentResultFromAttempt_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userProfileClient) DeleteMySavedAssessmentResult(ctx context.Context, in *DeleteMySavedAssessmentResultRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, UserProfile_DeleteMySavedAssessmentResult_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userProfileClient) ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListUsersResponse)
@@ -502,6 +528,10 @@ type UserProfileServer interface {
 	UpdateMe(context.Context, *UpdateMeRequest) (*User, error)
 	// Публичный профиль по user_id , скрытые поля не возвращаем
 	GetProfile(context.Context, *GetProfileRequest) (*PublicUser, error)
+	// Сохранить в профиль результат завершенной попытки
+	SaveMyAssessmentResultFromAttempt(context.Context, *SaveMyAssessmentResultFromAttemptRequest) (*SavedAssessmentResult, error)
+	// Удалить сохраненный результат теста из профиля
+	DeleteMySavedAssessmentResult(context.Context, *DeleteMySavedAssessmentResultRequest) (*emptypb.Empty, error)
 	// Поиск/листинг пользователей
 	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
 	// Публичные профили по user_id ,
@@ -526,6 +556,12 @@ func (UnimplementedUserProfileServer) UpdateMe(context.Context, *UpdateMeRequest
 }
 func (UnimplementedUserProfileServer) GetProfile(context.Context, *GetProfileRequest) (*PublicUser, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProfile not implemented")
+}
+func (UnimplementedUserProfileServer) SaveMyAssessmentResultFromAttempt(context.Context, *SaveMyAssessmentResultFromAttemptRequest) (*SavedAssessmentResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SaveMyAssessmentResultFromAttempt not implemented")
+}
+func (UnimplementedUserProfileServer) DeleteMySavedAssessmentResult(context.Context, *DeleteMySavedAssessmentResultRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMySavedAssessmentResult not implemented")
 }
 func (UnimplementedUserProfileServer) ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
@@ -611,6 +647,42 @@ func _UserProfile_GetProfile_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserProfile_SaveMyAssessmentResultFromAttempt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SaveMyAssessmentResultFromAttemptRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserProfileServer).SaveMyAssessmentResultFromAttempt(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserProfile_SaveMyAssessmentResultFromAttempt_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserProfileServer).SaveMyAssessmentResultFromAttempt(ctx, req.(*SaveMyAssessmentResultFromAttemptRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserProfile_DeleteMySavedAssessmentResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMySavedAssessmentResultRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserProfileServer).DeleteMySavedAssessmentResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserProfile_DeleteMySavedAssessmentResult_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserProfileServer).DeleteMySavedAssessmentResult(ctx, req.(*DeleteMySavedAssessmentResultRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserProfile_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListUsersRequest)
 	if err := dec(in); err != nil {
@@ -683,6 +755,14 @@ var UserProfile_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProfile",
 			Handler:    _UserProfile_GetProfile_Handler,
+		},
+		{
+			MethodName: "SaveMyAssessmentResultFromAttempt",
+			Handler:    _UserProfile_SaveMyAssessmentResultFromAttempt_Handler,
+		},
+		{
+			MethodName: "DeleteMySavedAssessmentResult",
+			Handler:    _UserProfile_DeleteMySavedAssessmentResult_Handler,
 		},
 		{
 			MethodName: "ListUsers",

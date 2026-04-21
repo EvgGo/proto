@@ -6,6 +6,12 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "dgeko.sso.v1;ssov1";
 
+enum CandidateAssessmentMatchMode {
+  CANDIDATE_ASSESSMENT_MATCH_MODE_UNSPECIFIED = 0;
+  CANDIDATE_ASSESSMENT_MATCH_MODE_ANY = 1;
+  CANDIDATE_ASSESSMENT_MATCH_MODE_ALL = 2;
+}
+
 service Auth {
 
   rpc Register(RegisterRequest) returns (RegisterResponse);
@@ -111,6 +117,12 @@ service UserProfile {
   // Публичный профиль по user_id , скрытые поля не возвращаем
   rpc GetProfile(GetProfileRequest) returns (PublicUser);
 
+  // Сохранить в профиль результат завершенной попытки
+  rpc SaveMyAssessmentResultFromAttempt(SaveMyAssessmentResultFromAttemptRequest) returns (SavedAssessmentResult);
+
+  // Удалить сохраненный результат теста из профиля
+  rpc DeleteMySavedAssessmentResult(DeleteMySavedAssessmentResultRequest) returns (google.protobuf.Empty);
+
   // Поиск/листинг пользователей
   rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
 
@@ -138,6 +150,7 @@ message User {
   google.protobuf.Timestamp updated_at = 14;
 
   repeated Skill skills = 15;
+  repeated SavedAssessmentResult saved_assessment_results = 16;
 }
 
 // Публичная проекция.
@@ -151,6 +164,7 @@ message PublicUser {
   bool is_user_open_suggestions = 7;
 
   repeated Skill skills = 8;
+  repeated SavedAssessmentResult saved_assessment_results = 9;
 }
 
 message GetProfileRequest {
@@ -225,6 +239,9 @@ message ListPublicCandidatesRequest {
   // сортировка
   PublicUserSortBy sort_by = 9;
   SortOrder sort_order = 10;
+
+  repeated CandidateAssessmentFilter assessment_filters = 11;
+  CandidateAssessmentMatchMode assessment_match_mode = 12;
 }
 
 message UserSkillMatchSummary {
@@ -239,6 +256,7 @@ message UserSkillMatchSummary {
 message PublicCandidate {
   PublicUser user = 1;
   UserSkillMatchSummary skill_match = 2;
+  repeated SavedAssessmentResult matched_assessment_results = 3;
 }
 
 message ListPublicCandidatesResponse {
@@ -311,4 +329,44 @@ message GetProfilesByIdsRequest {
 
 message GetProfilesByIdsResponse {
   repeated PublicUser users = 1;
+}
+
+enum SavedAssessmentMode {
+  SAVED_ASSESSMENT_MODE_UNSPECIFIED = 0;
+  SAVED_ASSESSMENT_MODE_SUBTOPIC = 1;
+  SAVED_ASSESSMENT_MODE_GLOBAL = 2;
+}
+
+message SavedAssessmentResult {
+  int64 assessment_id = 1;
+  int64 attempt_id = 2;
+  int64 subject_id = 3;
+
+  string assessment_code = 4;
+  string assessment_title = 5;
+
+  string subject_code = 6;
+  string subject_title = 7;
+
+  SavedAssessmentMode mode = 8;
+
+  int32 level = 9;        // 1..5
+  double confidence = 10; // 0..1
+
+  google.protobuf.Timestamp completed_at = 11;
+  google.protobuf.Timestamp saved_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+}
+
+message SaveMyAssessmentResultFromAttemptRequest {
+  int64 attempt_id = 1;
+}
+
+message DeleteMySavedAssessmentResultRequest {
+  int64 assessment_id = 1;
+}
+
+message CandidateAssessmentFilter {
+  int64 assessment_id = 1;
+  int32 min_level = 2; // 1..5
 }
