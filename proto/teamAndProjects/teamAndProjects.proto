@@ -117,6 +117,10 @@ message Project {
   repeated ProjectSkill skills = 13;
 
   ProjectRights my_rights = 14;
+
+  // Требования проекта по тестированию
+  // Пользователь может вступить в проект только если закрыл эти требования
+  repeated ProjectAssessmentRequirement assessment_requirements = 15;
 }
 
 
@@ -137,6 +141,10 @@ message ProjectPublic {
   repeated string skill_ids = 10; // skills проекта для публичного списка
   repeated ProjectSkill skills = 11;
   optional int32 profile_skill_match_percent = 12;
+
+  // Публичные требования проекта по тестированию
+  // Нужны, чтобы кандидат сразу видел, какие тесты и уровни требуются
+  repeated ProjectAssessmentRequirement assessment_requirements = 13;
 }
 
 message ProjectMember {
@@ -292,7 +300,7 @@ service Projects {
   rpc ListProjects(ListProjectsRequest) returns (ListProjectsResponse);
 
   // Публичный листинг проектов для поиска (главный сценарий)
-  // Обычно отдаёт только is_open=true
+  // Обычно отдает только is_open=true
   rpc ListPublicProjects(ListPublicProjectsRequest) returns (ListPublicProjectsResponse);
 
   // Участники проекта
@@ -334,7 +342,7 @@ service Projects {
   rpc ListProjectJoinRequestDetails(ListProjectJoinRequestDetailsRequest)
       returns (ListProjectJoinRequestDetailsResponse);
 
-  // Менеджер проекта одобряет заявку: создаём project_member и помечаем request approved
+  // Менеджер проекта одобряет заявку: создаем project_member и помечаем request approved
   rpc ApproveProjectJoinRequest(ApproveProjectJoinRequestRequest) returns (ProjectJoinRequest);
 
   // Менеджер проекта отклоняет заявку
@@ -362,7 +370,7 @@ service Projects {
   // Менеджер проекта отзывает pending приглашение
   rpc RevokeProjectInvitation(RevokeProjectInvitationRequest) returns (ProjectInvitation);
 
-  // Кандидат смотрит своё приглашение в конкретный проект
+  // Кандидат смотрит свое приглашение в конкретный проект
   rpc GetMyProjectInvitation(GetMyProjectInvitationRequest)
       returns (GetMyProjectInvitationResponse);
 
@@ -375,7 +383,7 @@ service Projects {
       returns (ListMyProjectInvitationsResponse);
 
   // Кандидат принимает приглашение:
-  // создаём project_member и помечаем invitation accepted
+  // создаем project_member и помечаем invitation accepted
   rpc AcceptProjectInvitation(AcceptProjectInvitationRequest) returns (ProjectInvitation);
 
   // Кандидат отклоняет приглашение
@@ -384,6 +392,17 @@ service Projects {
   // Список проектов, в которые текущий пользователь может приглашать кандидатов
   rpc ListMyInvitableProjects(ListMyInvitableProjectsRequest)
       returns (ListMyInvitableProjectsResponse);
+
+  // Полностью заменить требования проекта по тестам
+  // Если список пустой => очистить все требования
+  // Доступ: только тот, кто может управлять проектом
+  rpc SetProjectAssessmentRequirements(SetProjectAssessmentRequirementsRequest) returns (Project);
+
+  // Проверка, может ли текущий пользователь подать заявку на вступление
+  // Используется фронтом перед RequestJoinProject
+  // чтобы показать модалку с недостающими тестами / уровнями
+  rpc GetMyProjectJoinEligibility(GetMyProjectJoinEligibilityRequest)
+      returns (GetMyProjectJoinEligibilityResponse);
 }
 
 message CreateProjectRequest {
@@ -580,6 +599,92 @@ message SetProjectOpenRequest {
 message ProjectSkill {
   string id = 1;
   string name = 2;
+}
+
+enum ProjectAssessmentMode {
+  PROJECT_ASSESSMENT_MODE_UNSPECIFIED = 0;
+  PROJECT_ASSESSMENT_MODE_SUBTOPIC = 1;
+  PROJECT_ASSESSMENT_MODE_GLOBAL = 2;
+}
+
+// Read-модель требования проекта
+message ProjectAssessmentRequirement {
+  int64 assessment_id = 1;
+  string assessment_code = 2;
+  string assessment_title = 3;
+
+  int64 subject_id = 4;
+  string subject_code = 5;
+  string subject_title = 6;
+
+  ProjectAssessmentMode mode = 7;
+
+  // Минимальный уровень, который нужен проекту: 1..5
+  int32 min_level = 8;
+}
+
+message ProjectAssessmentRequirementInput {
+  int64 assessment_id = 1;
+  int32 min_level = 2; // 1..5
+}
+
+// Детализация одной проверки требования проекта для текущего пользователя
+// Нужна для модалки - чего не хватает для вступления
+message ProjectAssessmentRequirementCheck {
+  ProjectAssessmentRequirement requirement = 1;
+
+  // Есть ли вообще сохраненный результат по этому тесту в профиле пользователя
+  bool has_saved_result = 2;
+
+  // Текущий сохраненный уровень пользователя по этому тесту
+  // 0 => результата нет
+  int32 current_level = 3;
+
+  // Выполняет ли пользователь требование:
+  // has_saved_result == true && current_level >= requirement.min_level
+  bool meets_requirement = 4;
+
+  // Удобные флаги для фронта:
+  // нет результата => показать кнопку/ссылку пройти тест
+  bool needs_pass_test = 5;
+
+  // результат есть, но уровень ниже нужного => показать кнопку/ссылку улучшить результат
+  bool needs_improve_level = 6;
+}
+
+// Ответ для precheck перед RequestJoinProject
+// Фронт по нему поймет:
+// - можно ли отправлять заявку
+// - каких тестов не хватает
+// - где уровень ниже требуемого
+message GetMyProjectJoinEligibilityResponse {
+  string project_id = 1;
+
+  // true => можно вызывать RequestJoinProject
+  // false => нужно сначала закрыть недостающие требования
+  bool can_request_join = 2;
+
+  int32 total_requirements_count = 3;
+  int32 matched_requirements_count = 4;
+
+  repeated ProjectAssessmentRequirementCheck checks = 5;
+}
+
+// Полная замена требований проекта
+// Если requirements пустой => очистить все требования проекта
+message SetProjectAssessmentRequirementsRequest {
+  string project_id = 1;
+
+  // Полный новый набор требований проекта
+  // Backend-валидация:
+  // - максимум 10
+  // - без дублей по assessment_id
+  // - min_level только 1..5
+  repeated ProjectAssessmentRequirementInput requirements = 2;
+}
+
+message GetMyProjectJoinEligibilityRequest {
+  string project_id = 1;
 }
 
 message ListProjectJoinRequestDetailsRequest {

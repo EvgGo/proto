@@ -337,6 +337,55 @@ func (SortOrder) EnumDescriptor() ([]byte, []int) {
 	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{5}
 }
 
+type ProjectAssessmentMode int32
+
+const (
+	ProjectAssessmentMode_PROJECT_ASSESSMENT_MODE_UNSPECIFIED ProjectAssessmentMode = 0
+	ProjectAssessmentMode_PROJECT_ASSESSMENT_MODE_SUBTOPIC    ProjectAssessmentMode = 1
+	ProjectAssessmentMode_PROJECT_ASSESSMENT_MODE_GLOBAL      ProjectAssessmentMode = 2
+)
+
+// Enum value maps for ProjectAssessmentMode.
+var (
+	ProjectAssessmentMode_name = map[int32]string{
+		0: "PROJECT_ASSESSMENT_MODE_UNSPECIFIED",
+		1: "PROJECT_ASSESSMENT_MODE_SUBTOPIC",
+		2: "PROJECT_ASSESSMENT_MODE_GLOBAL",
+	}
+	ProjectAssessmentMode_value = map[string]int32{
+		"PROJECT_ASSESSMENT_MODE_UNSPECIFIED": 0,
+		"PROJECT_ASSESSMENT_MODE_SUBTOPIC":    1,
+		"PROJECT_ASSESSMENT_MODE_GLOBAL":      2,
+	}
+)
+
+func (x ProjectAssessmentMode) Enum() *ProjectAssessmentMode {
+	p := new(ProjectAssessmentMode)
+	*p = x
+	return p
+}
+
+func (x ProjectAssessmentMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ProjectAssessmentMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_teamAndProjects_teamAndProjects_proto_enumTypes[6].Descriptor()
+}
+
+func (ProjectAssessmentMode) Type() protoreflect.EnumType {
+	return &file_teamAndProjects_teamAndProjects_proto_enumTypes[6]
+}
+
+func (x ProjectAssessmentMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ProjectAssessmentMode.Descriptor instead.
+func (ProjectAssessmentMode) EnumDescriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{6}
+}
+
 type Date struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Year          int32                  `protobuf:"varint,1,opt,name=year,proto3" json:"year,omitempty"`   // e.g. 2026
@@ -713,23 +762,26 @@ func (x *TeamMember) GetRights() *TeamRights {
 }
 
 type Project struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                                // UUID
-	TeamId        string                 `protobuf:"bytes,2,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`          // UUID
-	CreatorId     string                 `protobuf:"bytes,3,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"` // UUID
-	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	Status        ProjectStatus          `protobuf:"varint,6,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"`
-	IsOpen        bool                   `protobuf:"varint,7,opt,name=is_open,json=isOpen,proto3" json:"is_open,omitempty"`
-	StartedAt     *Date                  `protobuf:"bytes,8,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
-	FinishedAt    *Date                  `protobuf:"bytes,9,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"` // может быть нулевой
-	CreatedAt     *Date                  `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *Date                  `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	SkillIds      []string               `protobuf:"bytes,12,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"` // требуемые проекту skills, max 60
-	Skills        []*ProjectSkill        `protobuf:"bytes,13,rep,name=skills,proto3" json:"skills,omitempty"`
-	MyRights      *ProjectRights         `protobuf:"bytes,14,opt,name=my_rights,json=myRights,proto3" json:"my_rights,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Id          string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                                // UUID
+	TeamId      string                 `protobuf:"bytes,2,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`          // UUID
+	CreatorId   string                 `protobuf:"bytes,3,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"` // UUID
+	Name        string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	Description string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	Status      ProjectStatus          `protobuf:"varint,6,opt,name=status,proto3,enum=workspace.v1.ProjectStatus" json:"status,omitempty"`
+	IsOpen      bool                   `protobuf:"varint,7,opt,name=is_open,json=isOpen,proto3" json:"is_open,omitempty"`
+	StartedAt   *Date                  `protobuf:"bytes,8,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	FinishedAt  *Date                  `protobuf:"bytes,9,opt,name=finished_at,json=finishedAt,proto3,oneof" json:"finished_at,omitempty"` // может быть нулевой
+	CreatedAt   *Date                  `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt   *Date                  `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	SkillIds    []string               `protobuf:"bytes,12,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"` // требуемые проекту skills, max 60
+	Skills      []*ProjectSkill        `protobuf:"bytes,13,rep,name=skills,proto3" json:"skills,omitempty"`
+	MyRights    *ProjectRights         `protobuf:"bytes,14,opt,name=my_rights,json=myRights,proto3" json:"my_rights,omitempty"`
+	// Требования проекта по тестированию
+	// Пользователь может вступить в проект только если закрыл эти требования
+	AssessmentRequirements []*ProjectAssessmentRequirement `protobuf:"bytes,15,rep,name=assessment_requirements,json=assessmentRequirements,proto3" json:"assessment_requirements,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *Project) Reset() {
@@ -860,6 +912,13 @@ func (x *Project) GetMyRights() *ProjectRights {
 	return nil
 }
 
+func (x *Project) GetAssessmentRequirements() []*ProjectAssessmentRequirement {
+	if x != nil {
+		return x.AssessmentRequirements
+	}
+	return nil
+}
+
 type ProjectPublic struct {
 	state                    protoimpl.MessageState `protogen:"open.v1"`
 	Id                       string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                       // UUID
@@ -874,8 +933,11 @@ type ProjectPublic struct {
 	SkillIds                 []string               `protobuf:"bytes,10,rep,name=skill_ids,json=skillIds,proto3" json:"skill_ids,omitempty"` // skills проекта для публичного списка
 	Skills                   []*ProjectSkill        `protobuf:"bytes,11,rep,name=skills,proto3" json:"skills,omitempty"`
 	ProfileSkillMatchPercent *int32                 `protobuf:"varint,12,opt,name=profile_skill_match_percent,json=profileSkillMatchPercent,proto3,oneof" json:"profile_skill_match_percent,omitempty"`
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
+	// Публичные требования проекта по тестированию
+	// Нужны, чтобы кандидат сразу видел, какие тесты и уровни требуются
+	AssessmentRequirements []*ProjectAssessmentRequirement `protobuf:"bytes,13,rep,name=assessment_requirements,json=assessmentRequirements,proto3" json:"assessment_requirements,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *ProjectPublic) Reset() {
@@ -990,6 +1052,13 @@ func (x *ProjectPublic) GetProfileSkillMatchPercent() int32 {
 		return *x.ProfileSkillMatchPercent
 	}
 	return 0
+}
+
+func (x *ProjectPublic) GetAssessmentRequirements() []*ProjectAssessmentRequirement {
+	if x != nil {
+		return x.AssessmentRequirements
+	}
+	return nil
 }
 
 type ProjectMember struct {
@@ -3447,6 +3516,440 @@ func (x *ProjectSkill) GetName() string {
 	return ""
 }
 
+// Read-модель требования проекта
+type ProjectAssessmentRequirement struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	AssessmentId    int64                  `protobuf:"varint,1,opt,name=assessment_id,json=assessmentId,proto3" json:"assessment_id,omitempty"`
+	AssessmentCode  string                 `protobuf:"bytes,2,opt,name=assessment_code,json=assessmentCode,proto3" json:"assessment_code,omitempty"`
+	AssessmentTitle string                 `protobuf:"bytes,3,opt,name=assessment_title,json=assessmentTitle,proto3" json:"assessment_title,omitempty"`
+	SubjectId       int64                  `protobuf:"varint,4,opt,name=subject_id,json=subjectId,proto3" json:"subject_id,omitempty"`
+	SubjectCode     string                 `protobuf:"bytes,5,opt,name=subject_code,json=subjectCode,proto3" json:"subject_code,omitempty"`
+	SubjectTitle    string                 `protobuf:"bytes,6,opt,name=subject_title,json=subjectTitle,proto3" json:"subject_title,omitempty"`
+	Mode            ProjectAssessmentMode  `protobuf:"varint,7,opt,name=mode,proto3,enum=workspace.v1.ProjectAssessmentMode" json:"mode,omitempty"`
+	// Минимальный уровень, который нужен проекту: 1..5
+	MinLevel      int32 `protobuf:"varint,8,opt,name=min_level,json=minLevel,proto3" json:"min_level,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProjectAssessmentRequirement) Reset() {
+	*x = ProjectAssessmentRequirement{}
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProjectAssessmentRequirement) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProjectAssessmentRequirement) ProtoMessage() {}
+
+func (x *ProjectAssessmentRequirement) ProtoReflect() protoreflect.Message {
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProjectAssessmentRequirement.ProtoReflect.Descriptor instead.
+func (*ProjectAssessmentRequirement) Descriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *ProjectAssessmentRequirement) GetAssessmentId() int64 {
+	if x != nil {
+		return x.AssessmentId
+	}
+	return 0
+}
+
+func (x *ProjectAssessmentRequirement) GetAssessmentCode() string {
+	if x != nil {
+		return x.AssessmentCode
+	}
+	return ""
+}
+
+func (x *ProjectAssessmentRequirement) GetAssessmentTitle() string {
+	if x != nil {
+		return x.AssessmentTitle
+	}
+	return ""
+}
+
+func (x *ProjectAssessmentRequirement) GetSubjectId() int64 {
+	if x != nil {
+		return x.SubjectId
+	}
+	return 0
+}
+
+func (x *ProjectAssessmentRequirement) GetSubjectCode() string {
+	if x != nil {
+		return x.SubjectCode
+	}
+	return ""
+}
+
+func (x *ProjectAssessmentRequirement) GetSubjectTitle() string {
+	if x != nil {
+		return x.SubjectTitle
+	}
+	return ""
+}
+
+func (x *ProjectAssessmentRequirement) GetMode() ProjectAssessmentMode {
+	if x != nil {
+		return x.Mode
+	}
+	return ProjectAssessmentMode_PROJECT_ASSESSMENT_MODE_UNSPECIFIED
+}
+
+func (x *ProjectAssessmentRequirement) GetMinLevel() int32 {
+	if x != nil {
+		return x.MinLevel
+	}
+	return 0
+}
+
+type ProjectAssessmentRequirementInput struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AssessmentId  int64                  `protobuf:"varint,1,opt,name=assessment_id,json=assessmentId,proto3" json:"assessment_id,omitempty"`
+	MinLevel      int32                  `protobuf:"varint,2,opt,name=min_level,json=minLevel,proto3" json:"min_level,omitempty"` // 1..5
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProjectAssessmentRequirementInput) Reset() {
+	*x = ProjectAssessmentRequirementInput{}
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProjectAssessmentRequirementInput) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProjectAssessmentRequirementInput) ProtoMessage() {}
+
+func (x *ProjectAssessmentRequirementInput) ProtoReflect() protoreflect.Message {
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProjectAssessmentRequirementInput.ProtoReflect.Descriptor instead.
+func (*ProjectAssessmentRequirementInput) Descriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *ProjectAssessmentRequirementInput) GetAssessmentId() int64 {
+	if x != nil {
+		return x.AssessmentId
+	}
+	return 0
+}
+
+func (x *ProjectAssessmentRequirementInput) GetMinLevel() int32 {
+	if x != nil {
+		return x.MinLevel
+	}
+	return 0
+}
+
+// Детализация одной проверки требования проекта для текущего пользователя
+// Нужна для модалки - чего не хватает для вступления
+type ProjectAssessmentRequirementCheck struct {
+	state       protoimpl.MessageState        `protogen:"open.v1"`
+	Requirement *ProjectAssessmentRequirement `protobuf:"bytes,1,opt,name=requirement,proto3" json:"requirement,omitempty"`
+	// Есть ли вообще сохраненный результат по этому тесту в профиле пользователя
+	HasSavedResult bool `protobuf:"varint,2,opt,name=has_saved_result,json=hasSavedResult,proto3" json:"has_saved_result,omitempty"`
+	// Текущий сохраненный уровень пользователя по этому тесту
+	// 0 => результата нет
+	CurrentLevel int32 `protobuf:"varint,3,opt,name=current_level,json=currentLevel,proto3" json:"current_level,omitempty"`
+	// Выполняет ли пользователь требование:
+	// has_saved_result == true && current_level >= requirement.min_level
+	MeetsRequirement bool `protobuf:"varint,4,opt,name=meets_requirement,json=meetsRequirement,proto3" json:"meets_requirement,omitempty"`
+	// Удобные флаги для фронта:
+	// нет результата => показать кнопку/ссылку пройти тест
+	NeedsPassTest bool `protobuf:"varint,5,opt,name=needs_pass_test,json=needsPassTest,proto3" json:"needs_pass_test,omitempty"`
+	// результат есть, но уровень ниже нужного => показать кнопку/ссылку улучшить результат
+	NeedsImproveLevel bool `protobuf:"varint,6,opt,name=needs_improve_level,json=needsImproveLevel,proto3" json:"needs_improve_level,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *ProjectAssessmentRequirementCheck) Reset() {
+	*x = ProjectAssessmentRequirementCheck{}
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProjectAssessmentRequirementCheck) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProjectAssessmentRequirementCheck) ProtoMessage() {}
+
+func (x *ProjectAssessmentRequirementCheck) ProtoReflect() protoreflect.Message {
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProjectAssessmentRequirementCheck.ProtoReflect.Descriptor instead.
+func (*ProjectAssessmentRequirementCheck) Descriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *ProjectAssessmentRequirementCheck) GetRequirement() *ProjectAssessmentRequirement {
+	if x != nil {
+		return x.Requirement
+	}
+	return nil
+}
+
+func (x *ProjectAssessmentRequirementCheck) GetHasSavedResult() bool {
+	if x != nil {
+		return x.HasSavedResult
+	}
+	return false
+}
+
+func (x *ProjectAssessmentRequirementCheck) GetCurrentLevel() int32 {
+	if x != nil {
+		return x.CurrentLevel
+	}
+	return 0
+}
+
+func (x *ProjectAssessmentRequirementCheck) GetMeetsRequirement() bool {
+	if x != nil {
+		return x.MeetsRequirement
+	}
+	return false
+}
+
+func (x *ProjectAssessmentRequirementCheck) GetNeedsPassTest() bool {
+	if x != nil {
+		return x.NeedsPassTest
+	}
+	return false
+}
+
+func (x *ProjectAssessmentRequirementCheck) GetNeedsImproveLevel() bool {
+	if x != nil {
+		return x.NeedsImproveLevel
+	}
+	return false
+}
+
+// Ответ для precheck перед RequestJoinProject
+// Фронт по нему поймет:
+// - можно ли отправлять заявку
+// - каких тестов не хватает
+// - где уровень ниже требуемого
+type GetMyProjectJoinEligibilityResponse struct {
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	ProjectId string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// true => можно вызывать RequestJoinProject
+	// false => нужно сначала закрыть недостающие требования
+	CanRequestJoin           bool                                 `protobuf:"varint,2,opt,name=can_request_join,json=canRequestJoin,proto3" json:"can_request_join,omitempty"`
+	TotalRequirementsCount   int32                                `protobuf:"varint,3,opt,name=total_requirements_count,json=totalRequirementsCount,proto3" json:"total_requirements_count,omitempty"`
+	MatchedRequirementsCount int32                                `protobuf:"varint,4,opt,name=matched_requirements_count,json=matchedRequirementsCount,proto3" json:"matched_requirements_count,omitempty"`
+	Checks                   []*ProjectAssessmentRequirementCheck `protobuf:"bytes,5,rep,name=checks,proto3" json:"checks,omitempty"`
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) Reset() {
+	*x = GetMyProjectJoinEligibilityResponse{}
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMyProjectJoinEligibilityResponse) ProtoMessage() {}
+
+func (x *GetMyProjectJoinEligibilityResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMyProjectJoinEligibilityResponse.ProtoReflect.Descriptor instead.
+func (*GetMyProjectJoinEligibilityResponse) Descriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) GetCanRequestJoin() bool {
+	if x != nil {
+		return x.CanRequestJoin
+	}
+	return false
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) GetTotalRequirementsCount() int32 {
+	if x != nil {
+		return x.TotalRequirementsCount
+	}
+	return 0
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) GetMatchedRequirementsCount() int32 {
+	if x != nil {
+		return x.MatchedRequirementsCount
+	}
+	return 0
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) GetChecks() []*ProjectAssessmentRequirementCheck {
+	if x != nil {
+		return x.Checks
+	}
+	return nil
+}
+
+// Полная замена требований проекта
+// Если requirements пустой => очистить все требования проекта
+type SetProjectAssessmentRequirementsRequest struct {
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	ProjectId string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	// Полный новый набор требований проекта
+	// Backend-валидация:
+	// - максимум 10
+	// - без дублей по assessment_id
+	// - min_level только 1..5
+	Requirements  []*ProjectAssessmentRequirementInput `protobuf:"bytes,2,rep,name=requirements,proto3" json:"requirements,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetProjectAssessmentRequirementsRequest) Reset() {
+	*x = SetProjectAssessmentRequirementsRequest{}
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetProjectAssessmentRequirementsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetProjectAssessmentRequirementsRequest) ProtoMessage() {}
+
+func (x *SetProjectAssessmentRequirementsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetProjectAssessmentRequirementsRequest.ProtoReflect.Descriptor instead.
+func (*SetProjectAssessmentRequirementsRequest) Descriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *SetProjectAssessmentRequirementsRequest) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *SetProjectAssessmentRequirementsRequest) GetRequirements() []*ProjectAssessmentRequirementInput {
+	if x != nil {
+		return x.Requirements
+	}
+	return nil
+}
+
+type GetMyProjectJoinEligibilityRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProjectId     string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMyProjectJoinEligibilityRequest) Reset() {
+	*x = GetMyProjectJoinEligibilityRequest{}
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMyProjectJoinEligibilityRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMyProjectJoinEligibilityRequest) ProtoMessage() {}
+
+func (x *GetMyProjectJoinEligibilityRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMyProjectJoinEligibilityRequest.ProtoReflect.Descriptor instead.
+func (*GetMyProjectJoinEligibilityRequest) Descriptor() ([]byte, []int) {
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *GetMyProjectJoinEligibilityRequest) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
 type ListProjectJoinRequestDetailsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProjectId     string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
@@ -3459,7 +3962,7 @@ type ListProjectJoinRequestDetailsRequest struct {
 
 func (x *ListProjectJoinRequestDetailsRequest) Reset() {
 	*x = ListProjectJoinRequestDetailsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[44]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3471,7 +3974,7 @@ func (x *ListProjectJoinRequestDetailsRequest) String() string {
 func (*ListProjectJoinRequestDetailsRequest) ProtoMessage() {}
 
 func (x *ListProjectJoinRequestDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[44]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3484,7 +3987,7 @@ func (x *ListProjectJoinRequestDetailsRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use ListProjectJoinRequestDetailsRequest.ProtoReflect.Descriptor instead.
 func (*ListProjectJoinRequestDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{44}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *ListProjectJoinRequestDetailsRequest) GetProjectId() string {
@@ -3528,7 +4031,7 @@ type CandidatePublicSummary struct {
 
 func (x *CandidatePublicSummary) Reset() {
 	*x = CandidatePublicSummary{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[45]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3540,7 +4043,7 @@ func (x *CandidatePublicSummary) String() string {
 func (*CandidatePublicSummary) ProtoMessage() {}
 
 func (x *CandidatePublicSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[45]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3553,7 +4056,7 @@ func (x *CandidatePublicSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CandidatePublicSummary.ProtoReflect.Descriptor instead.
 func (*CandidatePublicSummary) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{45}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *CandidatePublicSummary) GetUserId() string {
@@ -3604,7 +4107,7 @@ type SkillMatchSummary struct {
 
 func (x *SkillMatchSummary) Reset() {
 	*x = SkillMatchSummary{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[46]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3616,7 +4119,7 @@ func (x *SkillMatchSummary) String() string {
 func (*SkillMatchSummary) ProtoMessage() {}
 
 func (x *SkillMatchSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[46]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3629,7 +4132,7 @@ func (x *SkillMatchSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SkillMatchSummary.ProtoReflect.Descriptor instead.
 func (*SkillMatchSummary) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{46}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *SkillMatchSummary) GetMatchPercent() int32 {
@@ -3686,7 +4189,7 @@ type ProjectJoinRequestDetails struct {
 
 func (x *ProjectJoinRequestDetails) Reset() {
 	*x = ProjectJoinRequestDetails{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[47]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3698,7 +4201,7 @@ func (x *ProjectJoinRequestDetails) String() string {
 func (*ProjectJoinRequestDetails) ProtoMessage() {}
 
 func (x *ProjectJoinRequestDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[47]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3711,7 +4214,7 @@ func (x *ProjectJoinRequestDetails) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectJoinRequestDetails.ProtoReflect.Descriptor instead.
 func (*ProjectJoinRequestDetails) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{47}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *ProjectJoinRequestDetails) GetId() string {
@@ -3801,7 +4304,7 @@ type ListProjectJoinRequestDetailsResponse struct {
 
 func (x *ListProjectJoinRequestDetailsResponse) Reset() {
 	*x = ListProjectJoinRequestDetailsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[48]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3813,7 +4316,7 @@ func (x *ListProjectJoinRequestDetailsResponse) String() string {
 func (*ListProjectJoinRequestDetailsResponse) ProtoMessage() {}
 
 func (x *ListProjectJoinRequestDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[48]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3826,7 +4329,7 @@ func (x *ListProjectJoinRequestDetailsResponse) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use ListProjectJoinRequestDetailsResponse.ProtoReflect.Descriptor instead.
 func (*ListProjectJoinRequestDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{48}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *ListProjectJoinRequestDetailsResponse) GetRequests() []*ProjectJoinRequestDetails {
@@ -3852,7 +4355,7 @@ type GetMyProjectJoinRequestRequest struct {
 
 func (x *GetMyProjectJoinRequestRequest) Reset() {
 	*x = GetMyProjectJoinRequestRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[49]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3864,7 +4367,7 @@ func (x *GetMyProjectJoinRequestRequest) String() string {
 func (*GetMyProjectJoinRequestRequest) ProtoMessage() {}
 
 func (x *GetMyProjectJoinRequestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[49]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3877,7 +4380,7 @@ func (x *GetMyProjectJoinRequestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMyProjectJoinRequestRequest.ProtoReflect.Descriptor instead.
 func (*GetMyProjectJoinRequestRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{49}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *GetMyProjectJoinRequestRequest) GetProjectId() string {
@@ -3896,7 +4399,7 @@ type GetMyProjectJoinRequestResponse struct {
 
 func (x *GetMyProjectJoinRequestResponse) Reset() {
 	*x = GetMyProjectJoinRequestResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[50]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3908,7 +4411,7 @@ func (x *GetMyProjectJoinRequestResponse) String() string {
 func (*GetMyProjectJoinRequestResponse) ProtoMessage() {}
 
 func (x *GetMyProjectJoinRequestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[50]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3921,7 +4424,7 @@ func (x *GetMyProjectJoinRequestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMyProjectJoinRequestResponse.ProtoReflect.Descriptor instead.
 func (*GetMyProjectJoinRequestResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{50}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *GetMyProjectJoinRequestResponse) GetRequest() *ProjectJoinRequest {
@@ -3942,7 +4445,7 @@ type ListMyProjectJoinRequestsRequest struct {
 
 func (x *ListMyProjectJoinRequestsRequest) Reset() {
 	*x = ListMyProjectJoinRequestsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[51]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3954,7 +4457,7 @@ func (x *ListMyProjectJoinRequestsRequest) String() string {
 func (*ListMyProjectJoinRequestsRequest) ProtoMessage() {}
 
 func (x *ListMyProjectJoinRequestsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[51]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3967,7 +4470,7 @@ func (x *ListMyProjectJoinRequestsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyProjectJoinRequestsRequest.ProtoReflect.Descriptor instead.
 func (*ListMyProjectJoinRequestsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{51}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *ListMyProjectJoinRequestsRequest) GetStatus() JoinRequestStatus {
@@ -4004,7 +4507,7 @@ type MyProjectJoinRequestItem struct {
 
 func (x *MyProjectJoinRequestItem) Reset() {
 	*x = MyProjectJoinRequestItem{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[52]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4016,7 +4519,7 @@ func (x *MyProjectJoinRequestItem) String() string {
 func (*MyProjectJoinRequestItem) ProtoMessage() {}
 
 func (x *MyProjectJoinRequestItem) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[52]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4029,7 +4532,7 @@ func (x *MyProjectJoinRequestItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MyProjectJoinRequestItem.ProtoReflect.Descriptor instead.
 func (*MyProjectJoinRequestItem) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{52}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *MyProjectJoinRequestItem) GetProjectId() string {
@@ -4077,7 +4580,7 @@ type ListMyProjectJoinRequestsResponse struct {
 
 func (x *ListMyProjectJoinRequestsResponse) Reset() {
 	*x = ListMyProjectJoinRequestsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[53]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4089,7 +4592,7 @@ func (x *ListMyProjectJoinRequestsResponse) String() string {
 func (*ListMyProjectJoinRequestsResponse) ProtoMessage() {}
 
 func (x *ListMyProjectJoinRequestsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[53]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4102,7 +4605,7 @@ func (x *ListMyProjectJoinRequestsResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use ListMyProjectJoinRequestsResponse.ProtoReflect.Descriptor instead.
 func (*ListMyProjectJoinRequestsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{53}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *ListMyProjectJoinRequestsResponse) GetItems() []*MyProjectJoinRequestItem {
@@ -4130,7 +4633,7 @@ type InviteUserToProjectRequest struct {
 
 func (x *InviteUserToProjectRequest) Reset() {
 	*x = InviteUserToProjectRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[54]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4142,7 +4645,7 @@ func (x *InviteUserToProjectRequest) String() string {
 func (*InviteUserToProjectRequest) ProtoMessage() {}
 
 func (x *InviteUserToProjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[54]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4155,7 +4658,7 @@ func (x *InviteUserToProjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InviteUserToProjectRequest.ProtoReflect.Descriptor instead.
 func (*InviteUserToProjectRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{54}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *InviteUserToProjectRequest) GetProjectId() string {
@@ -4191,7 +4694,7 @@ type ListProjectInvitationsRequest struct {
 
 func (x *ListProjectInvitationsRequest) Reset() {
 	*x = ListProjectInvitationsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[55]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4203,7 +4706,7 @@ func (x *ListProjectInvitationsRequest) String() string {
 func (*ListProjectInvitationsRequest) ProtoMessage() {}
 
 func (x *ListProjectInvitationsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[55]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4216,7 +4719,7 @@ func (x *ListProjectInvitationsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectInvitationsRequest.ProtoReflect.Descriptor instead.
 func (*ListProjectInvitationsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{55}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *ListProjectInvitationsRequest) GetProjectId() string {
@@ -4257,7 +4760,7 @@ type ListProjectInvitationsResponse struct {
 
 func (x *ListProjectInvitationsResponse) Reset() {
 	*x = ListProjectInvitationsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[56]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4269,7 +4772,7 @@ func (x *ListProjectInvitationsResponse) String() string {
 func (*ListProjectInvitationsResponse) ProtoMessage() {}
 
 func (x *ListProjectInvitationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[56]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4282,7 +4785,7 @@ func (x *ListProjectInvitationsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectInvitationsResponse.ProtoReflect.Descriptor instead.
 func (*ListProjectInvitationsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{56}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *ListProjectInvitationsResponse) GetInvitations() []*ProjectInvitation {
@@ -4311,7 +4814,7 @@ type ListProjectInvitationDetailsRequest struct {
 
 func (x *ListProjectInvitationDetailsRequest) Reset() {
 	*x = ListProjectInvitationDetailsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[57]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4323,7 +4826,7 @@ func (x *ListProjectInvitationDetailsRequest) String() string {
 func (*ListProjectInvitationDetailsRequest) ProtoMessage() {}
 
 func (x *ListProjectInvitationDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[57]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4336,7 +4839,7 @@ func (x *ListProjectInvitationDetailsRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use ListProjectInvitationDetailsRequest.ProtoReflect.Descriptor instead.
 func (*ListProjectInvitationDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{57}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *ListProjectInvitationDetailsRequest) GetProjectId() string {
@@ -4387,7 +4890,7 @@ type ProjectInvitationDetails struct {
 
 func (x *ProjectInvitationDetails) Reset() {
 	*x = ProjectInvitationDetails{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[58]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4399,7 +4902,7 @@ func (x *ProjectInvitationDetails) String() string {
 func (*ProjectInvitationDetails) ProtoMessage() {}
 
 func (x *ProjectInvitationDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[58]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4412,7 +4915,7 @@ func (x *ProjectInvitationDetails) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectInvitationDetails.ProtoReflect.Descriptor instead.
 func (*ProjectInvitationDetails) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{58}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *ProjectInvitationDetails) GetId() string {
@@ -4509,7 +5012,7 @@ type ListProjectInvitationDetailsResponse struct {
 
 func (x *ListProjectInvitationDetailsResponse) Reset() {
 	*x = ListProjectInvitationDetailsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[59]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4521,7 +5024,7 @@ func (x *ListProjectInvitationDetailsResponse) String() string {
 func (*ListProjectInvitationDetailsResponse) ProtoMessage() {}
 
 func (x *ListProjectInvitationDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[59]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4534,7 +5037,7 @@ func (x *ListProjectInvitationDetailsResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use ListProjectInvitationDetailsResponse.ProtoReflect.Descriptor instead.
 func (*ListProjectInvitationDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{59}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *ListProjectInvitationDetailsResponse) GetInvitations() []*ProjectInvitationDetails {
@@ -4561,7 +5064,7 @@ type RevokeProjectInvitationRequest struct {
 
 func (x *RevokeProjectInvitationRequest) Reset() {
 	*x = RevokeProjectInvitationRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[60]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4573,7 +5076,7 @@ func (x *RevokeProjectInvitationRequest) String() string {
 func (*RevokeProjectInvitationRequest) ProtoMessage() {}
 
 func (x *RevokeProjectInvitationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[60]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4586,7 +5089,7 @@ func (x *RevokeProjectInvitationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeProjectInvitationRequest.ProtoReflect.Descriptor instead.
 func (*RevokeProjectInvitationRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{60}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *RevokeProjectInvitationRequest) GetInvitationId() string {
@@ -4612,7 +5115,7 @@ type GetMyProjectInvitationRequest struct {
 
 func (x *GetMyProjectInvitationRequest) Reset() {
 	*x = GetMyProjectInvitationRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[61]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4624,7 +5127,7 @@ func (x *GetMyProjectInvitationRequest) String() string {
 func (*GetMyProjectInvitationRequest) ProtoMessage() {}
 
 func (x *GetMyProjectInvitationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[61]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4637,7 +5140,7 @@ func (x *GetMyProjectInvitationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMyProjectInvitationRequest.ProtoReflect.Descriptor instead.
 func (*GetMyProjectInvitationRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{61}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *GetMyProjectInvitationRequest) GetProjectId() string {
@@ -4656,7 +5159,7 @@ type GetMyProjectInvitationResponse struct {
 
 func (x *GetMyProjectInvitationResponse) Reset() {
 	*x = GetMyProjectInvitationResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[62]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4668,7 +5171,7 @@ func (x *GetMyProjectInvitationResponse) String() string {
 func (*GetMyProjectInvitationResponse) ProtoMessage() {}
 
 func (x *GetMyProjectInvitationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[62]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4681,7 +5184,7 @@ func (x *GetMyProjectInvitationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMyProjectInvitationResponse.ProtoReflect.Descriptor instead.
 func (*GetMyProjectInvitationResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{62}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *GetMyProjectInvitationResponse) GetInvitation() *ProjectInvitation {
@@ -4702,7 +5205,7 @@ type ListMyProjectInvitationsRequest struct {
 
 func (x *ListMyProjectInvitationsRequest) Reset() {
 	*x = ListMyProjectInvitationsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[63]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4714,7 +5217,7 @@ func (x *ListMyProjectInvitationsRequest) String() string {
 func (*ListMyProjectInvitationsRequest) ProtoMessage() {}
 
 func (x *ListMyProjectInvitationsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[63]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4727,7 +5230,7 @@ func (x *ListMyProjectInvitationsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyProjectInvitationsRequest.ProtoReflect.Descriptor instead.
 func (*ListMyProjectInvitationsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{63}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *ListMyProjectInvitationsRequest) GetStatus() ProjectInvitationStatus {
@@ -4766,7 +5269,7 @@ type MyProjectInvitationItem struct {
 
 func (x *MyProjectInvitationItem) Reset() {
 	*x = MyProjectInvitationItem{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[64]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4778,7 +5281,7 @@ func (x *MyProjectInvitationItem) String() string {
 func (*MyProjectInvitationItem) ProtoMessage() {}
 
 func (x *MyProjectInvitationItem) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[64]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4791,7 +5294,7 @@ func (x *MyProjectInvitationItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MyProjectInvitationItem.ProtoReflect.Descriptor instead.
 func (*MyProjectInvitationItem) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{64}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *MyProjectInvitationItem) GetProjectId() string {
@@ -4853,7 +5356,7 @@ type ListMyProjectInvitationsResponse struct {
 
 func (x *ListMyProjectInvitationsResponse) Reset() {
 	*x = ListMyProjectInvitationsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[65]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4865,7 +5368,7 @@ func (x *ListMyProjectInvitationsResponse) String() string {
 func (*ListMyProjectInvitationsResponse) ProtoMessage() {}
 
 func (x *ListMyProjectInvitationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[65]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4878,7 +5381,7 @@ func (x *ListMyProjectInvitationsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyProjectInvitationsResponse.ProtoReflect.Descriptor instead.
 func (*ListMyProjectInvitationsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{65}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *ListMyProjectInvitationsResponse) GetItems() []*MyProjectInvitationItem {
@@ -4904,7 +5407,7 @@ type AcceptProjectInvitationRequest struct {
 
 func (x *AcceptProjectInvitationRequest) Reset() {
 	*x = AcceptProjectInvitationRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[66]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4916,7 +5419,7 @@ func (x *AcceptProjectInvitationRequest) String() string {
 func (*AcceptProjectInvitationRequest) ProtoMessage() {}
 
 func (x *AcceptProjectInvitationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[66]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4929,7 +5432,7 @@ func (x *AcceptProjectInvitationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AcceptProjectInvitationRequest.ProtoReflect.Descriptor instead.
 func (*AcceptProjectInvitationRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{66}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *AcceptProjectInvitationRequest) GetInvitationId() string {
@@ -4949,7 +5452,7 @@ type RejectProjectInvitationRequest struct {
 
 func (x *RejectProjectInvitationRequest) Reset() {
 	*x = RejectProjectInvitationRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[67]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4961,7 +5464,7 @@ func (x *RejectProjectInvitationRequest) String() string {
 func (*RejectProjectInvitationRequest) ProtoMessage() {}
 
 func (x *RejectProjectInvitationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[67]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4974,7 +5477,7 @@ func (x *RejectProjectInvitationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectProjectInvitationRequest.ProtoReflect.Descriptor instead.
 func (*RejectProjectInvitationRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{67}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *RejectProjectInvitationRequest) GetInvitationId() string {
@@ -5003,7 +5506,7 @@ type ListMyInvitableProjectsRequest struct {
 
 func (x *ListMyInvitableProjectsRequest) Reset() {
 	*x = ListMyInvitableProjectsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[68]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[74]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5015,7 +5518,7 @@ func (x *ListMyInvitableProjectsRequest) String() string {
 func (*ListMyInvitableProjectsRequest) ProtoMessage() {}
 
 func (x *ListMyInvitableProjectsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[68]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[74]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5028,7 +5531,7 @@ func (x *ListMyInvitableProjectsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyInvitableProjectsRequest.ProtoReflect.Descriptor instead.
 func (*ListMyInvitableProjectsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{68}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{74}
 }
 
 func (x *ListMyInvitableProjectsRequest) GetQuery() string {
@@ -5072,7 +5575,7 @@ type InvitableProjectItem struct {
 
 func (x *InvitableProjectItem) Reset() {
 	*x = InvitableProjectItem{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[69]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[75]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5084,7 +5587,7 @@ func (x *InvitableProjectItem) String() string {
 func (*InvitableProjectItem) ProtoMessage() {}
 
 func (x *InvitableProjectItem) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[69]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[75]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5097,7 +5600,7 @@ func (x *InvitableProjectItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InvitableProjectItem.ProtoReflect.Descriptor instead.
 func (*InvitableProjectItem) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{69}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{75}
 }
 
 func (x *InvitableProjectItem) GetProjectId() string {
@@ -5145,7 +5648,7 @@ type ListMyInvitableProjectsResponse struct {
 
 func (x *ListMyInvitableProjectsResponse) Reset() {
 	*x = ListMyInvitableProjectsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[70]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[76]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5157,7 +5660,7 @@ func (x *ListMyInvitableProjectsResponse) String() string {
 func (*ListMyInvitableProjectsResponse) ProtoMessage() {}
 
 func (x *ListMyInvitableProjectsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[70]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[76]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5170,7 +5673,7 @@ func (x *ListMyInvitableProjectsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyInvitableProjectsResponse.ProtoReflect.Descriptor instead.
 func (*ListMyInvitableProjectsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{70}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{76}
 }
 
 func (x *ListMyInvitableProjectsResponse) GetItems() []*InvitableProjectItem {
@@ -5198,7 +5701,7 @@ type UserPublicSummary struct {
 
 func (x *UserPublicSummary) Reset() {
 	*x = UserPublicSummary{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[71]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5210,7 +5713,7 @@ func (x *UserPublicSummary) String() string {
 func (*UserPublicSummary) ProtoMessage() {}
 
 func (x *UserPublicSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[71]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5223,7 +5726,7 @@ func (x *UserPublicSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserPublicSummary.ProtoReflect.Descriptor instead.
 func (*UserPublicSummary) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{71}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *UserPublicSummary) GetUserId() string {
@@ -5265,7 +5768,7 @@ type ProjectInvitationProjectSummary struct {
 
 func (x *ProjectInvitationProjectSummary) Reset() {
 	*x = ProjectInvitationProjectSummary{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[72]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5277,7 +5780,7 @@ func (x *ProjectInvitationProjectSummary) String() string {
 func (*ProjectInvitationProjectSummary) ProtoMessage() {}
 
 func (x *ProjectInvitationProjectSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[72]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5290,7 +5793,7 @@ func (x *ProjectInvitationProjectSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectInvitationProjectSummary.ProtoReflect.Descriptor instead.
 func (*ProjectInvitationProjectSummary) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{72}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *ProjectInvitationProjectSummary) GetId() string {
@@ -5372,7 +5875,7 @@ type GetMyProjectInvitationDetailsRequest struct {
 
 func (x *GetMyProjectInvitationDetailsRequest) Reset() {
 	*x = GetMyProjectInvitationDetailsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[73]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5384,7 +5887,7 @@ func (x *GetMyProjectInvitationDetailsRequest) String() string {
 func (*GetMyProjectInvitationDetailsRequest) ProtoMessage() {}
 
 func (x *GetMyProjectInvitationDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[73]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5397,7 +5900,7 @@ func (x *GetMyProjectInvitationDetailsRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use GetMyProjectInvitationDetailsRequest.ProtoReflect.Descriptor instead.
 func (*GetMyProjectInvitationDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{73}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{79}
 }
 
 func (x *GetMyProjectInvitationDetailsRequest) GetInvitationId() string {
@@ -5419,7 +5922,7 @@ type MyProjectInvitationDetails struct {
 
 func (x *MyProjectInvitationDetails) Reset() {
 	*x = MyProjectInvitationDetails{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[74]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[80]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5431,7 +5934,7 @@ func (x *MyProjectInvitationDetails) String() string {
 func (*MyProjectInvitationDetails) ProtoMessage() {}
 
 func (x *MyProjectInvitationDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[74]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[80]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5444,7 +5947,7 @@ func (x *MyProjectInvitationDetails) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MyProjectInvitationDetails.ProtoReflect.Descriptor instead.
 func (*MyProjectInvitationDetails) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{74}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{80}
 }
 
 func (x *MyProjectInvitationDetails) GetInvitation() *ProjectInvitation {
@@ -5484,7 +5987,7 @@ type GetMyProjectInvitationDetailsResponse struct {
 
 func (x *GetMyProjectInvitationDetailsResponse) Reset() {
 	*x = GetMyProjectInvitationDetailsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[75]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[81]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5496,7 +5999,7 @@ func (x *GetMyProjectInvitationDetailsResponse) String() string {
 func (*GetMyProjectInvitationDetailsResponse) ProtoMessage() {}
 
 func (x *GetMyProjectInvitationDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[75]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[81]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5509,7 +6012,7 @@ func (x *GetMyProjectInvitationDetailsResponse) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use GetMyProjectInvitationDetailsResponse.ProtoReflect.Descriptor instead.
 func (*GetMyProjectInvitationDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{75}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *GetMyProjectInvitationDetailsResponse) GetItem() *MyProjectInvitationDetails {
@@ -5532,7 +6035,7 @@ type ProjectMemberUserSummary struct {
 
 func (x *ProjectMemberUserSummary) Reset() {
 	*x = ProjectMemberUserSummary{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[76]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[82]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5544,7 +6047,7 @@ func (x *ProjectMemberUserSummary) String() string {
 func (*ProjectMemberUserSummary) ProtoMessage() {}
 
 func (x *ProjectMemberUserSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[76]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[82]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5557,7 +6060,7 @@ func (x *ProjectMemberUserSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectMemberUserSummary.ProtoReflect.Descriptor instead.
 func (*ProjectMemberUserSummary) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{76}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *ProjectMemberUserSummary) GetUserId() string {
@@ -5606,7 +6109,7 @@ type ProjectMemberCapabilities struct {
 
 func (x *ProjectMemberCapabilities) Reset() {
 	*x = ProjectMemberCapabilities{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[77]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[83]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5618,7 +6121,7 @@ func (x *ProjectMemberCapabilities) String() string {
 func (*ProjectMemberCapabilities) ProtoMessage() {}
 
 func (x *ProjectMemberCapabilities) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[77]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[83]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5631,7 +6134,7 @@ func (x *ProjectMemberCapabilities) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectMemberCapabilities.ProtoReflect.Descriptor instead.
 func (*ProjectMemberCapabilities) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{77}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *ProjectMemberCapabilities) GetCanEditRights() bool {
@@ -5674,7 +6177,7 @@ type ProjectMemberDetails struct {
 
 func (x *ProjectMemberDetails) Reset() {
 	*x = ProjectMemberDetails{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[78]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[84]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5686,7 +6189,7 @@ func (x *ProjectMemberDetails) String() string {
 func (*ProjectMemberDetails) ProtoMessage() {}
 
 func (x *ProjectMemberDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[78]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[84]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5699,7 +6202,7 @@ func (x *ProjectMemberDetails) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectMemberDetails.ProtoReflect.Descriptor instead.
 func (*ProjectMemberDetails) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{78}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{84}
 }
 
 func (x *ProjectMemberDetails) GetProjectId() string {
@@ -5790,7 +6293,7 @@ type ListProjectMemberDetailsRequest struct {
 
 func (x *ListProjectMemberDetailsRequest) Reset() {
 	*x = ListProjectMemberDetailsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[79]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[85]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5802,7 +6305,7 @@ func (x *ListProjectMemberDetailsRequest) String() string {
 func (*ListProjectMemberDetailsRequest) ProtoMessage() {}
 
 func (x *ListProjectMemberDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[79]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[85]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5815,7 +6318,7 @@ func (x *ListProjectMemberDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectMemberDetailsRequest.ProtoReflect.Descriptor instead.
 func (*ListProjectMemberDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{79}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{85}
 }
 
 func (x *ListProjectMemberDetailsRequest) GetProjectId() string {
@@ -5853,7 +6356,7 @@ type ListProjectMemberDetailsResponse struct {
 
 func (x *ListProjectMemberDetailsResponse) Reset() {
 	*x = ListProjectMemberDetailsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[80]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[86]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5865,7 +6368,7 @@ func (x *ListProjectMemberDetailsResponse) String() string {
 func (*ListProjectMemberDetailsResponse) ProtoMessage() {}
 
 func (x *ListProjectMemberDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[80]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[86]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5878,7 +6381,7 @@ func (x *ListProjectMemberDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectMemberDetailsResponse.ProtoReflect.Descriptor instead.
 func (*ListProjectMemberDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{80}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{86}
 }
 
 func (x *ListProjectMemberDetailsResponse) GetMembers() []*ProjectMemberDetails {
@@ -5924,7 +6427,7 @@ type TeamRights struct {
 
 func (x *TeamRights) Reset() {
 	*x = TeamRights{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[81]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[87]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5936,7 +6439,7 @@ func (x *TeamRights) String() string {
 func (*TeamRights) ProtoMessage() {}
 
 func (x *TeamRights) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[81]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[87]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5949,7 +6452,7 @@ func (x *TeamRights) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TeamRights.ProtoReflect.Descriptor instead.
 func (*TeamRights) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{81}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{87}
 }
 
 func (x *TeamRights) GetRootRights() bool {
@@ -6016,7 +6519,7 @@ type TeamCapabilities struct {
 
 func (x *TeamCapabilities) Reset() {
 	*x = TeamCapabilities{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[82]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[88]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6028,7 +6531,7 @@ func (x *TeamCapabilities) String() string {
 func (*TeamCapabilities) ProtoMessage() {}
 
 func (x *TeamCapabilities) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[82]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[88]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6041,7 +6544,7 @@ func (x *TeamCapabilities) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TeamCapabilities.ProtoReflect.Descriptor instead.
 func (*TeamCapabilities) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{82}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{88}
 }
 
 func (x *TeamCapabilities) GetCanUpdateTeam() bool {
@@ -6106,7 +6609,7 @@ type TeamMemberUserSummary struct {
 
 func (x *TeamMemberUserSummary) Reset() {
 	*x = TeamMemberUserSummary{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[83]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[89]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6118,7 +6621,7 @@ func (x *TeamMemberUserSummary) String() string {
 func (*TeamMemberUserSummary) ProtoMessage() {}
 
 func (x *TeamMemberUserSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[83]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[89]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6131,7 +6634,7 @@ func (x *TeamMemberUserSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TeamMemberUserSummary.ProtoReflect.Descriptor instead.
 func (*TeamMemberUserSummary) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{83}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{89}
 }
 
 func (x *TeamMemberUserSummary) GetUserId() string {
@@ -6181,7 +6684,7 @@ type TeamMemberCapabilities struct {
 
 func (x *TeamMemberCapabilities) Reset() {
 	*x = TeamMemberCapabilities{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[84]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[90]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6193,7 +6696,7 @@ func (x *TeamMemberCapabilities) String() string {
 func (*TeamMemberCapabilities) ProtoMessage() {}
 
 func (x *TeamMemberCapabilities) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[84]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[90]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6206,7 +6709,7 @@ func (x *TeamMemberCapabilities) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TeamMemberCapabilities.ProtoReflect.Descriptor instead.
 func (*TeamMemberCapabilities) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{84}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{90}
 }
 
 func (x *TeamMemberCapabilities) GetCanUpdateDuties() bool {
@@ -6248,7 +6751,7 @@ type TeamMemberProjectSummary struct {
 
 func (x *TeamMemberProjectSummary) Reset() {
 	*x = TeamMemberProjectSummary{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[85]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[91]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6260,7 +6763,7 @@ func (x *TeamMemberProjectSummary) String() string {
 func (*TeamMemberProjectSummary) ProtoMessage() {}
 
 func (x *TeamMemberProjectSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[85]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[91]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6273,7 +6776,7 @@ func (x *TeamMemberProjectSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TeamMemberProjectSummary.ProtoReflect.Descriptor instead.
 func (*TeamMemberProjectSummary) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{85}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{91}
 }
 
 func (x *TeamMemberProjectSummary) GetProjectId() string {
@@ -6316,7 +6819,7 @@ type TeamMemberDetails struct {
 
 func (x *TeamMemberDetails) Reset() {
 	*x = TeamMemberDetails{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[86]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6328,7 +6831,7 @@ func (x *TeamMemberDetails) String() string {
 func (*TeamMemberDetails) ProtoMessage() {}
 
 func (x *TeamMemberDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[86]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6341,7 +6844,7 @@ func (x *TeamMemberDetails) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TeamMemberDetails.ProtoReflect.Descriptor instead.
 func (*TeamMemberDetails) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{86}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *TeamMemberDetails) GetTeamId() string {
@@ -6434,7 +6937,7 @@ type ListTeamMemberDetailsRequest struct {
 
 func (x *ListTeamMemberDetailsRequest) Reset() {
 	*x = ListTeamMemberDetailsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[87]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6446,7 +6949,7 @@ func (x *ListTeamMemberDetailsRequest) String() string {
 func (*ListTeamMemberDetailsRequest) ProtoMessage() {}
 
 func (x *ListTeamMemberDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[87]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6459,7 +6962,7 @@ func (x *ListTeamMemberDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTeamMemberDetailsRequest.ProtoReflect.Descriptor instead.
 func (*ListTeamMemberDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{87}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *ListTeamMemberDetailsRequest) GetTeamId() string {
@@ -6509,7 +7012,7 @@ type ListTeamMemberDetailsResponse struct {
 
 func (x *ListTeamMemberDetailsResponse) Reset() {
 	*x = ListTeamMemberDetailsResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[88]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6521,7 +7024,7 @@ func (x *ListTeamMemberDetailsResponse) String() string {
 func (*ListTeamMemberDetailsResponse) ProtoMessage() {}
 
 func (x *ListTeamMemberDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[88]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6534,7 +7037,7 @@ func (x *ListTeamMemberDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTeamMemberDetailsResponse.ProtoReflect.Descriptor instead.
 func (*ListTeamMemberDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{88}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *ListTeamMemberDetailsResponse) GetMembers() []*TeamMemberDetails {
@@ -6576,7 +7079,7 @@ type UpdateTeamMemberDutiesRequest struct {
 
 func (x *UpdateTeamMemberDutiesRequest) Reset() {
 	*x = UpdateTeamMemberDutiesRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[89]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6588,7 +7091,7 @@ func (x *UpdateTeamMemberDutiesRequest) String() string {
 func (*UpdateTeamMemberDutiesRequest) ProtoMessage() {}
 
 func (x *UpdateTeamMemberDutiesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[89]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6601,7 +7104,7 @@ func (x *UpdateTeamMemberDutiesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTeamMemberDutiesRequest.ProtoReflect.Descriptor instead.
 func (*UpdateTeamMemberDutiesRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{89}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *UpdateTeamMemberDutiesRequest) GetTeamId() string {
@@ -6642,7 +7145,7 @@ type UpdateTeamMemberRightsRequest struct {
 
 func (x *UpdateTeamMemberRightsRequest) Reset() {
 	*x = UpdateTeamMemberRightsRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[90]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6654,7 +7157,7 @@ func (x *UpdateTeamMemberRightsRequest) String() string {
 func (*UpdateTeamMemberRightsRequest) ProtoMessage() {}
 
 func (x *UpdateTeamMemberRightsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[90]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6667,7 +7170,7 @@ func (x *UpdateTeamMemberRightsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTeamMemberRightsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateTeamMemberRightsRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{90}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *UpdateTeamMemberRightsRequest) GetTeamId() string {
@@ -6745,7 +7248,7 @@ type AssignTeamMemberToProjectRequest struct {
 
 func (x *AssignTeamMemberToProjectRequest) Reset() {
 	*x = AssignTeamMemberToProjectRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[91]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6757,7 +7260,7 @@ func (x *AssignTeamMemberToProjectRequest) String() string {
 func (*AssignTeamMemberToProjectRequest) ProtoMessage() {}
 
 func (x *AssignTeamMemberToProjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[91]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6770,7 +7273,7 @@ func (x *AssignTeamMemberToProjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignTeamMemberToProjectRequest.ProtoReflect.Descriptor instead.
 func (*AssignTeamMemberToProjectRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{91}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *AssignTeamMemberToProjectRequest) GetTeamId() string {
@@ -6814,7 +7317,7 @@ type ListTeamProjectsForAssignmentRequest struct {
 
 func (x *ListTeamProjectsForAssignmentRequest) Reset() {
 	*x = ListTeamProjectsForAssignmentRequest{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[92]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6826,7 +7329,7 @@ func (x *ListTeamProjectsForAssignmentRequest) String() string {
 func (*ListTeamProjectsForAssignmentRequest) ProtoMessage() {}
 
 func (x *ListTeamProjectsForAssignmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[92]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6839,7 +7342,7 @@ func (x *ListTeamProjectsForAssignmentRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use ListTeamProjectsForAssignmentRequest.ProtoReflect.Descriptor instead.
 func (*ListTeamProjectsForAssignmentRequest) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{92}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{98}
 }
 
 func (x *ListTeamProjectsForAssignmentRequest) GetTeamId() string {
@@ -6891,7 +7394,7 @@ type TeamProjectAssignmentItem struct {
 
 func (x *TeamProjectAssignmentItem) Reset() {
 	*x = TeamProjectAssignmentItem{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[93]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6903,7 +7406,7 @@ func (x *TeamProjectAssignmentItem) String() string {
 func (*TeamProjectAssignmentItem) ProtoMessage() {}
 
 func (x *TeamProjectAssignmentItem) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[93]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6916,7 +7419,7 @@ func (x *TeamProjectAssignmentItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TeamProjectAssignmentItem.ProtoReflect.Descriptor instead.
 func (*TeamProjectAssignmentItem) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{93}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{99}
 }
 
 func (x *TeamProjectAssignmentItem) GetProjectId() string {
@@ -6971,7 +7474,7 @@ type ListTeamProjectsForAssignmentResponse struct {
 
 func (x *ListTeamProjectsForAssignmentResponse) Reset() {
 	*x = ListTeamProjectsForAssignmentResponse{}
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[94]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6983,7 +7486,7 @@ func (x *ListTeamProjectsForAssignmentResponse) String() string {
 func (*ListTeamProjectsForAssignmentResponse) ProtoMessage() {}
 
 func (x *ListTeamProjectsForAssignmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[94]
+	mi := &file_teamAndProjects_teamAndProjects_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6996,7 +7499,7 @@ func (x *ListTeamProjectsForAssignmentResponse) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use ListTeamProjectsForAssignmentResponse.ProtoReflect.Descriptor instead.
 func (*ListTeamProjectsForAssignmentResponse) Descriptor() ([]byte, []int) {
-	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{94}
+	return file_teamAndProjects_teamAndProjects_proto_rawDescGZIP(), []int{100}
 }
 
 func (x *ListTeamProjectsForAssignmentResponse) GetItems() []*TeamProjectAssignmentItem {
@@ -7052,7 +7555,7 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x16\n" +
 	"\x06duties\x18\x03 \x01(\tR\x06duties\x12/\n" +
 	"\tjoined_at\x18\x04 \x01(\v2\x12.workspace.v1.DateR\bjoinedAt\x120\n" +
-	"\x06rights\x18\x05 \x01(\v2\x18.workspace.v1.TeamRightsR\x06rights\"\xc3\x04\n" +
+	"\x06rights\x18\x05 \x01(\v2\x18.workspace.v1.TeamRightsR\x06rights\"\xa8\x05\n" +
 	"\aProject\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\ateam_id\x18\x02 \x01(\tR\x06teamId\x12\x1d\n" +
@@ -7073,8 +7576,9 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"updated_at\x18\v \x01(\v2\x12.workspace.v1.DateR\tupdatedAt\x12\x1b\n" +
 	"\tskill_ids\x18\f \x03(\tR\bskillIds\x122\n" +
 	"\x06skills\x18\r \x03(\v2\x1a.workspace.v1.ProjectSkillR\x06skills\x128\n" +
-	"\tmy_rights\x18\x0e \x01(\v2\x1b.workspace.v1.ProjectRightsR\bmyRightsB\x0e\n" +
-	"\f_finished_at\"\xa1\x04\n" +
+	"\tmy_rights\x18\x0e \x01(\v2\x1b.workspace.v1.ProjectRightsR\bmyRights\x12c\n" +
+	"\x17assessment_requirements\x18\x0f \x03(\v2*.workspace.v1.ProjectAssessmentRequirementR\x16assessmentRequirementsB\x0e\n" +
+	"\f_finished_at\"\x86\x05\n" +
 	"\rProjectPublic\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\ateam_id\x18\x02 \x01(\tR\x06teamId\x12\x12\n" +
@@ -7091,7 +7595,8 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\tskill_ids\x18\n" +
 	" \x03(\tR\bskillIds\x122\n" +
 	"\x06skills\x18\v \x03(\v2\x1a.workspace.v1.ProjectSkillR\x06skills\x12B\n" +
-	"\x1bprofile_skill_match_percent\x18\f \x01(\x05H\x01R\x18profileSkillMatchPercent\x88\x01\x01B\x0e\n" +
+	"\x1bprofile_skill_match_percent\x18\f \x01(\x05H\x01R\x18profileSkillMatchPercent\x88\x01\x01\x12c\n" +
+	"\x17assessment_requirements\x18\r \x03(\v2*.workspace.v1.ProjectAssessmentRequirementR\x16assessmentRequirementsB\x0e\n" +
 	"\f_finished_atB\x1e\n" +
 	"\x1c_profile_skill_match_percent\"|\n" +
 	"\rProjectMember\x12\x1d\n" +
@@ -7335,7 +7840,41 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\ais_open\x18\x02 \x01(\bR\x06isOpen\"2\n" +
 	"\fProjectSkill\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"\xba\x01\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\xd4\x02\n" +
+	"\x1cProjectAssessmentRequirement\x12#\n" +
+	"\rassessment_id\x18\x01 \x01(\x03R\fassessmentId\x12'\n" +
+	"\x0fassessment_code\x18\x02 \x01(\tR\x0eassessmentCode\x12)\n" +
+	"\x10assessment_title\x18\x03 \x01(\tR\x0fassessmentTitle\x12\x1d\n" +
+	"\n" +
+	"subject_id\x18\x04 \x01(\x03R\tsubjectId\x12!\n" +
+	"\fsubject_code\x18\x05 \x01(\tR\vsubjectCode\x12#\n" +
+	"\rsubject_title\x18\x06 \x01(\tR\fsubjectTitle\x127\n" +
+	"\x04mode\x18\a \x01(\x0e2#.workspace.v1.ProjectAssessmentModeR\x04mode\x12\x1b\n" +
+	"\tmin_level\x18\b \x01(\x05R\bminLevel\"e\n" +
+	"!ProjectAssessmentRequirementInput\x12#\n" +
+	"\rassessment_id\x18\x01 \x01(\x03R\fassessmentId\x12\x1b\n" +
+	"\tmin_level\x18\x02 \x01(\x05R\bminLevel\"\xc5\x02\n" +
+	"!ProjectAssessmentRequirementCheck\x12L\n" +
+	"\vrequirement\x18\x01 \x01(\v2*.workspace.v1.ProjectAssessmentRequirementR\vrequirement\x12(\n" +
+	"\x10has_saved_result\x18\x02 \x01(\bR\x0ehasSavedResult\x12#\n" +
+	"\rcurrent_level\x18\x03 \x01(\x05R\fcurrentLevel\x12+\n" +
+	"\x11meets_requirement\x18\x04 \x01(\bR\x10meetsRequirement\x12&\n" +
+	"\x0fneeds_pass_test\x18\x05 \x01(\bR\rneedsPassTest\x12.\n" +
+	"\x13needs_improve_level\x18\x06 \x01(\bR\x11needsImproveLevel\"\xaf\x02\n" +
+	"#GetMyProjectJoinEligibilityResponse\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\x12(\n" +
+	"\x10can_request_join\x18\x02 \x01(\bR\x0ecanRequestJoin\x128\n" +
+	"\x18total_requirements_count\x18\x03 \x01(\x05R\x16totalRequirementsCount\x12<\n" +
+	"\x1amatched_requirements_count\x18\x04 \x01(\x05R\x18matchedRequirementsCount\x12G\n" +
+	"\x06checks\x18\x05 \x03(\v2/.workspace.v1.ProjectAssessmentRequirementCheckR\x06checks\"\x9d\x01\n" +
+	"'SetProjectAssessmentRequirementsRequest\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\x12S\n" +
+	"\frequirements\x18\x02 \x03(\v2/.workspace.v1.ProjectAssessmentRequirementInputR\frequirements\"C\n" +
+	"\"GetMyProjectJoinEligibilityRequest\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\"\xba\x01\n" +
 	"$ListProjectJoinRequestDetailsRequest\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tR\tprojectId\x127\n" +
@@ -7713,7 +8252,11 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\tSortOrder\x12\x1a\n" +
 	"\x16SORT_ORDER_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eSORT_ORDER_ASC\x10\x01\x12\x13\n" +
-	"\x0fSORT_ORDER_DESC\x10\x022\x90\t\n" +
+	"\x0fSORT_ORDER_DESC\x10\x02*\x8a\x01\n" +
+	"\x15ProjectAssessmentMode\x12'\n" +
+	"#PROJECT_ASSESSMENT_MODE_UNSPECIFIED\x10\x00\x12$\n" +
+	" PROJECT_ASSESSMENT_MODE_SUBTOPIC\x10\x01\x12\"\n" +
+	"\x1ePROJECT_ASSESSMENT_MODE_GLOBAL\x10\x022\x90\t\n" +
 	"\x05Teams\x12A\n" +
 	"\n" +
 	"CreateTeam\x12\x1f.workspace.v1.CreateTeamRequest\x1a\x12.workspace.v1.Team\x12;\n" +
@@ -7730,7 +8273,7 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\x16UpdateTeamMemberDuties\x12+.workspace.v1.UpdateTeamMemberDutiesRequest\x1a\x18.workspace.v1.TeamMember\x12_\n" +
 	"\x16UpdateTeamMemberRights\x12+.workspace.v1.UpdateTeamMemberRightsRequest\x1a\x18.workspace.v1.TeamMember\x12h\n" +
 	"\x19AssignTeamMemberToProject\x12..workspace.v1.AssignTeamMemberToProjectRequest\x1a\x1b.workspace.v1.ProjectMember\x12\x88\x01\n" +
-	"\x1dListTeamProjectsForAssignment\x122.workspace.v1.ListTeamProjectsForAssignmentRequest\x1a3.workspace.v1.ListTeamProjectsForAssignmentResponse2\x90\x1a\n" +
+	"\x1dListTeamProjectsForAssignment\x122.workspace.v1.ListTeamProjectsForAssignmentRequest\x1a3.workspace.v1.ListTeamProjectsForAssignmentResponse2\x87\x1c\n" +
 	"\bProjects\x12J\n" +
 	"\rCreateProject\x12\".workspace.v1.CreateProjectRequest\x1a\x15.workspace.v1.Project\x12D\n" +
 	"\n" +
@@ -7763,7 +8306,9 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\x18ListMyProjectInvitations\x12-.workspace.v1.ListMyProjectInvitationsRequest\x1a..workspace.v1.ListMyProjectInvitationsResponse\x12h\n" +
 	"\x17AcceptProjectInvitation\x12,.workspace.v1.AcceptProjectInvitationRequest\x1a\x1f.workspace.v1.ProjectInvitation\x12h\n" +
 	"\x17RejectProjectInvitation\x12,.workspace.v1.RejectProjectInvitationRequest\x1a\x1f.workspace.v1.ProjectInvitation\x12v\n" +
-	"\x17ListMyInvitableProjects\x12,.workspace.v1.ListMyInvitableProjectsRequest\x1a-.workspace.v1.ListMyInvitableProjectsResponseB Z\x1eevggo.workspace.v1;workspacev1b\x06proto3"
+	"\x17ListMyInvitableProjects\x12,.workspace.v1.ListMyInvitableProjectsRequest\x1a-.workspace.v1.ListMyInvitableProjectsResponse\x12p\n" +
+	" SetProjectAssessmentRequirements\x125.workspace.v1.SetProjectAssessmentRequirementsRequest\x1a\x15.workspace.v1.Project\x12\x82\x01\n" +
+	"\x1bGetMyProjectJoinEligibility\x120.workspace.v1.GetMyProjectJoinEligibilityRequest\x1a1.workspace.v1.GetMyProjectJoinEligibilityResponseB Z\x1eevggo.workspace.v1;workspacev1b\x06proto3"
 
 var (
 	file_teamAndProjects_teamAndProjects_proto_rawDescOnce sync.Once
@@ -7777,8 +8322,8 @@ func file_teamAndProjects_teamAndProjects_proto_rawDescGZIP() []byte {
 	return file_teamAndProjects_teamAndProjects_proto_rawDescData
 }
 
-var file_teamAndProjects_teamAndProjects_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
-var file_teamAndProjects_teamAndProjects_proto_msgTypes = make([]protoimpl.MessageInfo, 95)
+var file_teamAndProjects_teamAndProjects_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
+var file_teamAndProjects_teamAndProjects_proto_msgTypes = make([]protoimpl.MessageInfo, 101)
 var file_teamAndProjects_teamAndProjects_proto_goTypes = []any{
 	(ProjectInvitationStatus)(0),                            // 0: workspace.v1.ProjectInvitationStatus
 	(ProjectStatus)(0),                                      // 1: workspace.v1.ProjectStatus
@@ -7786,314 +8331,331 @@ var file_teamAndProjects_teamAndProjects_proto_goTypes = []any{
 	(ProjectSkillMatchMode)(0),                              // 3: workspace.v1.ProjectSkillMatchMode
 	(ProjectPublicSortBy)(0),                                // 4: workspace.v1.ProjectPublicSortBy
 	(SortOrder)(0),                                          // 5: workspace.v1.SortOrder
-	(*Date)(nil),                                            // 6: workspace.v1.Date
-	(*SkillIdsSelection)(nil),                               // 7: workspace.v1.SkillIdsSelection
-	(*ProjectRights)(nil),                                   // 8: workspace.v1.ProjectRights
-	(*Team)(nil),                                            // 9: workspace.v1.Team
-	(*TeamMember)(nil),                                      // 10: workspace.v1.TeamMember
-	(*Project)(nil),                                         // 11: workspace.v1.Project
-	(*ProjectPublic)(nil),                                   // 12: workspace.v1.ProjectPublic
-	(*ProjectMember)(nil),                                   // 13: workspace.v1.ProjectMember
-	(*ProjectJoinRequest)(nil),                              // 14: workspace.v1.ProjectJoinRequest
-	(*ProjectInvitation)(nil),                               // 15: workspace.v1.ProjectInvitation
-	(*CreateTeamRequest)(nil),                               // 16: workspace.v1.CreateTeamRequest
-	(*GetTeamRequest)(nil),                                  // 17: workspace.v1.GetTeamRequest
-	(*UpdateTeamRequest)(nil),                               // 18: workspace.v1.UpdateTeamRequest
-	(*DeleteTeamRequest)(nil),                               // 19: workspace.v1.DeleteTeamRequest
-	(*ListTeamsRequest)(nil),                                // 20: workspace.v1.ListTeamsRequest
-	(*ListTeamsResponse)(nil),                               // 21: workspace.v1.ListTeamsResponse
-	(*ListTeamMembersRequest)(nil),                          // 22: workspace.v1.ListTeamMembersRequest
-	(*ListTeamMembersResponse)(nil),                         // 23: workspace.v1.ListTeamMembersResponse
-	(*UpdateTeamMemberRequest)(nil),                         // 24: workspace.v1.UpdateTeamMemberRequest
-	(*RemoveTeamMemberRequest)(nil),                         // 25: workspace.v1.RemoveTeamMemberRequest
-	(*CreateProjectRequest)(nil),                            // 26: workspace.v1.CreateProjectRequest
-	(*GetProjectRequest)(nil),                               // 27: workspace.v1.GetProjectRequest
-	(*UpdateProjectRequest)(nil),                            // 28: workspace.v1.UpdateProjectRequest
-	(*ListManageableProjectJoinRequestBucketsRequest)(nil),  // 29: workspace.v1.ListManageableProjectJoinRequestBucketsRequest
-	(*ManageableProjectJoinRequestBucket)(nil),              // 30: workspace.v1.ManageableProjectJoinRequestBucket
-	(*ListManageableProjectJoinRequestBucketsResponse)(nil), // 31: workspace.v1.ListManageableProjectJoinRequestBucketsResponse
-	(*DeleteProjectRequest)(nil),                            // 32: workspace.v1.DeleteProjectRequest
-	(*ListProjectsRequest)(nil),                             // 33: workspace.v1.ListProjectsRequest
-	(*ListProjectsResponse)(nil),                            // 34: workspace.v1.ListProjectsResponse
-	(*ListPublicProjectsRequest)(nil),                       // 35: workspace.v1.ListPublicProjectsRequest
-	(*ListPublicProjectsResponse)(nil),                      // 36: workspace.v1.ListPublicProjectsResponse
-	(*ListProjectMembersRequest)(nil),                       // 37: workspace.v1.ListProjectMembersRequest
-	(*ListProjectMembersResponse)(nil),                      // 38: workspace.v1.ListProjectMembersResponse
-	(*AddProjectMemberRequest)(nil),                         // 39: workspace.v1.AddProjectMemberRequest
-	(*RemoveProjectMemberRequest)(nil),                      // 40: workspace.v1.RemoveProjectMemberRequest
-	(*UpdateProjectMemberRightsRequest)(nil),                // 41: workspace.v1.UpdateProjectMemberRightsRequest
-	(*RequestJoinProjectRequest)(nil),                       // 42: workspace.v1.RequestJoinProjectRequest
-	(*CancelJoinProjectRequest)(nil),                        // 43: workspace.v1.CancelJoinProjectRequest
-	(*ListProjectJoinRequestsRequest)(nil),                  // 44: workspace.v1.ListProjectJoinRequestsRequest
-	(*ListProjectJoinRequestsResponse)(nil),                 // 45: workspace.v1.ListProjectJoinRequestsResponse
-	(*ApproveProjectJoinRequestRequest)(nil),                // 46: workspace.v1.ApproveProjectJoinRequestRequest
-	(*RejectProjectJoinRequestRequest)(nil),                 // 47: workspace.v1.RejectProjectJoinRequestRequest
-	(*SetProjectOpenRequest)(nil),                           // 48: workspace.v1.SetProjectOpenRequest
-	(*ProjectSkill)(nil),                                    // 49: workspace.v1.ProjectSkill
-	(*ListProjectJoinRequestDetailsRequest)(nil),            // 50: workspace.v1.ListProjectJoinRequestDetailsRequest
-	(*CandidatePublicSummary)(nil),                          // 51: workspace.v1.CandidatePublicSummary
-	(*SkillMatchSummary)(nil),                               // 52: workspace.v1.SkillMatchSummary
-	(*ProjectJoinRequestDetails)(nil),                       // 53: workspace.v1.ProjectJoinRequestDetails
-	(*ListProjectJoinRequestDetailsResponse)(nil),           // 54: workspace.v1.ListProjectJoinRequestDetailsResponse
-	(*GetMyProjectJoinRequestRequest)(nil),                  // 55: workspace.v1.GetMyProjectJoinRequestRequest
-	(*GetMyProjectJoinRequestResponse)(nil),                 // 56: workspace.v1.GetMyProjectJoinRequestResponse
-	(*ListMyProjectJoinRequestsRequest)(nil),                // 57: workspace.v1.ListMyProjectJoinRequestsRequest
-	(*MyProjectJoinRequestItem)(nil),                        // 58: workspace.v1.MyProjectJoinRequestItem
-	(*ListMyProjectJoinRequestsResponse)(nil),               // 59: workspace.v1.ListMyProjectJoinRequestsResponse
-	(*InviteUserToProjectRequest)(nil),                      // 60: workspace.v1.InviteUserToProjectRequest
-	(*ListProjectInvitationsRequest)(nil),                   // 61: workspace.v1.ListProjectInvitationsRequest
-	(*ListProjectInvitationsResponse)(nil),                  // 62: workspace.v1.ListProjectInvitationsResponse
-	(*ListProjectInvitationDetailsRequest)(nil),             // 63: workspace.v1.ListProjectInvitationDetailsRequest
-	(*ProjectInvitationDetails)(nil),                        // 64: workspace.v1.ProjectInvitationDetails
-	(*ListProjectInvitationDetailsResponse)(nil),            // 65: workspace.v1.ListProjectInvitationDetailsResponse
-	(*RevokeProjectInvitationRequest)(nil),                  // 66: workspace.v1.RevokeProjectInvitationRequest
-	(*GetMyProjectInvitationRequest)(nil),                   // 67: workspace.v1.GetMyProjectInvitationRequest
-	(*GetMyProjectInvitationResponse)(nil),                  // 68: workspace.v1.GetMyProjectInvitationResponse
-	(*ListMyProjectInvitationsRequest)(nil),                 // 69: workspace.v1.ListMyProjectInvitationsRequest
-	(*MyProjectInvitationItem)(nil),                         // 70: workspace.v1.MyProjectInvitationItem
-	(*ListMyProjectInvitationsResponse)(nil),                // 71: workspace.v1.ListMyProjectInvitationsResponse
-	(*AcceptProjectInvitationRequest)(nil),                  // 72: workspace.v1.AcceptProjectInvitationRequest
-	(*RejectProjectInvitationRequest)(nil),                  // 73: workspace.v1.RejectProjectInvitationRequest
-	(*ListMyInvitableProjectsRequest)(nil),                  // 74: workspace.v1.ListMyInvitableProjectsRequest
-	(*InvitableProjectItem)(nil),                            // 75: workspace.v1.InvitableProjectItem
-	(*ListMyInvitableProjectsResponse)(nil),                 // 76: workspace.v1.ListMyInvitableProjectsResponse
-	(*UserPublicSummary)(nil),                               // 77: workspace.v1.UserPublicSummary
-	(*ProjectInvitationProjectSummary)(nil),                 // 78: workspace.v1.ProjectInvitationProjectSummary
-	(*GetMyProjectInvitationDetailsRequest)(nil),            // 79: workspace.v1.GetMyProjectInvitationDetailsRequest
-	(*MyProjectInvitationDetails)(nil),                      // 80: workspace.v1.MyProjectInvitationDetails
-	(*GetMyProjectInvitationDetailsResponse)(nil),           // 81: workspace.v1.GetMyProjectInvitationDetailsResponse
-	(*ProjectMemberUserSummary)(nil),                        // 82: workspace.v1.ProjectMemberUserSummary
-	(*ProjectMemberCapabilities)(nil),                       // 83: workspace.v1.ProjectMemberCapabilities
-	(*ProjectMemberDetails)(nil),                            // 84: workspace.v1.ProjectMemberDetails
-	(*ListProjectMemberDetailsRequest)(nil),                 // 85: workspace.v1.ListProjectMemberDetailsRequest
-	(*ListProjectMemberDetailsResponse)(nil),                // 86: workspace.v1.ListProjectMemberDetailsResponse
-	(*TeamRights)(nil),                                      // 87: workspace.v1.TeamRights
-	(*TeamCapabilities)(nil),                                // 88: workspace.v1.TeamCapabilities
-	(*TeamMemberUserSummary)(nil),                           // 89: workspace.v1.TeamMemberUserSummary
-	(*TeamMemberCapabilities)(nil),                          // 90: workspace.v1.TeamMemberCapabilities
-	(*TeamMemberProjectSummary)(nil),                        // 91: workspace.v1.TeamMemberProjectSummary
-	(*TeamMemberDetails)(nil),                               // 92: workspace.v1.TeamMemberDetails
-	(*ListTeamMemberDetailsRequest)(nil),                    // 93: workspace.v1.ListTeamMemberDetailsRequest
-	(*ListTeamMemberDetailsResponse)(nil),                   // 94: workspace.v1.ListTeamMemberDetailsResponse
-	(*UpdateTeamMemberDutiesRequest)(nil),                   // 95: workspace.v1.UpdateTeamMemberDutiesRequest
-	(*UpdateTeamMemberRightsRequest)(nil),                   // 96: workspace.v1.UpdateTeamMemberRightsRequest
-	(*AssignTeamMemberToProjectRequest)(nil),                // 97: workspace.v1.AssignTeamMemberToProjectRequest
-	(*ListTeamProjectsForAssignmentRequest)(nil),            // 98: workspace.v1.ListTeamProjectsForAssignmentRequest
-	(*TeamProjectAssignmentItem)(nil),                       // 99: workspace.v1.TeamProjectAssignmentItem
-	(*ListTeamProjectsForAssignmentResponse)(nil),           // 100: workspace.v1.ListTeamProjectsForAssignmentResponse
-	(*emptypb.Empty)(nil),                                   // 101: google.protobuf.Empty
+	(ProjectAssessmentMode)(0),                              // 6: workspace.v1.ProjectAssessmentMode
+	(*Date)(nil),                                            // 7: workspace.v1.Date
+	(*SkillIdsSelection)(nil),                               // 8: workspace.v1.SkillIdsSelection
+	(*ProjectRights)(nil),                                   // 9: workspace.v1.ProjectRights
+	(*Team)(nil),                                            // 10: workspace.v1.Team
+	(*TeamMember)(nil),                                      // 11: workspace.v1.TeamMember
+	(*Project)(nil),                                         // 12: workspace.v1.Project
+	(*ProjectPublic)(nil),                                   // 13: workspace.v1.ProjectPublic
+	(*ProjectMember)(nil),                                   // 14: workspace.v1.ProjectMember
+	(*ProjectJoinRequest)(nil),                              // 15: workspace.v1.ProjectJoinRequest
+	(*ProjectInvitation)(nil),                               // 16: workspace.v1.ProjectInvitation
+	(*CreateTeamRequest)(nil),                               // 17: workspace.v1.CreateTeamRequest
+	(*GetTeamRequest)(nil),                                  // 18: workspace.v1.GetTeamRequest
+	(*UpdateTeamRequest)(nil),                               // 19: workspace.v1.UpdateTeamRequest
+	(*DeleteTeamRequest)(nil),                               // 20: workspace.v1.DeleteTeamRequest
+	(*ListTeamsRequest)(nil),                                // 21: workspace.v1.ListTeamsRequest
+	(*ListTeamsResponse)(nil),                               // 22: workspace.v1.ListTeamsResponse
+	(*ListTeamMembersRequest)(nil),                          // 23: workspace.v1.ListTeamMembersRequest
+	(*ListTeamMembersResponse)(nil),                         // 24: workspace.v1.ListTeamMembersResponse
+	(*UpdateTeamMemberRequest)(nil),                         // 25: workspace.v1.UpdateTeamMemberRequest
+	(*RemoveTeamMemberRequest)(nil),                         // 26: workspace.v1.RemoveTeamMemberRequest
+	(*CreateProjectRequest)(nil),                            // 27: workspace.v1.CreateProjectRequest
+	(*GetProjectRequest)(nil),                               // 28: workspace.v1.GetProjectRequest
+	(*UpdateProjectRequest)(nil),                            // 29: workspace.v1.UpdateProjectRequest
+	(*ListManageableProjectJoinRequestBucketsRequest)(nil),  // 30: workspace.v1.ListManageableProjectJoinRequestBucketsRequest
+	(*ManageableProjectJoinRequestBucket)(nil),              // 31: workspace.v1.ManageableProjectJoinRequestBucket
+	(*ListManageableProjectJoinRequestBucketsResponse)(nil), // 32: workspace.v1.ListManageableProjectJoinRequestBucketsResponse
+	(*DeleteProjectRequest)(nil),                            // 33: workspace.v1.DeleteProjectRequest
+	(*ListProjectsRequest)(nil),                             // 34: workspace.v1.ListProjectsRequest
+	(*ListProjectsResponse)(nil),                            // 35: workspace.v1.ListProjectsResponse
+	(*ListPublicProjectsRequest)(nil),                       // 36: workspace.v1.ListPublicProjectsRequest
+	(*ListPublicProjectsResponse)(nil),                      // 37: workspace.v1.ListPublicProjectsResponse
+	(*ListProjectMembersRequest)(nil),                       // 38: workspace.v1.ListProjectMembersRequest
+	(*ListProjectMembersResponse)(nil),                      // 39: workspace.v1.ListProjectMembersResponse
+	(*AddProjectMemberRequest)(nil),                         // 40: workspace.v1.AddProjectMemberRequest
+	(*RemoveProjectMemberRequest)(nil),                      // 41: workspace.v1.RemoveProjectMemberRequest
+	(*UpdateProjectMemberRightsRequest)(nil),                // 42: workspace.v1.UpdateProjectMemberRightsRequest
+	(*RequestJoinProjectRequest)(nil),                       // 43: workspace.v1.RequestJoinProjectRequest
+	(*CancelJoinProjectRequest)(nil),                        // 44: workspace.v1.CancelJoinProjectRequest
+	(*ListProjectJoinRequestsRequest)(nil),                  // 45: workspace.v1.ListProjectJoinRequestsRequest
+	(*ListProjectJoinRequestsResponse)(nil),                 // 46: workspace.v1.ListProjectJoinRequestsResponse
+	(*ApproveProjectJoinRequestRequest)(nil),                // 47: workspace.v1.ApproveProjectJoinRequestRequest
+	(*RejectProjectJoinRequestRequest)(nil),                 // 48: workspace.v1.RejectProjectJoinRequestRequest
+	(*SetProjectOpenRequest)(nil),                           // 49: workspace.v1.SetProjectOpenRequest
+	(*ProjectSkill)(nil),                                    // 50: workspace.v1.ProjectSkill
+	(*ProjectAssessmentRequirement)(nil),                    // 51: workspace.v1.ProjectAssessmentRequirement
+	(*ProjectAssessmentRequirementInput)(nil),               // 52: workspace.v1.ProjectAssessmentRequirementInput
+	(*ProjectAssessmentRequirementCheck)(nil),               // 53: workspace.v1.ProjectAssessmentRequirementCheck
+	(*GetMyProjectJoinEligibilityResponse)(nil),             // 54: workspace.v1.GetMyProjectJoinEligibilityResponse
+	(*SetProjectAssessmentRequirementsRequest)(nil),         // 55: workspace.v1.SetProjectAssessmentRequirementsRequest
+	(*GetMyProjectJoinEligibilityRequest)(nil),              // 56: workspace.v1.GetMyProjectJoinEligibilityRequest
+	(*ListProjectJoinRequestDetailsRequest)(nil),            // 57: workspace.v1.ListProjectJoinRequestDetailsRequest
+	(*CandidatePublicSummary)(nil),                          // 58: workspace.v1.CandidatePublicSummary
+	(*SkillMatchSummary)(nil),                               // 59: workspace.v1.SkillMatchSummary
+	(*ProjectJoinRequestDetails)(nil),                       // 60: workspace.v1.ProjectJoinRequestDetails
+	(*ListProjectJoinRequestDetailsResponse)(nil),           // 61: workspace.v1.ListProjectJoinRequestDetailsResponse
+	(*GetMyProjectJoinRequestRequest)(nil),                  // 62: workspace.v1.GetMyProjectJoinRequestRequest
+	(*GetMyProjectJoinRequestResponse)(nil),                 // 63: workspace.v1.GetMyProjectJoinRequestResponse
+	(*ListMyProjectJoinRequestsRequest)(nil),                // 64: workspace.v1.ListMyProjectJoinRequestsRequest
+	(*MyProjectJoinRequestItem)(nil),                        // 65: workspace.v1.MyProjectJoinRequestItem
+	(*ListMyProjectJoinRequestsResponse)(nil),               // 66: workspace.v1.ListMyProjectJoinRequestsResponse
+	(*InviteUserToProjectRequest)(nil),                      // 67: workspace.v1.InviteUserToProjectRequest
+	(*ListProjectInvitationsRequest)(nil),                   // 68: workspace.v1.ListProjectInvitationsRequest
+	(*ListProjectInvitationsResponse)(nil),                  // 69: workspace.v1.ListProjectInvitationsResponse
+	(*ListProjectInvitationDetailsRequest)(nil),             // 70: workspace.v1.ListProjectInvitationDetailsRequest
+	(*ProjectInvitationDetails)(nil),                        // 71: workspace.v1.ProjectInvitationDetails
+	(*ListProjectInvitationDetailsResponse)(nil),            // 72: workspace.v1.ListProjectInvitationDetailsResponse
+	(*RevokeProjectInvitationRequest)(nil),                  // 73: workspace.v1.RevokeProjectInvitationRequest
+	(*GetMyProjectInvitationRequest)(nil),                   // 74: workspace.v1.GetMyProjectInvitationRequest
+	(*GetMyProjectInvitationResponse)(nil),                  // 75: workspace.v1.GetMyProjectInvitationResponse
+	(*ListMyProjectInvitationsRequest)(nil),                 // 76: workspace.v1.ListMyProjectInvitationsRequest
+	(*MyProjectInvitationItem)(nil),                         // 77: workspace.v1.MyProjectInvitationItem
+	(*ListMyProjectInvitationsResponse)(nil),                // 78: workspace.v1.ListMyProjectInvitationsResponse
+	(*AcceptProjectInvitationRequest)(nil),                  // 79: workspace.v1.AcceptProjectInvitationRequest
+	(*RejectProjectInvitationRequest)(nil),                  // 80: workspace.v1.RejectProjectInvitationRequest
+	(*ListMyInvitableProjectsRequest)(nil),                  // 81: workspace.v1.ListMyInvitableProjectsRequest
+	(*InvitableProjectItem)(nil),                            // 82: workspace.v1.InvitableProjectItem
+	(*ListMyInvitableProjectsResponse)(nil),                 // 83: workspace.v1.ListMyInvitableProjectsResponse
+	(*UserPublicSummary)(nil),                               // 84: workspace.v1.UserPublicSummary
+	(*ProjectInvitationProjectSummary)(nil),                 // 85: workspace.v1.ProjectInvitationProjectSummary
+	(*GetMyProjectInvitationDetailsRequest)(nil),            // 86: workspace.v1.GetMyProjectInvitationDetailsRequest
+	(*MyProjectInvitationDetails)(nil),                      // 87: workspace.v1.MyProjectInvitationDetails
+	(*GetMyProjectInvitationDetailsResponse)(nil),           // 88: workspace.v1.GetMyProjectInvitationDetailsResponse
+	(*ProjectMemberUserSummary)(nil),                        // 89: workspace.v1.ProjectMemberUserSummary
+	(*ProjectMemberCapabilities)(nil),                       // 90: workspace.v1.ProjectMemberCapabilities
+	(*ProjectMemberDetails)(nil),                            // 91: workspace.v1.ProjectMemberDetails
+	(*ListProjectMemberDetailsRequest)(nil),                 // 92: workspace.v1.ListProjectMemberDetailsRequest
+	(*ListProjectMemberDetailsResponse)(nil),                // 93: workspace.v1.ListProjectMemberDetailsResponse
+	(*TeamRights)(nil),                                      // 94: workspace.v1.TeamRights
+	(*TeamCapabilities)(nil),                                // 95: workspace.v1.TeamCapabilities
+	(*TeamMemberUserSummary)(nil),                           // 96: workspace.v1.TeamMemberUserSummary
+	(*TeamMemberCapabilities)(nil),                          // 97: workspace.v1.TeamMemberCapabilities
+	(*TeamMemberProjectSummary)(nil),                        // 98: workspace.v1.TeamMemberProjectSummary
+	(*TeamMemberDetails)(nil),                               // 99: workspace.v1.TeamMemberDetails
+	(*ListTeamMemberDetailsRequest)(nil),                    // 100: workspace.v1.ListTeamMemberDetailsRequest
+	(*ListTeamMemberDetailsResponse)(nil),                   // 101: workspace.v1.ListTeamMemberDetailsResponse
+	(*UpdateTeamMemberDutiesRequest)(nil),                   // 102: workspace.v1.UpdateTeamMemberDutiesRequest
+	(*UpdateTeamMemberRightsRequest)(nil),                   // 103: workspace.v1.UpdateTeamMemberRightsRequest
+	(*AssignTeamMemberToProjectRequest)(nil),                // 104: workspace.v1.AssignTeamMemberToProjectRequest
+	(*ListTeamProjectsForAssignmentRequest)(nil),            // 105: workspace.v1.ListTeamProjectsForAssignmentRequest
+	(*TeamProjectAssignmentItem)(nil),                       // 106: workspace.v1.TeamProjectAssignmentItem
+	(*ListTeamProjectsForAssignmentResponse)(nil),           // 107: workspace.v1.ListTeamProjectsForAssignmentResponse
+	(*emptypb.Empty)(nil),                                   // 108: google.protobuf.Empty
 }
 var file_teamAndProjects_teamAndProjects_proto_depIdxs = []int32{
-	6,   // 0: workspace.v1.Team.created_at:type_name -> workspace.v1.Date
-	6,   // 1: workspace.v1.Team.updated_at:type_name -> workspace.v1.Date
-	87,  // 2: workspace.v1.Team.my_rights:type_name -> workspace.v1.TeamRights
-	88,  // 3: workspace.v1.Team.capabilities:type_name -> workspace.v1.TeamCapabilities
-	6,   // 4: workspace.v1.TeamMember.joined_at:type_name -> workspace.v1.Date
-	87,  // 5: workspace.v1.TeamMember.rights:type_name -> workspace.v1.TeamRights
+	7,   // 0: workspace.v1.Team.created_at:type_name -> workspace.v1.Date
+	7,   // 1: workspace.v1.Team.updated_at:type_name -> workspace.v1.Date
+	94,  // 2: workspace.v1.Team.my_rights:type_name -> workspace.v1.TeamRights
+	95,  // 3: workspace.v1.Team.capabilities:type_name -> workspace.v1.TeamCapabilities
+	7,   // 4: workspace.v1.TeamMember.joined_at:type_name -> workspace.v1.Date
+	94,  // 5: workspace.v1.TeamMember.rights:type_name -> workspace.v1.TeamRights
 	1,   // 6: workspace.v1.Project.status:type_name -> workspace.v1.ProjectStatus
-	6,   // 7: workspace.v1.Project.started_at:type_name -> workspace.v1.Date
-	6,   // 8: workspace.v1.Project.finished_at:type_name -> workspace.v1.Date
-	6,   // 9: workspace.v1.Project.created_at:type_name -> workspace.v1.Date
-	6,   // 10: workspace.v1.Project.updated_at:type_name -> workspace.v1.Date
-	49,  // 11: workspace.v1.Project.skills:type_name -> workspace.v1.ProjectSkill
-	8,   // 12: workspace.v1.Project.my_rights:type_name -> workspace.v1.ProjectRights
-	1,   // 13: workspace.v1.ProjectPublic.status:type_name -> workspace.v1.ProjectStatus
-	6,   // 14: workspace.v1.ProjectPublic.started_at:type_name -> workspace.v1.Date
-	6,   // 15: workspace.v1.ProjectPublic.finished_at:type_name -> workspace.v1.Date
-	6,   // 16: workspace.v1.ProjectPublic.created_at:type_name -> workspace.v1.Date
-	49,  // 17: workspace.v1.ProjectPublic.skills:type_name -> workspace.v1.ProjectSkill
-	8,   // 18: workspace.v1.ProjectMember.rights:type_name -> workspace.v1.ProjectRights
-	2,   // 19: workspace.v1.ProjectJoinRequest.status:type_name -> workspace.v1.JoinRequestStatus
-	6,   // 20: workspace.v1.ProjectJoinRequest.decided_at:type_name -> workspace.v1.Date
-	6,   // 21: workspace.v1.ProjectJoinRequest.created_at:type_name -> workspace.v1.Date
-	0,   // 22: workspace.v1.ProjectInvitation.status:type_name -> workspace.v1.ProjectInvitationStatus
-	6,   // 23: workspace.v1.ProjectInvitation.decided_at:type_name -> workspace.v1.Date
-	6,   // 24: workspace.v1.ProjectInvitation.created_at:type_name -> workspace.v1.Date
-	9,   // 25: workspace.v1.ListTeamsResponse.teams:type_name -> workspace.v1.Team
-	10,  // 26: workspace.v1.ListTeamMembersResponse.members:type_name -> workspace.v1.TeamMember
-	1,   // 27: workspace.v1.CreateProjectRequest.status:type_name -> workspace.v1.ProjectStatus
-	6,   // 28: workspace.v1.CreateProjectRequest.started_at:type_name -> workspace.v1.Date
-	6,   // 29: workspace.v1.CreateProjectRequest.finished_at:type_name -> workspace.v1.Date
-	1,   // 30: workspace.v1.UpdateProjectRequest.status:type_name -> workspace.v1.ProjectStatus
-	6,   // 31: workspace.v1.UpdateProjectRequest.started_at:type_name -> workspace.v1.Date
-	6,   // 32: workspace.v1.UpdateProjectRequest.finished_at:type_name -> workspace.v1.Date
-	7,   // 33: workspace.v1.UpdateProjectRequest.skills:type_name -> workspace.v1.SkillIdsSelection
-	2,   // 34: workspace.v1.ListManageableProjectJoinRequestBucketsRequest.status:type_name -> workspace.v1.JoinRequestStatus
-	1,   // 35: workspace.v1.ManageableProjectJoinRequestBucket.project_status:type_name -> workspace.v1.ProjectStatus
-	6,   // 36: workspace.v1.ManageableProjectJoinRequestBucket.last_request_created_at:type_name -> workspace.v1.Date
-	8,   // 37: workspace.v1.ManageableProjectJoinRequestBucket.my_rights:type_name -> workspace.v1.ProjectRights
-	30,  // 38: workspace.v1.ListManageableProjectJoinRequestBucketsResponse.items:type_name -> workspace.v1.ManageableProjectJoinRequestBucket
-	1,   // 39: workspace.v1.ListProjectsRequest.status:type_name -> workspace.v1.ProjectStatus
-	3,   // 40: workspace.v1.ListProjectsRequest.skill_match_mode:type_name -> workspace.v1.ProjectSkillMatchMode
-	11,  // 41: workspace.v1.ListProjectsResponse.projects:type_name -> workspace.v1.Project
-	1,   // 42: workspace.v1.ListPublicProjectsRequest.status:type_name -> workspace.v1.ProjectStatus
-	3,   // 43: workspace.v1.ListPublicProjectsRequest.skill_match_mode:type_name -> workspace.v1.ProjectSkillMatchMode
-	4,   // 44: workspace.v1.ListPublicProjectsRequest.sort_by:type_name -> workspace.v1.ProjectPublicSortBy
-	5,   // 45: workspace.v1.ListPublicProjectsRequest.sort_order:type_name -> workspace.v1.SortOrder
-	12,  // 46: workspace.v1.ListPublicProjectsResponse.projects:type_name -> workspace.v1.ProjectPublic
-	13,  // 47: workspace.v1.ListProjectMembersResponse.members:type_name -> workspace.v1.ProjectMember
-	8,   // 48: workspace.v1.AddProjectMemberRequest.rights:type_name -> workspace.v1.ProjectRights
-	2,   // 49: workspace.v1.ListProjectJoinRequestsRequest.status:type_name -> workspace.v1.JoinRequestStatus
-	14,  // 50: workspace.v1.ListProjectJoinRequestsResponse.requests:type_name -> workspace.v1.ProjectJoinRequest
-	8,   // 51: workspace.v1.ApproveProjectJoinRequestRequest.initial_rights:type_name -> workspace.v1.ProjectRights
-	2,   // 52: workspace.v1.ListProjectJoinRequestDetailsRequest.status:type_name -> workspace.v1.JoinRequestStatus
-	49,  // 53: workspace.v1.CandidatePublicSummary.skills:type_name -> workspace.v1.ProjectSkill
-	49,  // 54: workspace.v1.SkillMatchSummary.matched_skills:type_name -> workspace.v1.ProjectSkill
-	49,  // 55: workspace.v1.SkillMatchSummary.missing_project_skills:type_name -> workspace.v1.ProjectSkill
-	2,   // 56: workspace.v1.ProjectJoinRequestDetails.status:type_name -> workspace.v1.JoinRequestStatus
-	6,   // 57: workspace.v1.ProjectJoinRequestDetails.decided_at:type_name -> workspace.v1.Date
-	6,   // 58: workspace.v1.ProjectJoinRequestDetails.created_at:type_name -> workspace.v1.Date
-	51,  // 59: workspace.v1.ProjectJoinRequestDetails.candidate:type_name -> workspace.v1.CandidatePublicSummary
-	52,  // 60: workspace.v1.ProjectJoinRequestDetails.skill_match:type_name -> workspace.v1.SkillMatchSummary
-	53,  // 61: workspace.v1.ListProjectJoinRequestDetailsResponse.requests:type_name -> workspace.v1.ProjectJoinRequestDetails
-	14,  // 62: workspace.v1.GetMyProjectJoinRequestResponse.request:type_name -> workspace.v1.ProjectJoinRequest
-	2,   // 63: workspace.v1.ListMyProjectJoinRequestsRequest.status:type_name -> workspace.v1.JoinRequestStatus
-	1,   // 64: workspace.v1.MyProjectJoinRequestItem.project_status:type_name -> workspace.v1.ProjectStatus
-	14,  // 65: workspace.v1.MyProjectJoinRequestItem.request:type_name -> workspace.v1.ProjectJoinRequest
-	58,  // 66: workspace.v1.ListMyProjectJoinRequestsResponse.items:type_name -> workspace.v1.MyProjectJoinRequestItem
-	0,   // 67: workspace.v1.ListProjectInvitationsRequest.status:type_name -> workspace.v1.ProjectInvitationStatus
-	15,  // 68: workspace.v1.ListProjectInvitationsResponse.invitations:type_name -> workspace.v1.ProjectInvitation
-	0,   // 69: workspace.v1.ListProjectInvitationDetailsRequest.status:type_name -> workspace.v1.ProjectInvitationStatus
-	0,   // 70: workspace.v1.ProjectInvitationDetails.status:type_name -> workspace.v1.ProjectInvitationStatus
-	6,   // 71: workspace.v1.ProjectInvitationDetails.decided_at:type_name -> workspace.v1.Date
-	6,   // 72: workspace.v1.ProjectInvitationDetails.created_at:type_name -> workspace.v1.Date
-	51,  // 73: workspace.v1.ProjectInvitationDetails.candidate:type_name -> workspace.v1.CandidatePublicSummary
-	52,  // 74: workspace.v1.ProjectInvitationDetails.skill_match:type_name -> workspace.v1.SkillMatchSummary
-	64,  // 75: workspace.v1.ListProjectInvitationDetailsResponse.invitations:type_name -> workspace.v1.ProjectInvitationDetails
-	15,  // 76: workspace.v1.GetMyProjectInvitationResponse.invitation:type_name -> workspace.v1.ProjectInvitation
-	0,   // 77: workspace.v1.ListMyProjectInvitationsRequest.status:type_name -> workspace.v1.ProjectInvitationStatus
-	1,   // 78: workspace.v1.MyProjectInvitationItem.project_status:type_name -> workspace.v1.ProjectStatus
-	15,  // 79: workspace.v1.MyProjectInvitationItem.invitation:type_name -> workspace.v1.ProjectInvitation
-	77,  // 80: workspace.v1.MyProjectInvitationItem.invited_by_user:type_name -> workspace.v1.UserPublicSummary
-	52,  // 81: workspace.v1.MyProjectInvitationItem.skill_match:type_name -> workspace.v1.SkillMatchSummary
-	70,  // 82: workspace.v1.ListMyProjectInvitationsResponse.items:type_name -> workspace.v1.MyProjectInvitationItem
-	1,   // 83: workspace.v1.InvitableProjectItem.project_status:type_name -> workspace.v1.ProjectStatus
-	8,   // 84: workspace.v1.InvitableProjectItem.my_rights:type_name -> workspace.v1.ProjectRights
-	75,  // 85: workspace.v1.ListMyInvitableProjectsResponse.items:type_name -> workspace.v1.InvitableProjectItem
-	1,   // 86: workspace.v1.ProjectInvitationProjectSummary.status:type_name -> workspace.v1.ProjectStatus
-	6,   // 87: workspace.v1.ProjectInvitationProjectSummary.started_at:type_name -> workspace.v1.Date
-	6,   // 88: workspace.v1.ProjectInvitationProjectSummary.finished_at:type_name -> workspace.v1.Date
-	6,   // 89: workspace.v1.ProjectInvitationProjectSummary.created_at:type_name -> workspace.v1.Date
-	6,   // 90: workspace.v1.ProjectInvitationProjectSummary.updated_at:type_name -> workspace.v1.Date
-	49,  // 91: workspace.v1.ProjectInvitationProjectSummary.skills:type_name -> workspace.v1.ProjectSkill
-	15,  // 92: workspace.v1.MyProjectInvitationDetails.invitation:type_name -> workspace.v1.ProjectInvitation
-	78,  // 93: workspace.v1.MyProjectInvitationDetails.project:type_name -> workspace.v1.ProjectInvitationProjectSummary
-	77,  // 94: workspace.v1.MyProjectInvitationDetails.invited_by_user:type_name -> workspace.v1.UserPublicSummary
-	52,  // 95: workspace.v1.MyProjectInvitationDetails.skill_match:type_name -> workspace.v1.SkillMatchSummary
-	80,  // 96: workspace.v1.GetMyProjectInvitationDetailsResponse.item:type_name -> workspace.v1.MyProjectInvitationDetails
-	49,  // 97: workspace.v1.ProjectMemberUserSummary.skills:type_name -> workspace.v1.ProjectSkill
-	8,   // 98: workspace.v1.ProjectMemberDetails.rights:type_name -> workspace.v1.ProjectRights
-	82,  // 99: workspace.v1.ProjectMemberDetails.user:type_name -> workspace.v1.ProjectMemberUserSummary
-	83,  // 100: workspace.v1.ProjectMemberDetails.capabilities:type_name -> workspace.v1.ProjectMemberCapabilities
-	84,  // 101: workspace.v1.ListProjectMemberDetailsResponse.members:type_name -> workspace.v1.ProjectMemberDetails
-	8,   // 102: workspace.v1.ListProjectMemberDetailsResponse.my_rights:type_name -> workspace.v1.ProjectRights
-	49,  // 103: workspace.v1.TeamMemberUserSummary.skills:type_name -> workspace.v1.ProjectSkill
-	1,   // 104: workspace.v1.TeamMemberProjectSummary.project_status:type_name -> workspace.v1.ProjectStatus
-	6,   // 105: workspace.v1.TeamMemberDetails.joined_at:type_name -> workspace.v1.Date
-	87,  // 106: workspace.v1.TeamMemberDetails.rights:type_name -> workspace.v1.TeamRights
-	89,  // 107: workspace.v1.TeamMemberDetails.user:type_name -> workspace.v1.TeamMemberUserSummary
-	91,  // 108: workspace.v1.TeamMemberDetails.projects:type_name -> workspace.v1.TeamMemberProjectSummary
-	90,  // 109: workspace.v1.TeamMemberDetails.capabilities:type_name -> workspace.v1.TeamMemberCapabilities
-	92,  // 110: workspace.v1.ListTeamMemberDetailsResponse.members:type_name -> workspace.v1.TeamMemberDetails
-	87,  // 111: workspace.v1.ListTeamMemberDetailsResponse.my_rights:type_name -> workspace.v1.TeamRights
-	88,  // 112: workspace.v1.ListTeamMemberDetailsResponse.capabilities:type_name -> workspace.v1.TeamCapabilities
-	8,   // 113: workspace.v1.AssignTeamMemberToProjectRequest.initial_rights:type_name -> workspace.v1.ProjectRights
-	1,   // 114: workspace.v1.TeamProjectAssignmentItem.project_status:type_name -> workspace.v1.ProjectStatus
-	8,   // 115: workspace.v1.TeamProjectAssignmentItem.current_rights:type_name -> workspace.v1.ProjectRights
-	99,  // 116: workspace.v1.ListTeamProjectsForAssignmentResponse.items:type_name -> workspace.v1.TeamProjectAssignmentItem
-	16,  // 117: workspace.v1.Teams.CreateTeam:input_type -> workspace.v1.CreateTeamRequest
-	17,  // 118: workspace.v1.Teams.GetTeam:input_type -> workspace.v1.GetTeamRequest
-	18,  // 119: workspace.v1.Teams.UpdateTeam:input_type -> workspace.v1.UpdateTeamRequest
-	19,  // 120: workspace.v1.Teams.DeleteTeam:input_type -> workspace.v1.DeleteTeamRequest
-	20,  // 121: workspace.v1.Teams.ListTeams:input_type -> workspace.v1.ListTeamsRequest
-	22,  // 122: workspace.v1.Teams.ListTeamMembers:input_type -> workspace.v1.ListTeamMembersRequest
-	24,  // 123: workspace.v1.Teams.UpdateTeamMember:input_type -> workspace.v1.UpdateTeamMemberRequest
-	25,  // 124: workspace.v1.Teams.RemoveTeamMember:input_type -> workspace.v1.RemoveTeamMemberRequest
-	93,  // 125: workspace.v1.Teams.ListTeamMemberDetails:input_type -> workspace.v1.ListTeamMemberDetailsRequest
-	95,  // 126: workspace.v1.Teams.UpdateTeamMemberDuties:input_type -> workspace.v1.UpdateTeamMemberDutiesRequest
-	96,  // 127: workspace.v1.Teams.UpdateTeamMemberRights:input_type -> workspace.v1.UpdateTeamMemberRightsRequest
-	97,  // 128: workspace.v1.Teams.AssignTeamMemberToProject:input_type -> workspace.v1.AssignTeamMemberToProjectRequest
-	98,  // 129: workspace.v1.Teams.ListTeamProjectsForAssignment:input_type -> workspace.v1.ListTeamProjectsForAssignmentRequest
-	26,  // 130: workspace.v1.Projects.CreateProject:input_type -> workspace.v1.CreateProjectRequest
-	27,  // 131: workspace.v1.Projects.GetProject:input_type -> workspace.v1.GetProjectRequest
-	28,  // 132: workspace.v1.Projects.UpdateProject:input_type -> workspace.v1.UpdateProjectRequest
-	32,  // 133: workspace.v1.Projects.DeleteProject:input_type -> workspace.v1.DeleteProjectRequest
-	33,  // 134: workspace.v1.Projects.ListProjects:input_type -> workspace.v1.ListProjectsRequest
-	35,  // 135: workspace.v1.Projects.ListPublicProjects:input_type -> workspace.v1.ListPublicProjectsRequest
-	37,  // 136: workspace.v1.Projects.ListProjectMembers:input_type -> workspace.v1.ListProjectMembersRequest
-	85,  // 137: workspace.v1.Projects.ListProjectMemberDetails:input_type -> workspace.v1.ListProjectMemberDetailsRequest
-	29,  // 138: workspace.v1.Projects.ListManageableProjectJoinRequestBuckets:input_type -> workspace.v1.ListManageableProjectJoinRequestBucketsRequest
-	39,  // 139: workspace.v1.Projects.AddProjectMember:input_type -> workspace.v1.AddProjectMemberRequest
-	40,  // 140: workspace.v1.Projects.RemoveProjectMember:input_type -> workspace.v1.RemoveProjectMemberRequest
-	41,  // 141: workspace.v1.Projects.UpdateProjectMemberRights:input_type -> workspace.v1.UpdateProjectMemberRightsRequest
-	42,  // 142: workspace.v1.Projects.RequestJoinProject:input_type -> workspace.v1.RequestJoinProjectRequest
-	43,  // 143: workspace.v1.Projects.CancelJoinProject:input_type -> workspace.v1.CancelJoinProjectRequest
-	44,  // 144: workspace.v1.Projects.ListProjectJoinRequests:input_type -> workspace.v1.ListProjectJoinRequestsRequest
-	50,  // 145: workspace.v1.Projects.ListProjectJoinRequestDetails:input_type -> workspace.v1.ListProjectJoinRequestDetailsRequest
-	46,  // 146: workspace.v1.Projects.ApproveProjectJoinRequest:input_type -> workspace.v1.ApproveProjectJoinRequestRequest
-	47,  // 147: workspace.v1.Projects.RejectProjectJoinRequest:input_type -> workspace.v1.RejectProjectJoinRequestRequest
-	48,  // 148: workspace.v1.Projects.SetProjectOpen:input_type -> workspace.v1.SetProjectOpenRequest
-	55,  // 149: workspace.v1.Projects.GetMyProjectJoinRequest:input_type -> workspace.v1.GetMyProjectJoinRequestRequest
-	57,  // 150: workspace.v1.Projects.ListMyProjectJoinRequests:input_type -> workspace.v1.ListMyProjectJoinRequestsRequest
-	60,  // 151: workspace.v1.Projects.InviteUserToProject:input_type -> workspace.v1.InviteUserToProjectRequest
-	61,  // 152: workspace.v1.Projects.ListProjectInvitations:input_type -> workspace.v1.ListProjectInvitationsRequest
-	63,  // 153: workspace.v1.Projects.ListProjectInvitationDetails:input_type -> workspace.v1.ListProjectInvitationDetailsRequest
-	66,  // 154: workspace.v1.Projects.RevokeProjectInvitation:input_type -> workspace.v1.RevokeProjectInvitationRequest
-	67,  // 155: workspace.v1.Projects.GetMyProjectInvitation:input_type -> workspace.v1.GetMyProjectInvitationRequest
-	79,  // 156: workspace.v1.Projects.GetMyProjectInvitationDetails:input_type -> workspace.v1.GetMyProjectInvitationDetailsRequest
-	69,  // 157: workspace.v1.Projects.ListMyProjectInvitations:input_type -> workspace.v1.ListMyProjectInvitationsRequest
-	72,  // 158: workspace.v1.Projects.AcceptProjectInvitation:input_type -> workspace.v1.AcceptProjectInvitationRequest
-	73,  // 159: workspace.v1.Projects.RejectProjectInvitation:input_type -> workspace.v1.RejectProjectInvitationRequest
-	74,  // 160: workspace.v1.Projects.ListMyInvitableProjects:input_type -> workspace.v1.ListMyInvitableProjectsRequest
-	9,   // 161: workspace.v1.Teams.CreateTeam:output_type -> workspace.v1.Team
-	9,   // 162: workspace.v1.Teams.GetTeam:output_type -> workspace.v1.Team
-	9,   // 163: workspace.v1.Teams.UpdateTeam:output_type -> workspace.v1.Team
-	101, // 164: workspace.v1.Teams.DeleteTeam:output_type -> google.protobuf.Empty
-	21,  // 165: workspace.v1.Teams.ListTeams:output_type -> workspace.v1.ListTeamsResponse
-	23,  // 166: workspace.v1.Teams.ListTeamMembers:output_type -> workspace.v1.ListTeamMembersResponse
-	10,  // 167: workspace.v1.Teams.UpdateTeamMember:output_type -> workspace.v1.TeamMember
-	101, // 168: workspace.v1.Teams.RemoveTeamMember:output_type -> google.protobuf.Empty
-	94,  // 169: workspace.v1.Teams.ListTeamMemberDetails:output_type -> workspace.v1.ListTeamMemberDetailsResponse
-	10,  // 170: workspace.v1.Teams.UpdateTeamMemberDuties:output_type -> workspace.v1.TeamMember
-	10,  // 171: workspace.v1.Teams.UpdateTeamMemberRights:output_type -> workspace.v1.TeamMember
-	13,  // 172: workspace.v1.Teams.AssignTeamMemberToProject:output_type -> workspace.v1.ProjectMember
-	100, // 173: workspace.v1.Teams.ListTeamProjectsForAssignment:output_type -> workspace.v1.ListTeamProjectsForAssignmentResponse
-	11,  // 174: workspace.v1.Projects.CreateProject:output_type -> workspace.v1.Project
-	11,  // 175: workspace.v1.Projects.GetProject:output_type -> workspace.v1.Project
-	11,  // 176: workspace.v1.Projects.UpdateProject:output_type -> workspace.v1.Project
-	101, // 177: workspace.v1.Projects.DeleteProject:output_type -> google.protobuf.Empty
-	34,  // 178: workspace.v1.Projects.ListProjects:output_type -> workspace.v1.ListProjectsResponse
-	36,  // 179: workspace.v1.Projects.ListPublicProjects:output_type -> workspace.v1.ListPublicProjectsResponse
-	38,  // 180: workspace.v1.Projects.ListProjectMembers:output_type -> workspace.v1.ListProjectMembersResponse
-	86,  // 181: workspace.v1.Projects.ListProjectMemberDetails:output_type -> workspace.v1.ListProjectMemberDetailsResponse
-	31,  // 182: workspace.v1.Projects.ListManageableProjectJoinRequestBuckets:output_type -> workspace.v1.ListManageableProjectJoinRequestBucketsResponse
-	13,  // 183: workspace.v1.Projects.AddProjectMember:output_type -> workspace.v1.ProjectMember
-	101, // 184: workspace.v1.Projects.RemoveProjectMember:output_type -> google.protobuf.Empty
-	13,  // 185: workspace.v1.Projects.UpdateProjectMemberRights:output_type -> workspace.v1.ProjectMember
-	14,  // 186: workspace.v1.Projects.RequestJoinProject:output_type -> workspace.v1.ProjectJoinRequest
-	14,  // 187: workspace.v1.Projects.CancelJoinProject:output_type -> workspace.v1.ProjectJoinRequest
-	45,  // 188: workspace.v1.Projects.ListProjectJoinRequests:output_type -> workspace.v1.ListProjectJoinRequestsResponse
-	54,  // 189: workspace.v1.Projects.ListProjectJoinRequestDetails:output_type -> workspace.v1.ListProjectJoinRequestDetailsResponse
-	14,  // 190: workspace.v1.Projects.ApproveProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
-	14,  // 191: workspace.v1.Projects.RejectProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
-	11,  // 192: workspace.v1.Projects.SetProjectOpen:output_type -> workspace.v1.Project
-	56,  // 193: workspace.v1.Projects.GetMyProjectJoinRequest:output_type -> workspace.v1.GetMyProjectJoinRequestResponse
-	59,  // 194: workspace.v1.Projects.ListMyProjectJoinRequests:output_type -> workspace.v1.ListMyProjectJoinRequestsResponse
-	15,  // 195: workspace.v1.Projects.InviteUserToProject:output_type -> workspace.v1.ProjectInvitation
-	62,  // 196: workspace.v1.Projects.ListProjectInvitations:output_type -> workspace.v1.ListProjectInvitationsResponse
-	65,  // 197: workspace.v1.Projects.ListProjectInvitationDetails:output_type -> workspace.v1.ListProjectInvitationDetailsResponse
-	15,  // 198: workspace.v1.Projects.RevokeProjectInvitation:output_type -> workspace.v1.ProjectInvitation
-	68,  // 199: workspace.v1.Projects.GetMyProjectInvitation:output_type -> workspace.v1.GetMyProjectInvitationResponse
-	81,  // 200: workspace.v1.Projects.GetMyProjectInvitationDetails:output_type -> workspace.v1.GetMyProjectInvitationDetailsResponse
-	71,  // 201: workspace.v1.Projects.ListMyProjectInvitations:output_type -> workspace.v1.ListMyProjectInvitationsResponse
-	15,  // 202: workspace.v1.Projects.AcceptProjectInvitation:output_type -> workspace.v1.ProjectInvitation
-	15,  // 203: workspace.v1.Projects.RejectProjectInvitation:output_type -> workspace.v1.ProjectInvitation
-	76,  // 204: workspace.v1.Projects.ListMyInvitableProjects:output_type -> workspace.v1.ListMyInvitableProjectsResponse
-	161, // [161:205] is the sub-list for method output_type
-	117, // [117:161] is the sub-list for method input_type
-	117, // [117:117] is the sub-list for extension type_name
-	117, // [117:117] is the sub-list for extension extendee
-	0,   // [0:117] is the sub-list for field type_name
+	7,   // 7: workspace.v1.Project.started_at:type_name -> workspace.v1.Date
+	7,   // 8: workspace.v1.Project.finished_at:type_name -> workspace.v1.Date
+	7,   // 9: workspace.v1.Project.created_at:type_name -> workspace.v1.Date
+	7,   // 10: workspace.v1.Project.updated_at:type_name -> workspace.v1.Date
+	50,  // 11: workspace.v1.Project.skills:type_name -> workspace.v1.ProjectSkill
+	9,   // 12: workspace.v1.Project.my_rights:type_name -> workspace.v1.ProjectRights
+	51,  // 13: workspace.v1.Project.assessment_requirements:type_name -> workspace.v1.ProjectAssessmentRequirement
+	1,   // 14: workspace.v1.ProjectPublic.status:type_name -> workspace.v1.ProjectStatus
+	7,   // 15: workspace.v1.ProjectPublic.started_at:type_name -> workspace.v1.Date
+	7,   // 16: workspace.v1.ProjectPublic.finished_at:type_name -> workspace.v1.Date
+	7,   // 17: workspace.v1.ProjectPublic.created_at:type_name -> workspace.v1.Date
+	50,  // 18: workspace.v1.ProjectPublic.skills:type_name -> workspace.v1.ProjectSkill
+	51,  // 19: workspace.v1.ProjectPublic.assessment_requirements:type_name -> workspace.v1.ProjectAssessmentRequirement
+	9,   // 20: workspace.v1.ProjectMember.rights:type_name -> workspace.v1.ProjectRights
+	2,   // 21: workspace.v1.ProjectJoinRequest.status:type_name -> workspace.v1.JoinRequestStatus
+	7,   // 22: workspace.v1.ProjectJoinRequest.decided_at:type_name -> workspace.v1.Date
+	7,   // 23: workspace.v1.ProjectJoinRequest.created_at:type_name -> workspace.v1.Date
+	0,   // 24: workspace.v1.ProjectInvitation.status:type_name -> workspace.v1.ProjectInvitationStatus
+	7,   // 25: workspace.v1.ProjectInvitation.decided_at:type_name -> workspace.v1.Date
+	7,   // 26: workspace.v1.ProjectInvitation.created_at:type_name -> workspace.v1.Date
+	10,  // 27: workspace.v1.ListTeamsResponse.teams:type_name -> workspace.v1.Team
+	11,  // 28: workspace.v1.ListTeamMembersResponse.members:type_name -> workspace.v1.TeamMember
+	1,   // 29: workspace.v1.CreateProjectRequest.status:type_name -> workspace.v1.ProjectStatus
+	7,   // 30: workspace.v1.CreateProjectRequest.started_at:type_name -> workspace.v1.Date
+	7,   // 31: workspace.v1.CreateProjectRequest.finished_at:type_name -> workspace.v1.Date
+	1,   // 32: workspace.v1.UpdateProjectRequest.status:type_name -> workspace.v1.ProjectStatus
+	7,   // 33: workspace.v1.UpdateProjectRequest.started_at:type_name -> workspace.v1.Date
+	7,   // 34: workspace.v1.UpdateProjectRequest.finished_at:type_name -> workspace.v1.Date
+	8,   // 35: workspace.v1.UpdateProjectRequest.skills:type_name -> workspace.v1.SkillIdsSelection
+	2,   // 36: workspace.v1.ListManageableProjectJoinRequestBucketsRequest.status:type_name -> workspace.v1.JoinRequestStatus
+	1,   // 37: workspace.v1.ManageableProjectJoinRequestBucket.project_status:type_name -> workspace.v1.ProjectStatus
+	7,   // 38: workspace.v1.ManageableProjectJoinRequestBucket.last_request_created_at:type_name -> workspace.v1.Date
+	9,   // 39: workspace.v1.ManageableProjectJoinRequestBucket.my_rights:type_name -> workspace.v1.ProjectRights
+	31,  // 40: workspace.v1.ListManageableProjectJoinRequestBucketsResponse.items:type_name -> workspace.v1.ManageableProjectJoinRequestBucket
+	1,   // 41: workspace.v1.ListProjectsRequest.status:type_name -> workspace.v1.ProjectStatus
+	3,   // 42: workspace.v1.ListProjectsRequest.skill_match_mode:type_name -> workspace.v1.ProjectSkillMatchMode
+	12,  // 43: workspace.v1.ListProjectsResponse.projects:type_name -> workspace.v1.Project
+	1,   // 44: workspace.v1.ListPublicProjectsRequest.status:type_name -> workspace.v1.ProjectStatus
+	3,   // 45: workspace.v1.ListPublicProjectsRequest.skill_match_mode:type_name -> workspace.v1.ProjectSkillMatchMode
+	4,   // 46: workspace.v1.ListPublicProjectsRequest.sort_by:type_name -> workspace.v1.ProjectPublicSortBy
+	5,   // 47: workspace.v1.ListPublicProjectsRequest.sort_order:type_name -> workspace.v1.SortOrder
+	13,  // 48: workspace.v1.ListPublicProjectsResponse.projects:type_name -> workspace.v1.ProjectPublic
+	14,  // 49: workspace.v1.ListProjectMembersResponse.members:type_name -> workspace.v1.ProjectMember
+	9,   // 50: workspace.v1.AddProjectMemberRequest.rights:type_name -> workspace.v1.ProjectRights
+	2,   // 51: workspace.v1.ListProjectJoinRequestsRequest.status:type_name -> workspace.v1.JoinRequestStatus
+	15,  // 52: workspace.v1.ListProjectJoinRequestsResponse.requests:type_name -> workspace.v1.ProjectJoinRequest
+	9,   // 53: workspace.v1.ApproveProjectJoinRequestRequest.initial_rights:type_name -> workspace.v1.ProjectRights
+	6,   // 54: workspace.v1.ProjectAssessmentRequirement.mode:type_name -> workspace.v1.ProjectAssessmentMode
+	51,  // 55: workspace.v1.ProjectAssessmentRequirementCheck.requirement:type_name -> workspace.v1.ProjectAssessmentRequirement
+	53,  // 56: workspace.v1.GetMyProjectJoinEligibilityResponse.checks:type_name -> workspace.v1.ProjectAssessmentRequirementCheck
+	52,  // 57: workspace.v1.SetProjectAssessmentRequirementsRequest.requirements:type_name -> workspace.v1.ProjectAssessmentRequirementInput
+	2,   // 58: workspace.v1.ListProjectJoinRequestDetailsRequest.status:type_name -> workspace.v1.JoinRequestStatus
+	50,  // 59: workspace.v1.CandidatePublicSummary.skills:type_name -> workspace.v1.ProjectSkill
+	50,  // 60: workspace.v1.SkillMatchSummary.matched_skills:type_name -> workspace.v1.ProjectSkill
+	50,  // 61: workspace.v1.SkillMatchSummary.missing_project_skills:type_name -> workspace.v1.ProjectSkill
+	2,   // 62: workspace.v1.ProjectJoinRequestDetails.status:type_name -> workspace.v1.JoinRequestStatus
+	7,   // 63: workspace.v1.ProjectJoinRequestDetails.decided_at:type_name -> workspace.v1.Date
+	7,   // 64: workspace.v1.ProjectJoinRequestDetails.created_at:type_name -> workspace.v1.Date
+	58,  // 65: workspace.v1.ProjectJoinRequestDetails.candidate:type_name -> workspace.v1.CandidatePublicSummary
+	59,  // 66: workspace.v1.ProjectJoinRequestDetails.skill_match:type_name -> workspace.v1.SkillMatchSummary
+	60,  // 67: workspace.v1.ListProjectJoinRequestDetailsResponse.requests:type_name -> workspace.v1.ProjectJoinRequestDetails
+	15,  // 68: workspace.v1.GetMyProjectJoinRequestResponse.request:type_name -> workspace.v1.ProjectJoinRequest
+	2,   // 69: workspace.v1.ListMyProjectJoinRequestsRequest.status:type_name -> workspace.v1.JoinRequestStatus
+	1,   // 70: workspace.v1.MyProjectJoinRequestItem.project_status:type_name -> workspace.v1.ProjectStatus
+	15,  // 71: workspace.v1.MyProjectJoinRequestItem.request:type_name -> workspace.v1.ProjectJoinRequest
+	65,  // 72: workspace.v1.ListMyProjectJoinRequestsResponse.items:type_name -> workspace.v1.MyProjectJoinRequestItem
+	0,   // 73: workspace.v1.ListProjectInvitationsRequest.status:type_name -> workspace.v1.ProjectInvitationStatus
+	16,  // 74: workspace.v1.ListProjectInvitationsResponse.invitations:type_name -> workspace.v1.ProjectInvitation
+	0,   // 75: workspace.v1.ListProjectInvitationDetailsRequest.status:type_name -> workspace.v1.ProjectInvitationStatus
+	0,   // 76: workspace.v1.ProjectInvitationDetails.status:type_name -> workspace.v1.ProjectInvitationStatus
+	7,   // 77: workspace.v1.ProjectInvitationDetails.decided_at:type_name -> workspace.v1.Date
+	7,   // 78: workspace.v1.ProjectInvitationDetails.created_at:type_name -> workspace.v1.Date
+	58,  // 79: workspace.v1.ProjectInvitationDetails.candidate:type_name -> workspace.v1.CandidatePublicSummary
+	59,  // 80: workspace.v1.ProjectInvitationDetails.skill_match:type_name -> workspace.v1.SkillMatchSummary
+	71,  // 81: workspace.v1.ListProjectInvitationDetailsResponse.invitations:type_name -> workspace.v1.ProjectInvitationDetails
+	16,  // 82: workspace.v1.GetMyProjectInvitationResponse.invitation:type_name -> workspace.v1.ProjectInvitation
+	0,   // 83: workspace.v1.ListMyProjectInvitationsRequest.status:type_name -> workspace.v1.ProjectInvitationStatus
+	1,   // 84: workspace.v1.MyProjectInvitationItem.project_status:type_name -> workspace.v1.ProjectStatus
+	16,  // 85: workspace.v1.MyProjectInvitationItem.invitation:type_name -> workspace.v1.ProjectInvitation
+	84,  // 86: workspace.v1.MyProjectInvitationItem.invited_by_user:type_name -> workspace.v1.UserPublicSummary
+	59,  // 87: workspace.v1.MyProjectInvitationItem.skill_match:type_name -> workspace.v1.SkillMatchSummary
+	77,  // 88: workspace.v1.ListMyProjectInvitationsResponse.items:type_name -> workspace.v1.MyProjectInvitationItem
+	1,   // 89: workspace.v1.InvitableProjectItem.project_status:type_name -> workspace.v1.ProjectStatus
+	9,   // 90: workspace.v1.InvitableProjectItem.my_rights:type_name -> workspace.v1.ProjectRights
+	82,  // 91: workspace.v1.ListMyInvitableProjectsResponse.items:type_name -> workspace.v1.InvitableProjectItem
+	1,   // 92: workspace.v1.ProjectInvitationProjectSummary.status:type_name -> workspace.v1.ProjectStatus
+	7,   // 93: workspace.v1.ProjectInvitationProjectSummary.started_at:type_name -> workspace.v1.Date
+	7,   // 94: workspace.v1.ProjectInvitationProjectSummary.finished_at:type_name -> workspace.v1.Date
+	7,   // 95: workspace.v1.ProjectInvitationProjectSummary.created_at:type_name -> workspace.v1.Date
+	7,   // 96: workspace.v1.ProjectInvitationProjectSummary.updated_at:type_name -> workspace.v1.Date
+	50,  // 97: workspace.v1.ProjectInvitationProjectSummary.skills:type_name -> workspace.v1.ProjectSkill
+	16,  // 98: workspace.v1.MyProjectInvitationDetails.invitation:type_name -> workspace.v1.ProjectInvitation
+	85,  // 99: workspace.v1.MyProjectInvitationDetails.project:type_name -> workspace.v1.ProjectInvitationProjectSummary
+	84,  // 100: workspace.v1.MyProjectInvitationDetails.invited_by_user:type_name -> workspace.v1.UserPublicSummary
+	59,  // 101: workspace.v1.MyProjectInvitationDetails.skill_match:type_name -> workspace.v1.SkillMatchSummary
+	87,  // 102: workspace.v1.GetMyProjectInvitationDetailsResponse.item:type_name -> workspace.v1.MyProjectInvitationDetails
+	50,  // 103: workspace.v1.ProjectMemberUserSummary.skills:type_name -> workspace.v1.ProjectSkill
+	9,   // 104: workspace.v1.ProjectMemberDetails.rights:type_name -> workspace.v1.ProjectRights
+	89,  // 105: workspace.v1.ProjectMemberDetails.user:type_name -> workspace.v1.ProjectMemberUserSummary
+	90,  // 106: workspace.v1.ProjectMemberDetails.capabilities:type_name -> workspace.v1.ProjectMemberCapabilities
+	91,  // 107: workspace.v1.ListProjectMemberDetailsResponse.members:type_name -> workspace.v1.ProjectMemberDetails
+	9,   // 108: workspace.v1.ListProjectMemberDetailsResponse.my_rights:type_name -> workspace.v1.ProjectRights
+	50,  // 109: workspace.v1.TeamMemberUserSummary.skills:type_name -> workspace.v1.ProjectSkill
+	1,   // 110: workspace.v1.TeamMemberProjectSummary.project_status:type_name -> workspace.v1.ProjectStatus
+	7,   // 111: workspace.v1.TeamMemberDetails.joined_at:type_name -> workspace.v1.Date
+	94,  // 112: workspace.v1.TeamMemberDetails.rights:type_name -> workspace.v1.TeamRights
+	96,  // 113: workspace.v1.TeamMemberDetails.user:type_name -> workspace.v1.TeamMemberUserSummary
+	98,  // 114: workspace.v1.TeamMemberDetails.projects:type_name -> workspace.v1.TeamMemberProjectSummary
+	97,  // 115: workspace.v1.TeamMemberDetails.capabilities:type_name -> workspace.v1.TeamMemberCapabilities
+	99,  // 116: workspace.v1.ListTeamMemberDetailsResponse.members:type_name -> workspace.v1.TeamMemberDetails
+	94,  // 117: workspace.v1.ListTeamMemberDetailsResponse.my_rights:type_name -> workspace.v1.TeamRights
+	95,  // 118: workspace.v1.ListTeamMemberDetailsResponse.capabilities:type_name -> workspace.v1.TeamCapabilities
+	9,   // 119: workspace.v1.AssignTeamMemberToProjectRequest.initial_rights:type_name -> workspace.v1.ProjectRights
+	1,   // 120: workspace.v1.TeamProjectAssignmentItem.project_status:type_name -> workspace.v1.ProjectStatus
+	9,   // 121: workspace.v1.TeamProjectAssignmentItem.current_rights:type_name -> workspace.v1.ProjectRights
+	106, // 122: workspace.v1.ListTeamProjectsForAssignmentResponse.items:type_name -> workspace.v1.TeamProjectAssignmentItem
+	17,  // 123: workspace.v1.Teams.CreateTeam:input_type -> workspace.v1.CreateTeamRequest
+	18,  // 124: workspace.v1.Teams.GetTeam:input_type -> workspace.v1.GetTeamRequest
+	19,  // 125: workspace.v1.Teams.UpdateTeam:input_type -> workspace.v1.UpdateTeamRequest
+	20,  // 126: workspace.v1.Teams.DeleteTeam:input_type -> workspace.v1.DeleteTeamRequest
+	21,  // 127: workspace.v1.Teams.ListTeams:input_type -> workspace.v1.ListTeamsRequest
+	23,  // 128: workspace.v1.Teams.ListTeamMembers:input_type -> workspace.v1.ListTeamMembersRequest
+	25,  // 129: workspace.v1.Teams.UpdateTeamMember:input_type -> workspace.v1.UpdateTeamMemberRequest
+	26,  // 130: workspace.v1.Teams.RemoveTeamMember:input_type -> workspace.v1.RemoveTeamMemberRequest
+	100, // 131: workspace.v1.Teams.ListTeamMemberDetails:input_type -> workspace.v1.ListTeamMemberDetailsRequest
+	102, // 132: workspace.v1.Teams.UpdateTeamMemberDuties:input_type -> workspace.v1.UpdateTeamMemberDutiesRequest
+	103, // 133: workspace.v1.Teams.UpdateTeamMemberRights:input_type -> workspace.v1.UpdateTeamMemberRightsRequest
+	104, // 134: workspace.v1.Teams.AssignTeamMemberToProject:input_type -> workspace.v1.AssignTeamMemberToProjectRequest
+	105, // 135: workspace.v1.Teams.ListTeamProjectsForAssignment:input_type -> workspace.v1.ListTeamProjectsForAssignmentRequest
+	27,  // 136: workspace.v1.Projects.CreateProject:input_type -> workspace.v1.CreateProjectRequest
+	28,  // 137: workspace.v1.Projects.GetProject:input_type -> workspace.v1.GetProjectRequest
+	29,  // 138: workspace.v1.Projects.UpdateProject:input_type -> workspace.v1.UpdateProjectRequest
+	33,  // 139: workspace.v1.Projects.DeleteProject:input_type -> workspace.v1.DeleteProjectRequest
+	34,  // 140: workspace.v1.Projects.ListProjects:input_type -> workspace.v1.ListProjectsRequest
+	36,  // 141: workspace.v1.Projects.ListPublicProjects:input_type -> workspace.v1.ListPublicProjectsRequest
+	38,  // 142: workspace.v1.Projects.ListProjectMembers:input_type -> workspace.v1.ListProjectMembersRequest
+	92,  // 143: workspace.v1.Projects.ListProjectMemberDetails:input_type -> workspace.v1.ListProjectMemberDetailsRequest
+	30,  // 144: workspace.v1.Projects.ListManageableProjectJoinRequestBuckets:input_type -> workspace.v1.ListManageableProjectJoinRequestBucketsRequest
+	40,  // 145: workspace.v1.Projects.AddProjectMember:input_type -> workspace.v1.AddProjectMemberRequest
+	41,  // 146: workspace.v1.Projects.RemoveProjectMember:input_type -> workspace.v1.RemoveProjectMemberRequest
+	42,  // 147: workspace.v1.Projects.UpdateProjectMemberRights:input_type -> workspace.v1.UpdateProjectMemberRightsRequest
+	43,  // 148: workspace.v1.Projects.RequestJoinProject:input_type -> workspace.v1.RequestJoinProjectRequest
+	44,  // 149: workspace.v1.Projects.CancelJoinProject:input_type -> workspace.v1.CancelJoinProjectRequest
+	45,  // 150: workspace.v1.Projects.ListProjectJoinRequests:input_type -> workspace.v1.ListProjectJoinRequestsRequest
+	57,  // 151: workspace.v1.Projects.ListProjectJoinRequestDetails:input_type -> workspace.v1.ListProjectJoinRequestDetailsRequest
+	47,  // 152: workspace.v1.Projects.ApproveProjectJoinRequest:input_type -> workspace.v1.ApproveProjectJoinRequestRequest
+	48,  // 153: workspace.v1.Projects.RejectProjectJoinRequest:input_type -> workspace.v1.RejectProjectJoinRequestRequest
+	49,  // 154: workspace.v1.Projects.SetProjectOpen:input_type -> workspace.v1.SetProjectOpenRequest
+	62,  // 155: workspace.v1.Projects.GetMyProjectJoinRequest:input_type -> workspace.v1.GetMyProjectJoinRequestRequest
+	64,  // 156: workspace.v1.Projects.ListMyProjectJoinRequests:input_type -> workspace.v1.ListMyProjectJoinRequestsRequest
+	67,  // 157: workspace.v1.Projects.InviteUserToProject:input_type -> workspace.v1.InviteUserToProjectRequest
+	68,  // 158: workspace.v1.Projects.ListProjectInvitations:input_type -> workspace.v1.ListProjectInvitationsRequest
+	70,  // 159: workspace.v1.Projects.ListProjectInvitationDetails:input_type -> workspace.v1.ListProjectInvitationDetailsRequest
+	73,  // 160: workspace.v1.Projects.RevokeProjectInvitation:input_type -> workspace.v1.RevokeProjectInvitationRequest
+	74,  // 161: workspace.v1.Projects.GetMyProjectInvitation:input_type -> workspace.v1.GetMyProjectInvitationRequest
+	86,  // 162: workspace.v1.Projects.GetMyProjectInvitationDetails:input_type -> workspace.v1.GetMyProjectInvitationDetailsRequest
+	76,  // 163: workspace.v1.Projects.ListMyProjectInvitations:input_type -> workspace.v1.ListMyProjectInvitationsRequest
+	79,  // 164: workspace.v1.Projects.AcceptProjectInvitation:input_type -> workspace.v1.AcceptProjectInvitationRequest
+	80,  // 165: workspace.v1.Projects.RejectProjectInvitation:input_type -> workspace.v1.RejectProjectInvitationRequest
+	81,  // 166: workspace.v1.Projects.ListMyInvitableProjects:input_type -> workspace.v1.ListMyInvitableProjectsRequest
+	55,  // 167: workspace.v1.Projects.SetProjectAssessmentRequirements:input_type -> workspace.v1.SetProjectAssessmentRequirementsRequest
+	56,  // 168: workspace.v1.Projects.GetMyProjectJoinEligibility:input_type -> workspace.v1.GetMyProjectJoinEligibilityRequest
+	10,  // 169: workspace.v1.Teams.CreateTeam:output_type -> workspace.v1.Team
+	10,  // 170: workspace.v1.Teams.GetTeam:output_type -> workspace.v1.Team
+	10,  // 171: workspace.v1.Teams.UpdateTeam:output_type -> workspace.v1.Team
+	108, // 172: workspace.v1.Teams.DeleteTeam:output_type -> google.protobuf.Empty
+	22,  // 173: workspace.v1.Teams.ListTeams:output_type -> workspace.v1.ListTeamsResponse
+	24,  // 174: workspace.v1.Teams.ListTeamMembers:output_type -> workspace.v1.ListTeamMembersResponse
+	11,  // 175: workspace.v1.Teams.UpdateTeamMember:output_type -> workspace.v1.TeamMember
+	108, // 176: workspace.v1.Teams.RemoveTeamMember:output_type -> google.protobuf.Empty
+	101, // 177: workspace.v1.Teams.ListTeamMemberDetails:output_type -> workspace.v1.ListTeamMemberDetailsResponse
+	11,  // 178: workspace.v1.Teams.UpdateTeamMemberDuties:output_type -> workspace.v1.TeamMember
+	11,  // 179: workspace.v1.Teams.UpdateTeamMemberRights:output_type -> workspace.v1.TeamMember
+	14,  // 180: workspace.v1.Teams.AssignTeamMemberToProject:output_type -> workspace.v1.ProjectMember
+	107, // 181: workspace.v1.Teams.ListTeamProjectsForAssignment:output_type -> workspace.v1.ListTeamProjectsForAssignmentResponse
+	12,  // 182: workspace.v1.Projects.CreateProject:output_type -> workspace.v1.Project
+	12,  // 183: workspace.v1.Projects.GetProject:output_type -> workspace.v1.Project
+	12,  // 184: workspace.v1.Projects.UpdateProject:output_type -> workspace.v1.Project
+	108, // 185: workspace.v1.Projects.DeleteProject:output_type -> google.protobuf.Empty
+	35,  // 186: workspace.v1.Projects.ListProjects:output_type -> workspace.v1.ListProjectsResponse
+	37,  // 187: workspace.v1.Projects.ListPublicProjects:output_type -> workspace.v1.ListPublicProjectsResponse
+	39,  // 188: workspace.v1.Projects.ListProjectMembers:output_type -> workspace.v1.ListProjectMembersResponse
+	93,  // 189: workspace.v1.Projects.ListProjectMemberDetails:output_type -> workspace.v1.ListProjectMemberDetailsResponse
+	32,  // 190: workspace.v1.Projects.ListManageableProjectJoinRequestBuckets:output_type -> workspace.v1.ListManageableProjectJoinRequestBucketsResponse
+	14,  // 191: workspace.v1.Projects.AddProjectMember:output_type -> workspace.v1.ProjectMember
+	108, // 192: workspace.v1.Projects.RemoveProjectMember:output_type -> google.protobuf.Empty
+	14,  // 193: workspace.v1.Projects.UpdateProjectMemberRights:output_type -> workspace.v1.ProjectMember
+	15,  // 194: workspace.v1.Projects.RequestJoinProject:output_type -> workspace.v1.ProjectJoinRequest
+	15,  // 195: workspace.v1.Projects.CancelJoinProject:output_type -> workspace.v1.ProjectJoinRequest
+	46,  // 196: workspace.v1.Projects.ListProjectJoinRequests:output_type -> workspace.v1.ListProjectJoinRequestsResponse
+	61,  // 197: workspace.v1.Projects.ListProjectJoinRequestDetails:output_type -> workspace.v1.ListProjectJoinRequestDetailsResponse
+	15,  // 198: workspace.v1.Projects.ApproveProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
+	15,  // 199: workspace.v1.Projects.RejectProjectJoinRequest:output_type -> workspace.v1.ProjectJoinRequest
+	12,  // 200: workspace.v1.Projects.SetProjectOpen:output_type -> workspace.v1.Project
+	63,  // 201: workspace.v1.Projects.GetMyProjectJoinRequest:output_type -> workspace.v1.GetMyProjectJoinRequestResponse
+	66,  // 202: workspace.v1.Projects.ListMyProjectJoinRequests:output_type -> workspace.v1.ListMyProjectJoinRequestsResponse
+	16,  // 203: workspace.v1.Projects.InviteUserToProject:output_type -> workspace.v1.ProjectInvitation
+	69,  // 204: workspace.v1.Projects.ListProjectInvitations:output_type -> workspace.v1.ListProjectInvitationsResponse
+	72,  // 205: workspace.v1.Projects.ListProjectInvitationDetails:output_type -> workspace.v1.ListProjectInvitationDetailsResponse
+	16,  // 206: workspace.v1.Projects.RevokeProjectInvitation:output_type -> workspace.v1.ProjectInvitation
+	75,  // 207: workspace.v1.Projects.GetMyProjectInvitation:output_type -> workspace.v1.GetMyProjectInvitationResponse
+	88,  // 208: workspace.v1.Projects.GetMyProjectInvitationDetails:output_type -> workspace.v1.GetMyProjectInvitationDetailsResponse
+	78,  // 209: workspace.v1.Projects.ListMyProjectInvitations:output_type -> workspace.v1.ListMyProjectInvitationsResponse
+	16,  // 210: workspace.v1.Projects.AcceptProjectInvitation:output_type -> workspace.v1.ProjectInvitation
+	16,  // 211: workspace.v1.Projects.RejectProjectInvitation:output_type -> workspace.v1.ProjectInvitation
+	83,  // 212: workspace.v1.Projects.ListMyInvitableProjects:output_type -> workspace.v1.ListMyInvitableProjectsResponse
+	12,  // 213: workspace.v1.Projects.SetProjectAssessmentRequirements:output_type -> workspace.v1.Project
+	54,  // 214: workspace.v1.Projects.GetMyProjectJoinEligibility:output_type -> workspace.v1.GetMyProjectJoinEligibilityResponse
+	169, // [169:215] is the sub-list for method output_type
+	123, // [123:169] is the sub-list for method input_type
+	123, // [123:123] is the sub-list for extension type_name
+	123, // [123:123] is the sub-list for extension extendee
+	0,   // [0:123] is the sub-list for field type_name
 }
 
 func init() { file_teamAndProjects_teamAndProjects_proto_init() }
@@ -8111,21 +8673,21 @@ func file_teamAndProjects_teamAndProjects_proto_init() {
 	file_teamAndProjects_teamAndProjects_proto_msgTypes[22].OneofWrappers = []any{}
 	file_teamAndProjects_teamAndProjects_proto_msgTypes[24].OneofWrappers = []any{}
 	file_teamAndProjects_teamAndProjects_proto_msgTypes[35].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[47].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[50].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[58].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[62].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[72].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[75].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[53].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[56].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[64].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[68].OneofWrappers = []any{}
 	file_teamAndProjects_teamAndProjects_proto_msgTypes[78].OneofWrappers = []any{}
-	file_teamAndProjects_teamAndProjects_proto_msgTypes[90].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[81].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[84].OneofWrappers = []any{}
+	file_teamAndProjects_teamAndProjects_proto_msgTypes[96].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_teamAndProjects_teamAndProjects_proto_rawDesc), len(file_teamAndProjects_teamAndProjects_proto_rawDesc)),
-			NumEnums:      6,
-			NumMessages:   95,
+			NumEnums:      7,
+			NumMessages:   101,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

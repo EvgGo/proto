@@ -619,6 +619,8 @@ const (
 	Projects_AcceptProjectInvitation_FullMethodName                 = "/workspace.v1.Projects/AcceptProjectInvitation"
 	Projects_RejectProjectInvitation_FullMethodName                 = "/workspace.v1.Projects/RejectProjectInvitation"
 	Projects_ListMyInvitableProjects_FullMethodName                 = "/workspace.v1.Projects/ListMyInvitableProjects"
+	Projects_SetProjectAssessmentRequirements_FullMethodName        = "/workspace.v1.Projects/SetProjectAssessmentRequirements"
+	Projects_GetMyProjectJoinEligibility_FullMethodName             = "/workspace.v1.Projects/GetMyProjectJoinEligibility"
 )
 
 // ProjectsClient is the client API for Projects service.
@@ -635,7 +637,7 @@ type ProjectsClient interface {
 	// Список проектов для внутренних страниц: мои проекты, проекты команды
 	ListProjects(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ListProjectsResponse, error)
 	// Публичный листинг проектов для поиска (главный сценарий)
-	// Обычно отдаёт только is_open=true
+	// Обычно отдает только is_open=true
 	ListPublicProjects(ctx context.Context, in *ListPublicProjectsRequest, opts ...grpc.CallOption) (*ListPublicProjectsResponse, error)
 	// Участники проекта
 	ListProjectMembers(ctx context.Context, in *ListProjectMembersRequest, opts ...grpc.CallOption) (*ListProjectMembersResponse, error)
@@ -665,7 +667,7 @@ type ProjectsClient interface {
 	// Менеджеры проекта смотрят заявки
 	ListProjectJoinRequests(ctx context.Context, in *ListProjectJoinRequestsRequest, opts ...grpc.CallOption) (*ListProjectJoinRequestsResponse, error)
 	ListProjectJoinRequestDetails(ctx context.Context, in *ListProjectJoinRequestDetailsRequest, opts ...grpc.CallOption) (*ListProjectJoinRequestDetailsResponse, error)
-	// Менеджер проекта одобряет заявку: создаём project_member и помечаем request approved
+	// Менеджер проекта одобряет заявку: создаем project_member и помечаем request approved
 	ApproveProjectJoinRequest(ctx context.Context, in *ApproveProjectJoinRequestRequest, opts ...grpc.CallOption) (*ProjectJoinRequest, error)
 	// Менеджер проекта отклоняет заявку
 	RejectProjectJoinRequest(ctx context.Context, in *RejectProjectJoinRequestRequest, opts ...grpc.CallOption) (*ProjectJoinRequest, error)
@@ -681,19 +683,27 @@ type ProjectsClient interface {
 	ListProjectInvitationDetails(ctx context.Context, in *ListProjectInvitationDetailsRequest, opts ...grpc.CallOption) (*ListProjectInvitationDetailsResponse, error)
 	// Менеджер проекта отзывает pending приглашение
 	RevokeProjectInvitation(ctx context.Context, in *RevokeProjectInvitationRequest, opts ...grpc.CallOption) (*ProjectInvitation, error)
-	// Кандидат смотрит своё приглашение в конкретный проект
+	// Кандидат смотрит свое приглашение в конкретный проект
 	GetMyProjectInvitation(ctx context.Context, in *GetMyProjectInvitationRequest, opts ...grpc.CallOption) (*GetMyProjectInvitationResponse, error)
 	// Кандидат смотрит детали приглашения в проект
 	GetMyProjectInvitationDetails(ctx context.Context, in *GetMyProjectInvitationDetailsRequest, opts ...grpc.CallOption) (*GetMyProjectInvitationDetailsResponse, error)
 	// Кандидат смотрит все свои приглашения
 	ListMyProjectInvitations(ctx context.Context, in *ListMyProjectInvitationsRequest, opts ...grpc.CallOption) (*ListMyProjectInvitationsResponse, error)
 	// Кандидат принимает приглашение:
-	// создаём project_member и помечаем invitation accepted
+	// создаем project_member и помечаем invitation accepted
 	AcceptProjectInvitation(ctx context.Context, in *AcceptProjectInvitationRequest, opts ...grpc.CallOption) (*ProjectInvitation, error)
 	// Кандидат отклоняет приглашение
 	RejectProjectInvitation(ctx context.Context, in *RejectProjectInvitationRequest, opts ...grpc.CallOption) (*ProjectInvitation, error)
 	// Список проектов, в которые текущий пользователь может приглашать кандидатов
 	ListMyInvitableProjects(ctx context.Context, in *ListMyInvitableProjectsRequest, opts ...grpc.CallOption) (*ListMyInvitableProjectsResponse, error)
+	// Полностью заменить требования проекта по тестам
+	// Если список пустой => очистить все требования
+	// Доступ: только тот, кто может управлять проектом
+	SetProjectAssessmentRequirements(ctx context.Context, in *SetProjectAssessmentRequirementsRequest, opts ...grpc.CallOption) (*Project, error)
+	// Проверка, может ли текущий пользователь подать заявку на вступление
+	// Используется фронтом перед RequestJoinProject
+	// чтобы показать модалку с недостающими тестами / уровнями
+	GetMyProjectJoinEligibility(ctx context.Context, in *GetMyProjectJoinEligibilityRequest, opts ...grpc.CallOption) (*GetMyProjectJoinEligibilityResponse, error)
 }
 
 type projectsClient struct {
@@ -1014,6 +1024,26 @@ func (c *projectsClient) ListMyInvitableProjects(ctx context.Context, in *ListMy
 	return out, nil
 }
 
+func (c *projectsClient) SetProjectAssessmentRequirements(ctx context.Context, in *SetProjectAssessmentRequirementsRequest, opts ...grpc.CallOption) (*Project, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Project)
+	err := c.cc.Invoke(ctx, Projects_SetProjectAssessmentRequirements_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) GetMyProjectJoinEligibility(ctx context.Context, in *GetMyProjectJoinEligibilityRequest, opts ...grpc.CallOption) (*GetMyProjectJoinEligibilityResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMyProjectJoinEligibilityResponse)
+	err := c.cc.Invoke(ctx, Projects_GetMyProjectJoinEligibility_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectsServer is the server API for Projects service.
 // All implementations must embed UnimplementedProjectsServer
 // for forward compatibility.
@@ -1028,7 +1058,7 @@ type ProjectsServer interface {
 	// Список проектов для внутренних страниц: мои проекты, проекты команды
 	ListProjects(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error)
 	// Публичный листинг проектов для поиска (главный сценарий)
-	// Обычно отдаёт только is_open=true
+	// Обычно отдает только is_open=true
 	ListPublicProjects(context.Context, *ListPublicProjectsRequest) (*ListPublicProjectsResponse, error)
 	// Участники проекта
 	ListProjectMembers(context.Context, *ListProjectMembersRequest) (*ListProjectMembersResponse, error)
@@ -1058,7 +1088,7 @@ type ProjectsServer interface {
 	// Менеджеры проекта смотрят заявки
 	ListProjectJoinRequests(context.Context, *ListProjectJoinRequestsRequest) (*ListProjectJoinRequestsResponse, error)
 	ListProjectJoinRequestDetails(context.Context, *ListProjectJoinRequestDetailsRequest) (*ListProjectJoinRequestDetailsResponse, error)
-	// Менеджер проекта одобряет заявку: создаём project_member и помечаем request approved
+	// Менеджер проекта одобряет заявку: создаем project_member и помечаем request approved
 	ApproveProjectJoinRequest(context.Context, *ApproveProjectJoinRequestRequest) (*ProjectJoinRequest, error)
 	// Менеджер проекта отклоняет заявку
 	RejectProjectJoinRequest(context.Context, *RejectProjectJoinRequestRequest) (*ProjectJoinRequest, error)
@@ -1074,19 +1104,27 @@ type ProjectsServer interface {
 	ListProjectInvitationDetails(context.Context, *ListProjectInvitationDetailsRequest) (*ListProjectInvitationDetailsResponse, error)
 	// Менеджер проекта отзывает pending приглашение
 	RevokeProjectInvitation(context.Context, *RevokeProjectInvitationRequest) (*ProjectInvitation, error)
-	// Кандидат смотрит своё приглашение в конкретный проект
+	// Кандидат смотрит свое приглашение в конкретный проект
 	GetMyProjectInvitation(context.Context, *GetMyProjectInvitationRequest) (*GetMyProjectInvitationResponse, error)
 	// Кандидат смотрит детали приглашения в проект
 	GetMyProjectInvitationDetails(context.Context, *GetMyProjectInvitationDetailsRequest) (*GetMyProjectInvitationDetailsResponse, error)
 	// Кандидат смотрит все свои приглашения
 	ListMyProjectInvitations(context.Context, *ListMyProjectInvitationsRequest) (*ListMyProjectInvitationsResponse, error)
 	// Кандидат принимает приглашение:
-	// создаём project_member и помечаем invitation accepted
+	// создаем project_member и помечаем invitation accepted
 	AcceptProjectInvitation(context.Context, *AcceptProjectInvitationRequest) (*ProjectInvitation, error)
 	// Кандидат отклоняет приглашение
 	RejectProjectInvitation(context.Context, *RejectProjectInvitationRequest) (*ProjectInvitation, error)
 	// Список проектов, в которые текущий пользователь может приглашать кандидатов
 	ListMyInvitableProjects(context.Context, *ListMyInvitableProjectsRequest) (*ListMyInvitableProjectsResponse, error)
+	// Полностью заменить требования проекта по тестам
+	// Если список пустой => очистить все требования
+	// Доступ: только тот, кто может управлять проектом
+	SetProjectAssessmentRequirements(context.Context, *SetProjectAssessmentRequirementsRequest) (*Project, error)
+	// Проверка, может ли текущий пользователь подать заявку на вступление
+	// Используется фронтом перед RequestJoinProject
+	// чтобы показать модалку с недостающими тестами / уровнями
+	GetMyProjectJoinEligibility(context.Context, *GetMyProjectJoinEligibilityRequest) (*GetMyProjectJoinEligibilityResponse, error)
 	mustEmbedUnimplementedProjectsServer()
 }
 
@@ -1189,6 +1227,12 @@ func (UnimplementedProjectsServer) RejectProjectInvitation(context.Context, *Rej
 }
 func (UnimplementedProjectsServer) ListMyInvitableProjects(context.Context, *ListMyInvitableProjectsRequest) (*ListMyInvitableProjectsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMyInvitableProjects not implemented")
+}
+func (UnimplementedProjectsServer) SetProjectAssessmentRequirements(context.Context, *SetProjectAssessmentRequirementsRequest) (*Project, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetProjectAssessmentRequirements not implemented")
+}
+func (UnimplementedProjectsServer) GetMyProjectJoinEligibility(context.Context, *GetMyProjectJoinEligibilityRequest) (*GetMyProjectJoinEligibilityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMyProjectJoinEligibility not implemented")
 }
 func (UnimplementedProjectsServer) mustEmbedUnimplementedProjectsServer() {}
 func (UnimplementedProjectsServer) testEmbeddedByValue()                  {}
@@ -1769,6 +1813,42 @@ func _Projects_ListMyInvitableProjects_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_SetProjectAssessmentRequirements_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetProjectAssessmentRequirementsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).SetProjectAssessmentRequirements(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_SetProjectAssessmentRequirements_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).SetProjectAssessmentRequirements(ctx, req.(*SetProjectAssessmentRequirementsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_GetMyProjectJoinEligibility_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMyProjectJoinEligibilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).GetMyProjectJoinEligibility(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_GetMyProjectJoinEligibility_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).GetMyProjectJoinEligibility(ctx, req.(*GetMyProjectJoinEligibilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Projects_ServiceDesc is the grpc.ServiceDesc for Projects service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1899,6 +1979,14 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListMyInvitableProjects",
 			Handler:    _Projects_ListMyInvitableProjects_Handler,
+		},
+		{
+			MethodName: "SetProjectAssessmentRequirements",
+			Handler:    _Projects_SetProjectAssessmentRequirements_Handler,
+		},
+		{
+			MethodName: "GetMyProjectJoinEligibility",
+			Handler:    _Projects_GetMyProjectJoinEligibility_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
