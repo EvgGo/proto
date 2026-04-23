@@ -3778,6 +3778,10 @@ type GetMyProjectJoinEligibilityResponse struct {
 	TotalRequirementsCount   int32                                `protobuf:"varint,3,opt,name=total_requirements_count,json=totalRequirementsCount,proto3" json:"total_requirements_count,omitempty"`
 	MatchedRequirementsCount int32                                `protobuf:"varint,4,opt,name=matched_requirements_count,json=matchedRequirementsCount,proto3" json:"matched_requirements_count,omitempty"`
 	Checks                   []*ProjectAssessmentRequirementCheck `protobuf:"bytes,5,rep,name=checks,proto3" json:"checks,omitempty"`
+	IsProjectOpen            bool                                 `protobuf:"varint,6,opt,name=is_project_open,json=isProjectOpen,proto3" json:"is_project_open,omitempty"`
+	AlreadyMember            bool                                 `protobuf:"varint,7,opt,name=already_member,json=alreadyMember,proto3" json:"already_member,omitempty"`
+	HasPendingJoinRequest    bool                                 `protobuf:"varint,8,opt,name=has_pending_join_request,json=hasPendingJoinRequest,proto3" json:"has_pending_join_request,omitempty"`
+	HasPendingInvitation     bool                                 `protobuf:"varint,9,opt,name=has_pending_invitation,json=hasPendingInvitation,proto3" json:"has_pending_invitation,omitempty"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -3845,6 +3849,34 @@ func (x *GetMyProjectJoinEligibilityResponse) GetChecks() []*ProjectAssessmentRe
 		return x.Checks
 	}
 	return nil
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) GetIsProjectOpen() bool {
+	if x != nil {
+		return x.IsProjectOpen
+	}
+	return false
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) GetAlreadyMember() bool {
+	if x != nil {
+		return x.AlreadyMember
+	}
+	return false
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) GetHasPendingJoinRequest() bool {
+	if x != nil {
+		return x.HasPendingJoinRequest
+	}
+	return false
+}
+
+func (x *GetMyProjectJoinEligibilityResponse) GetHasPendingInvitation() bool {
+	if x != nil {
+		return x.HasPendingInvitation
+	}
+	return false
 }
 
 // Полная замена требований проекта
@@ -7860,14 +7892,18 @@ const file_teamAndProjects_teamAndProjects_proto_rawDesc = "" +
 	"\rcurrent_level\x18\x03 \x01(\x05R\fcurrentLevel\x12+\n" +
 	"\x11meets_requirement\x18\x04 \x01(\bR\x10meetsRequirement\x12&\n" +
 	"\x0fneeds_pass_test\x18\x05 \x01(\bR\rneedsPassTest\x12.\n" +
-	"\x13needs_improve_level\x18\x06 \x01(\bR\x11needsImproveLevel\"\xaf\x02\n" +
+	"\x13needs_improve_level\x18\x06 \x01(\bR\x11needsImproveLevel\"\xed\x03\n" +
 	"#GetMyProjectJoinEligibilityResponse\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tR\tprojectId\x12(\n" +
 	"\x10can_request_join\x18\x02 \x01(\bR\x0ecanRequestJoin\x128\n" +
 	"\x18total_requirements_count\x18\x03 \x01(\x05R\x16totalRequirementsCount\x12<\n" +
 	"\x1amatched_requirements_count\x18\x04 \x01(\x05R\x18matchedRequirementsCount\x12G\n" +
-	"\x06checks\x18\x05 \x03(\v2/.workspace.v1.ProjectAssessmentRequirementCheckR\x06checks\"\x9d\x01\n" +
+	"\x06checks\x18\x05 \x03(\v2/.workspace.v1.ProjectAssessmentRequirementCheckR\x06checks\x12&\n" +
+	"\x0fis_project_open\x18\x06 \x01(\bR\risProjectOpen\x12%\n" +
+	"\x0ealready_member\x18\a \x01(\bR\ralreadyMember\x127\n" +
+	"\x18has_pending_join_request\x18\b \x01(\bR\x15hasPendingJoinRequest\x124\n" +
+	"\x16has_pending_invitation\x18\t \x01(\bR\x14hasPendingInvitation\"\x9d\x01\n" +
 	"'SetProjectAssessmentRequirementsRequest\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x01 \x01(\tR\tprojectId\x12S\n" +

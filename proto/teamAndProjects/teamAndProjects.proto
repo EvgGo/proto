@@ -668,6 +668,10 @@ message GetMyProjectJoinEligibilityResponse {
   int32 matched_requirements_count = 4;
 
   repeated ProjectAssessmentRequirementCheck checks = 5;
+  bool is_project_open = 6;
+  bool already_member = 7;
+  bool has_pending_join_request = 8;
+  bool has_pending_invitation = 9;
 }
 
 // Полная замена требований проекта
