@@ -19,17 +19,21 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AdaptiveTesting_ListSubjects_FullMethodName       = "/assessment.v1.AdaptiveTesting/ListSubjects"
-	AdaptiveTesting_ListSubtopics_FullMethodName      = "/assessment.v1.AdaptiveTesting/ListSubtopics"
-	AdaptiveTesting_ListAssessments_FullMethodName    = "/assessment.v1.AdaptiveTesting/ListAssessments"
-	AdaptiveTesting_GetAssessment_FullMethodName      = "/assessment.v1.AdaptiveTesting/GetAssessment"
-	AdaptiveTesting_StartAttempt_FullMethodName       = "/assessment.v1.AdaptiveTesting/StartAttempt"
-	AdaptiveTesting_GetAttempt_FullMethodName         = "/assessment.v1.AdaptiveTesting/GetAttempt"
-	AdaptiveTesting_GetAttemptProgress_FullMethodName = "/assessment.v1.AdaptiveTesting/GetAttemptProgress"
-	AdaptiveTesting_GetNextQuestion_FullMethodName    = "/assessment.v1.AdaptiveTesting/GetNextQuestion"
-	AdaptiveTesting_SubmitAnswer_FullMethodName       = "/assessment.v1.AdaptiveTesting/SubmitAnswer"
-	AdaptiveTesting_FinishAttempt_FullMethodName      = "/assessment.v1.AdaptiveTesting/FinishAttempt"
-	AdaptiveTesting_ListMyAttempts_FullMethodName     = "/assessment.v1.AdaptiveTesting/ListMyAttempts"
+	AdaptiveTesting_ListSubjects_FullMethodName            = "/assessment.v1.AdaptiveTesting/ListSubjects"
+	AdaptiveTesting_ListSubtopics_FullMethodName           = "/assessment.v1.AdaptiveTesting/ListSubtopics"
+	AdaptiveTesting_ListAssessments_FullMethodName         = "/assessment.v1.AdaptiveTesting/ListAssessments"
+	AdaptiveTesting_GetAssessment_FullMethodName           = "/assessment.v1.AdaptiveTesting/GetAssessment"
+	AdaptiveTesting_StartAttempt_FullMethodName            = "/assessment.v1.AdaptiveTesting/StartAttempt"
+	AdaptiveTesting_GetAttempt_FullMethodName              = "/assessment.v1.AdaptiveTesting/GetAttempt"
+	AdaptiveTesting_GetAttemptProgress_FullMethodName      = "/assessment.v1.AdaptiveTesting/GetAttemptProgress"
+	AdaptiveTesting_GetNextQuestion_FullMethodName         = "/assessment.v1.AdaptiveTesting/GetNextQuestion"
+	AdaptiveTesting_SubmitAnswer_FullMethodName            = "/assessment.v1.AdaptiveTesting/SubmitAnswer"
+	AdaptiveTesting_FinishAttempt_FullMethodName           = "/assessment.v1.AdaptiveTesting/FinishAttempt"
+	AdaptiveTesting_ListMyAttempts_FullMethodName          = "/assessment.v1.AdaptiveTesting/ListMyAttempts"
+	AdaptiveTesting_CreateCustomAssessment_FullMethodName  = "/assessment.v1.AdaptiveTesting/CreateCustomAssessment"
+	AdaptiveTesting_UpdateCustomAssessment_FullMethodName  = "/assessment.v1.AdaptiveTesting/UpdateCustomAssessment"
+	AdaptiveTesting_ArchiveCustomAssessment_FullMethodName = "/assessment.v1.AdaptiveTesting/ArchiveCustomAssessment"
+	AdaptiveTesting_ListMyCustomAssessments_FullMethodName = "/assessment.v1.AdaptiveTesting/ListMyCustomAssessments"
 )
 
 // AdaptiveTestingClient is the client API for AdaptiveTesting service.
@@ -59,6 +63,16 @@ type AdaptiveTestingClient interface {
 	FinishAttempt(ctx context.Context, in *FinishAttemptRequest, opts ...grpc.CallOption) (*Attempt, error)
 	// История моих попыток (только владелец)
 	ListMyAttempts(ctx context.Context, in *ListMyAttemptsRequest, opts ...grpc.CallOption) (*ListMyAttemptsResponse, error)
+	// Создать пользовательский тест из выбранных подтем
+	CreateCustomAssessment(ctx context.Context, in *CreateCustomAssessmentRequest, opts ...grpc.CallOption) (*Assessment, error)
+	// Полностью обновить пользовательский тест
+	// Backend должен проверить владельца и is_editable
+	UpdateCustomAssessment(ctx context.Context, in *UpdateCustomAssessmentRequest, opts ...grpc.CallOption) (*Assessment, error)
+	// Архивировать пользовательский тест
+	// Физически не удаляем, чтобы не ломать историю попыток
+	ArchiveCustomAssessment(ctx context.Context, in *ArchiveCustomAssessmentRequest, opts ...grpc.CallOption) (*Assessment, error)
+	// Список моих пользовательских тестов
+	ListMyCustomAssessments(ctx context.Context, in *ListMyCustomAssessmentsRequest, opts ...grpc.CallOption) (*ListMyCustomAssessmentsResponse, error)
 }
 
 type adaptiveTestingClient struct {
@@ -179,6 +193,46 @@ func (c *adaptiveTestingClient) ListMyAttempts(ctx context.Context, in *ListMyAt
 	return out, nil
 }
 
+func (c *adaptiveTestingClient) CreateCustomAssessment(ctx context.Context, in *CreateCustomAssessmentRequest, opts ...grpc.CallOption) (*Assessment, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Assessment)
+	err := c.cc.Invoke(ctx, AdaptiveTesting_CreateCustomAssessment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adaptiveTestingClient) UpdateCustomAssessment(ctx context.Context, in *UpdateCustomAssessmentRequest, opts ...grpc.CallOption) (*Assessment, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Assessment)
+	err := c.cc.Invoke(ctx, AdaptiveTesting_UpdateCustomAssessment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adaptiveTestingClient) ArchiveCustomAssessment(ctx context.Context, in *ArchiveCustomAssessmentRequest, opts ...grpc.CallOption) (*Assessment, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Assessment)
+	err := c.cc.Invoke(ctx, AdaptiveTesting_ArchiveCustomAssessment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adaptiveTestingClient) ListMyCustomAssessments(ctx context.Context, in *ListMyCustomAssessmentsRequest, opts ...grpc.CallOption) (*ListMyCustomAssessmentsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyCustomAssessmentsResponse)
+	err := c.cc.Invoke(ctx, AdaptiveTesting_ListMyCustomAssessments_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AdaptiveTestingServer is the server API for AdaptiveTesting service.
 // All implementations must embed UnimplementedAdaptiveTestingServer
 // for forward compatibility.
@@ -206,6 +260,16 @@ type AdaptiveTestingServer interface {
 	FinishAttempt(context.Context, *FinishAttemptRequest) (*Attempt, error)
 	// История моих попыток (только владелец)
 	ListMyAttempts(context.Context, *ListMyAttemptsRequest) (*ListMyAttemptsResponse, error)
+	// Создать пользовательский тест из выбранных подтем
+	CreateCustomAssessment(context.Context, *CreateCustomAssessmentRequest) (*Assessment, error)
+	// Полностью обновить пользовательский тест
+	// Backend должен проверить владельца и is_editable
+	UpdateCustomAssessment(context.Context, *UpdateCustomAssessmentRequest) (*Assessment, error)
+	// Архивировать пользовательский тест
+	// Физически не удаляем, чтобы не ломать историю попыток
+	ArchiveCustomAssessment(context.Context, *ArchiveCustomAssessmentRequest) (*Assessment, error)
+	// Список моих пользовательских тестов
+	ListMyCustomAssessments(context.Context, *ListMyCustomAssessmentsRequest) (*ListMyCustomAssessmentsResponse, error)
 	mustEmbedUnimplementedAdaptiveTestingServer()
 }
 
@@ -248,6 +312,18 @@ func (UnimplementedAdaptiveTestingServer) FinishAttempt(context.Context, *Finish
 }
 func (UnimplementedAdaptiveTestingServer) ListMyAttempts(context.Context, *ListMyAttemptsRequest) (*ListMyAttemptsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMyAttempts not implemented")
+}
+func (UnimplementedAdaptiveTestingServer) CreateCustomAssessment(context.Context, *CreateCustomAssessmentRequest) (*Assessment, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCustomAssessment not implemented")
+}
+func (UnimplementedAdaptiveTestingServer) UpdateCustomAssessment(context.Context, *UpdateCustomAssessmentRequest) (*Assessment, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCustomAssessment not implemented")
+}
+func (UnimplementedAdaptiveTestingServer) ArchiveCustomAssessment(context.Context, *ArchiveCustomAssessmentRequest) (*Assessment, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ArchiveCustomAssessment not implemented")
+}
+func (UnimplementedAdaptiveTestingServer) ListMyCustomAssessments(context.Context, *ListMyCustomAssessmentsRequest) (*ListMyCustomAssessmentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMyCustomAssessments not implemented")
 }
 func (UnimplementedAdaptiveTestingServer) mustEmbedUnimplementedAdaptiveTestingServer() {}
 func (UnimplementedAdaptiveTestingServer) testEmbeddedByValue()                         {}
@@ -468,6 +544,78 @@ func _AdaptiveTesting_ListMyAttempts_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AdaptiveTesting_CreateCustomAssessment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateCustomAssessmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdaptiveTestingServer).CreateCustomAssessment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdaptiveTesting_CreateCustomAssessment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdaptiveTestingServer).CreateCustomAssessment(ctx, req.(*CreateCustomAssessmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdaptiveTesting_UpdateCustomAssessment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateCustomAssessmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdaptiveTestingServer).UpdateCustomAssessment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdaptiveTesting_UpdateCustomAssessment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdaptiveTestingServer).UpdateCustomAssessment(ctx, req.(*UpdateCustomAssessmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdaptiveTesting_ArchiveCustomAssessment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ArchiveCustomAssessmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdaptiveTestingServer).ArchiveCustomAssessment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdaptiveTesting_ArchiveCustomAssessment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdaptiveTestingServer).ArchiveCustomAssessment(ctx, req.(*ArchiveCustomAssessmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AdaptiveTesting_ListMyCustomAssessments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyCustomAssessmentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdaptiveTestingServer).ListMyCustomAssessments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdaptiveTesting_ListMyCustomAssessments_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdaptiveTestingServer).ListMyCustomAssessments(ctx, req.(*ListMyCustomAssessmentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AdaptiveTesting_ServiceDesc is the grpc.ServiceDesc for AdaptiveTesting service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -518,6 +666,22 @@ var AdaptiveTesting_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListMyAttempts",
 			Handler:    _AdaptiveTesting_ListMyAttempts_Handler,
+		},
+		{
+			MethodName: "CreateCustomAssessment",
+			Handler:    _AdaptiveTesting_CreateCustomAssessment_Handler,
+		},
+		{
+			MethodName: "UpdateCustomAssessment",
+			Handler:    _AdaptiveTesting_UpdateCustomAssessment_Handler,
+		},
+		{
+			MethodName: "ArchiveCustomAssessment",
+			Handler:    _AdaptiveTesting_ArchiveCustomAssessment_Handler,
+		},
+		{
+			MethodName: "ListMyCustomAssessments",
+			Handler:    _AdaptiveTesting_ListMyCustomAssessments_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

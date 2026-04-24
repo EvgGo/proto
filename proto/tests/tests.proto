@@ -4,7 +4,6 @@ package assessment.v1;
 
 option go_package = "evggo.assessment.v1;assessmentv1";
 
-import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 enum AssessmentStatus {
@@ -43,6 +42,49 @@ enum AssessmentMode {
   ASSESSMENT_MODE_GLOBAL = 2;
 }
 
+enum AssessmentKind {
+  ASSESSMENT_KIND_UNSPECIFIED = 0;
+
+  // Системный тест, созданный администратором
+  ASSESSMENT_KIND_SYSTEM = 1;
+
+  // Пользовательский тест, собранный пользователем из подтем
+  ASSESSMENT_KIND_CUSTOM = 2;
+}
+
+enum AssessmentVisibility {
+  ASSESSMENT_VISIBILITY_UNSPECIFIED = 0;
+
+  // Видит только создатель
+  ASSESSMENT_VISIBILITY_PRIVATE = 1;
+
+  // Видит создатель и пользователи, которым тест доступен через проект
+  ASSESSMENT_VISIBILITY_PROJECT = 2;
+
+  // Видят все пользователи в общем списке тестов
+  ASSESSMENT_VISIBILITY_PUBLIC = 3;
+}
+
+enum AssessmentListScope {
+  ASSESSMENT_LIST_SCOPE_UNSPECIFIED = 0;
+
+  // Все тесты, доступные текущему пользователю
+  ASSESSMENT_LIST_SCOPE_AVAILABLE = 1;
+
+  // Только системные тесты
+  ASSESSMENT_LIST_SCOPE_SYSTEM = 2;
+
+  // Только мои пользовательские тесты
+  ASSESSMENT_LIST_SCOPE_MY_CUSTOM = 3;
+
+  // Тесты, которые можно прикреплять к проекту:
+  // системные + мои custom + public/project-visible, если backend разрешает
+  ASSESSMENT_LIST_SCOPE_PROJECT_AVAILABLE = 4;
+
+  // Только публичные пользовательские тесты
+  ASSESSMENT_LIST_SCOPE_PUBLIC_CUSTOM = 5;
+}
+
 // Предмет: верхний уровень (Golang, Git, PostgreSQL, ...)
 message Subject {
   int64 id = 1;
@@ -60,7 +102,7 @@ message Subtopic {
   google.protobuf.Timestamp created_at = 5;
 }
 
-// Конфигурация подтемы внутри теста (assessment)
+// Конфигурация подтемы внутри теста
 message AssessmentSubtopicConfig {
   int64 assessment_id = 1;
   int64 subtopic_id = 2;
@@ -68,7 +110,7 @@ message AssessmentSubtopicConfig {
   // Важность подтемы для общего результата
   double weight = 3;
 
-  // Меньше priority -> выше приоритет (как в твоей логике)
+  // Меньше priority - выше приоритет
   int32 priority = 4;
 
   // Пер-подтема лимиты / настройки (если не заданы, сервер использует assessment defaults)
@@ -78,7 +120,34 @@ message AssessmentSubtopicConfig {
   optional double stop_confidence = 8;    // 0..1
 }
 
-// Тест (продукт), который проходит пользователь
+
+// Используется при создании и редактировании custom assessment
+message CustomAssessmentSubtopicInput {
+  int64 subtopic_id = 1;
+
+  // Важность подтемы в общем результате
+  // Если 0, backend может выставить 1.0
+  double weight = 2;
+
+  // Меньше priority - выше приоритет
+  // Если 0, backend может расставить порядок автоматически
+  int32 priority = 3;
+
+  // Пер-подтема лимиты
+  // Если 0, backend использует defaults из assessment
+  int32 min_items = 4;
+  int32 max_items = 5;
+
+  // Стартовая сложность по подтеме
+  // Если 0, backend использует default start_difficulty assessment
+  int32 start_difficulty = 6;
+
+  // Целевая уверенность остановки по подтеме
+  // Если 0, backend использует default stop_confidence assessment
+  double stop_confidence = 7;
+}
+
+// Тест  который проходит пользователь
 message Assessment {
   int64 id = 1;
   int64 subject_id = 2;
@@ -107,7 +176,19 @@ message Assessment {
   // Какие подтемы входят в тест
   repeated AssessmentSubtopicConfig subtopics = 16;
   AssessmentMode mode = 17;
+
+  AssessmentKind kind = 18;
+  AssessmentVisibility visibility = 19;
+
+  string created_by_user_id = 20;
+
+  bool is_editable = 21;
+  bool can_use_in_project = 22;
+
+  int32 version = 23;
+  int64 parent_assessment_id = 24;
 }
+
 
 // Короткая карточка теста для списков
 message AssessmentSummary {
@@ -119,6 +200,28 @@ message AssessmentSummary {
   AssessmentStatus status = 6;
   int32 duration_seconds = 7;
   AssessmentMode mode = 8;
+
+  AssessmentKind kind = 9;
+  AssessmentVisibility visibility = 10;
+
+  // UUID пользователя-создателя
+  // Для системных тестов может быть пустым
+  string created_by_user_id = 11;
+
+  // Можно ли текущему пользователю редактировать этот тест
+  // Backend сам считает это по правам, попыткам и использованию в проектах
+  bool is_editable = 12;
+
+  // Есть ли у текущего пользователя право использовать тест в проекте
+  // Полезно для страницы настройки требований проекта
+  bool can_use_in_project = 13;
+
+  // Версия теста.
+  int32 version = 14;
+
+  // Если это новая версия старого теста, тут id родителя
+  // 0 => родителя нет
+  int64 parent_assessment_id = 106;
 }
 
 message QuestionOption {
@@ -256,6 +359,23 @@ service AdaptiveTesting {
 
   // История моих попыток (только владелец)
   rpc ListMyAttempts(ListMyAttemptsRequest) returns (ListMyAttemptsResponse);
+
+  // Пользовательские тесты
+
+  // Создать пользовательский тест из выбранных подтем
+  rpc CreateCustomAssessment(CreateCustomAssessmentRequest) returns (Assessment);
+
+  // Полностью обновить пользовательский тест
+  // Backend должен проверить владельца и is_editable
+  rpc UpdateCustomAssessment(UpdateCustomAssessmentRequest) returns (Assessment);
+
+  // Архивировать пользовательский тест
+  // Физически не удаляем, чтобы не ломать историю попыток
+  rpc ArchiveCustomAssessment(ArchiveCustomAssessmentRequest) returns (Assessment);
+
+  // Список моих пользовательских тестов
+  rpc ListMyCustomAssessments(ListMyCustomAssessmentsRequest)
+      returns (ListMyCustomAssessmentsResponse);
 }
 
 message ListSubjectsRequest {
@@ -282,6 +402,78 @@ message ListSubtopicsResponse {
   string next_page_token = 2;
 }
 
+// Создание пользовательского теста из выбранных подтем
+// Backend должен выставлять:
+// - kind = ASSESSMENT_KIND_CUSTOM
+// - mode = ASSESSMENT_MODE_SUBTOPIC
+// - status = ASSESSMENT_STATUS_ACTIVE
+// - created_by_user_id из auth context
+message CreateCustomAssessmentRequest {
+  int64 subject_id = 1;
+
+  string title = 2;
+  string description = 3;
+
+  AssessmentVisibility visibility = 4;
+
+  repeated CustomAssessmentSubtopicInput subtopics = 5;
+
+  // Глобальные defaults теста
+  int32 min_items = 6;
+  int32 max_items = 7;
+
+  int32 min_difficulty = 8;
+  int32 max_difficulty = 9;
+  int32 start_difficulty = 10;
+  double stop_confidence = 11;
+
+  int32 duration_seconds = 12;
+}
+
+// Полное обновление пользовательского теста
+// Разрешено только владельцу и только если backend считает assessment редактируемым
+message UpdateCustomAssessmentRequest {
+  int64 assessment_id = 1;
+
+  string title = 2;
+  string description = 3;
+
+  AssessmentVisibility visibility = 4;
+
+  repeated CustomAssessmentSubtopicInput subtopics = 5;
+
+  int32 min_items = 6;
+  int32 max_items = 7;
+
+  int32 min_difficulty = 8;
+  int32 max_difficulty = 9;
+  int32 start_difficulty = 10;
+  double stop_confidence = 11;
+
+  int32 duration_seconds = 12;
+}
+
+// Архивация пользовательского теста
+// Физически не удаляем, чтобы не ломать попытки и сохраненные результаты
+message ArchiveCustomAssessmentRequest {
+  int64 assessment_id = 1;
+}
+
+message ListMyCustomAssessmentsRequest {
+  string query = 1;
+
+  // UNSPECIFIED - любые статусы
+  AssessmentStatus status = 2;
+
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message ListMyCustomAssessmentsResponse {
+  repeated AssessmentSummary assessments = 1;
+  string next_page_token = 2;
+}
+
 message ListAssessmentsRequest {
   // Фильтр по предмету (0 - все)
   int64 subject_id = 1;
@@ -297,6 +489,12 @@ message ListAssessmentsRequest {
 
   // UNSPECIFIED - любые, GLOBAL / SUBTOPIC по выбору
   AssessmentMode mode = 6;
+
+  AssessmentKind kind = 7;
+  AssessmentVisibility visibility = 8;
+  AssessmentListScope scope = 9;
+
+  string created_by_user_id = 10;
 }
 
 message ListAssessmentsResponse {

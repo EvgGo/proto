@@ -9,7 +9,6 @@ package assessmentv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -282,6 +281,176 @@ func (AssessmentMode) EnumDescriptor() ([]byte, []int) {
 	return file_tests_tests_proto_rawDescGZIP(), []int{4}
 }
 
+type AssessmentKind int32
+
+const (
+	AssessmentKind_ASSESSMENT_KIND_UNSPECIFIED AssessmentKind = 0
+	// Системный тест, созданный администратором
+	AssessmentKind_ASSESSMENT_KIND_SYSTEM AssessmentKind = 1
+	// Пользовательский тест, собранный пользователем из подтем
+	AssessmentKind_ASSESSMENT_KIND_CUSTOM AssessmentKind = 2
+)
+
+// Enum value maps for AssessmentKind.
+var (
+	AssessmentKind_name = map[int32]string{
+		0: "ASSESSMENT_KIND_UNSPECIFIED",
+		1: "ASSESSMENT_KIND_SYSTEM",
+		2: "ASSESSMENT_KIND_CUSTOM",
+	}
+	AssessmentKind_value = map[string]int32{
+		"ASSESSMENT_KIND_UNSPECIFIED": 0,
+		"ASSESSMENT_KIND_SYSTEM":      1,
+		"ASSESSMENT_KIND_CUSTOM":      2,
+	}
+)
+
+func (x AssessmentKind) Enum() *AssessmentKind {
+	p := new(AssessmentKind)
+	*p = x
+	return p
+}
+
+func (x AssessmentKind) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AssessmentKind) Descriptor() protoreflect.EnumDescriptor {
+	return file_tests_tests_proto_enumTypes[5].Descriptor()
+}
+
+func (AssessmentKind) Type() protoreflect.EnumType {
+	return &file_tests_tests_proto_enumTypes[5]
+}
+
+func (x AssessmentKind) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AssessmentKind.Descriptor instead.
+func (AssessmentKind) EnumDescriptor() ([]byte, []int) {
+	return file_tests_tests_proto_rawDescGZIP(), []int{5}
+}
+
+type AssessmentVisibility int32
+
+const (
+	AssessmentVisibility_ASSESSMENT_VISIBILITY_UNSPECIFIED AssessmentVisibility = 0
+	// Видит только создатель
+	AssessmentVisibility_ASSESSMENT_VISIBILITY_PRIVATE AssessmentVisibility = 1
+	// Видит создатель и пользователи, которым тест доступен через проект
+	AssessmentVisibility_ASSESSMENT_VISIBILITY_PROJECT AssessmentVisibility = 2
+	// Видят все пользователи в общем списке тестов
+	AssessmentVisibility_ASSESSMENT_VISIBILITY_PUBLIC AssessmentVisibility = 3
+)
+
+// Enum value maps for AssessmentVisibility.
+var (
+	AssessmentVisibility_name = map[int32]string{
+		0: "ASSESSMENT_VISIBILITY_UNSPECIFIED",
+		1: "ASSESSMENT_VISIBILITY_PRIVATE",
+		2: "ASSESSMENT_VISIBILITY_PROJECT",
+		3: "ASSESSMENT_VISIBILITY_PUBLIC",
+	}
+	AssessmentVisibility_value = map[string]int32{
+		"ASSESSMENT_VISIBILITY_UNSPECIFIED": 0,
+		"ASSESSMENT_VISIBILITY_PRIVATE":     1,
+		"ASSESSMENT_VISIBILITY_PROJECT":     2,
+		"ASSESSMENT_VISIBILITY_PUBLIC":      3,
+	}
+)
+
+func (x AssessmentVisibility) Enum() *AssessmentVisibility {
+	p := new(AssessmentVisibility)
+	*p = x
+	return p
+}
+
+func (x AssessmentVisibility) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AssessmentVisibility) Descriptor() protoreflect.EnumDescriptor {
+	return file_tests_tests_proto_enumTypes[6].Descriptor()
+}
+
+func (AssessmentVisibility) Type() protoreflect.EnumType {
+	return &file_tests_tests_proto_enumTypes[6]
+}
+
+func (x AssessmentVisibility) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AssessmentVisibility.Descriptor instead.
+func (AssessmentVisibility) EnumDescriptor() ([]byte, []int) {
+	return file_tests_tests_proto_rawDescGZIP(), []int{6}
+}
+
+type AssessmentListScope int32
+
+const (
+	AssessmentListScope_ASSESSMENT_LIST_SCOPE_UNSPECIFIED AssessmentListScope = 0
+	// Все тесты, доступные текущему пользователю
+	AssessmentListScope_ASSESSMENT_LIST_SCOPE_AVAILABLE AssessmentListScope = 1
+	// Только системные тесты
+	AssessmentListScope_ASSESSMENT_LIST_SCOPE_SYSTEM AssessmentListScope = 2
+	// Только мои пользовательские тесты
+	AssessmentListScope_ASSESSMENT_LIST_SCOPE_MY_CUSTOM AssessmentListScope = 3
+	// Тесты, которые можно прикреплять к проекту:
+	// системные + мои custom + public/project-visible, если backend разрешает
+	AssessmentListScope_ASSESSMENT_LIST_SCOPE_PROJECT_AVAILABLE AssessmentListScope = 4
+	// Только публичные пользовательские тесты
+	AssessmentListScope_ASSESSMENT_LIST_SCOPE_PUBLIC_CUSTOM AssessmentListScope = 5
+)
+
+// Enum value maps for AssessmentListScope.
+var (
+	AssessmentListScope_name = map[int32]string{
+		0: "ASSESSMENT_LIST_SCOPE_UNSPECIFIED",
+		1: "ASSESSMENT_LIST_SCOPE_AVAILABLE",
+		2: "ASSESSMENT_LIST_SCOPE_SYSTEM",
+		3: "ASSESSMENT_LIST_SCOPE_MY_CUSTOM",
+		4: "ASSESSMENT_LIST_SCOPE_PROJECT_AVAILABLE",
+		5: "ASSESSMENT_LIST_SCOPE_PUBLIC_CUSTOM",
+	}
+	AssessmentListScope_value = map[string]int32{
+		"ASSESSMENT_LIST_SCOPE_UNSPECIFIED":       0,
+		"ASSESSMENT_LIST_SCOPE_AVAILABLE":         1,
+		"ASSESSMENT_LIST_SCOPE_SYSTEM":            2,
+		"ASSESSMENT_LIST_SCOPE_MY_CUSTOM":         3,
+		"ASSESSMENT_LIST_SCOPE_PROJECT_AVAILABLE": 4,
+		"ASSESSMENT_LIST_SCOPE_PUBLIC_CUSTOM":     5,
+	}
+)
+
+func (x AssessmentListScope) Enum() *AssessmentListScope {
+	p := new(AssessmentListScope)
+	*p = x
+	return p
+}
+
+func (x AssessmentListScope) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AssessmentListScope) Descriptor() protoreflect.EnumDescriptor {
+	return file_tests_tests_proto_enumTypes[7].Descriptor()
+}
+
+func (AssessmentListScope) Type() protoreflect.EnumType {
+	return &file_tests_tests_proto_enumTypes[7]
+}
+
+func (x AssessmentListScope) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AssessmentListScope.Descriptor instead.
+func (AssessmentListScope) EnumDescriptor() ([]byte, []int) {
+	return file_tests_tests_proto_rawDescGZIP(), []int{7}
+}
+
 // Предмет: верхний уровень (Golang, Git, PostgreSQL, ...)
 type Subject struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -428,14 +597,14 @@ func (x *Subtopic) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-// Конфигурация подтемы внутри теста (assessment)
+// Конфигурация подтемы внутри теста
 type AssessmentSubtopicConfig struct {
 	state        protoimpl.MessageState `protogen:"open.v1"`
 	AssessmentId int64                  `protobuf:"varint,1,opt,name=assessment_id,json=assessmentId,proto3" json:"assessment_id,omitempty"`
 	SubtopicId   int64                  `protobuf:"varint,2,opt,name=subtopic_id,json=subtopicId,proto3" json:"subtopic_id,omitempty"`
 	// Важность подтемы для общего результата
 	Weight float64 `protobuf:"fixed64,3,opt,name=weight,proto3" json:"weight,omitempty"`
-	// Меньше priority -> выше приоритет (как в твоей логике)
+	// Меньше priority - выше приоритет
 	Priority int32 `protobuf:"varint,4,opt,name=priority,proto3" json:"priority,omitempty"`
 	// Пер-подтема лимиты / настройки (если не заданы, сервер использует assessment defaults)
 	MinItems        *int32   `protobuf:"varint,5,opt,name=min_items,json=minItems,proto3,oneof" json:"min_items,omitempty"`
@@ -532,7 +701,110 @@ func (x *AssessmentSubtopicConfig) GetStopConfidence() float64 {
 	return 0
 }
 
-// Тест (продукт), который проходит пользователь
+// Используется при создании и редактировании custom assessment
+type CustomAssessmentSubtopicInput struct {
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	SubtopicId int64                  `protobuf:"varint,1,opt,name=subtopic_id,json=subtopicId,proto3" json:"subtopic_id,omitempty"`
+	// Важность подтемы в общем результате
+	// Если 0, backend может выставить 1.0
+	Weight float64 `protobuf:"fixed64,2,opt,name=weight,proto3" json:"weight,omitempty"`
+	// Меньше priority - выше приоритет
+	// Если 0, backend может расставить порядок автоматически
+	Priority int32 `protobuf:"varint,3,opt,name=priority,proto3" json:"priority,omitempty"`
+	// Пер-подтема лимиты
+	// Если 0, backend использует defaults из assessment
+	MinItems int32 `protobuf:"varint,4,opt,name=min_items,json=minItems,proto3" json:"min_items,omitempty"`
+	MaxItems int32 `protobuf:"varint,5,opt,name=max_items,json=maxItems,proto3" json:"max_items,omitempty"`
+	// Стартовая сложность по подтеме
+	// Если 0, backend использует default start_difficulty assessment
+	StartDifficulty int32 `protobuf:"varint,6,opt,name=start_difficulty,json=startDifficulty,proto3" json:"start_difficulty,omitempty"`
+	// Целевая уверенность остановки по подтеме
+	// Если 0, backend использует default stop_confidence assessment
+	StopConfidence float64 `protobuf:"fixed64,7,opt,name=stop_confidence,json=stopConfidence,proto3" json:"stop_confidence,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *CustomAssessmentSubtopicInput) Reset() {
+	*x = CustomAssessmentSubtopicInput{}
+	mi := &file_tests_tests_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CustomAssessmentSubtopicInput) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CustomAssessmentSubtopicInput) ProtoMessage() {}
+
+func (x *CustomAssessmentSubtopicInput) ProtoReflect() protoreflect.Message {
+	mi := &file_tests_tests_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CustomAssessmentSubtopicInput.ProtoReflect.Descriptor instead.
+func (*CustomAssessmentSubtopicInput) Descriptor() ([]byte, []int) {
+	return file_tests_tests_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *CustomAssessmentSubtopicInput) GetSubtopicId() int64 {
+	if x != nil {
+		return x.SubtopicId
+	}
+	return 0
+}
+
+func (x *CustomAssessmentSubtopicInput) GetWeight() float64 {
+	if x != nil {
+		return x.Weight
+	}
+	return 0
+}
+
+func (x *CustomAssessmentSubtopicInput) GetPriority() int32 {
+	if x != nil {
+		return x.Priority
+	}
+	return 0
+}
+
+func (x *CustomAssessmentSubtopicInput) GetMinItems() int32 {
+	if x != nil {
+		return x.MinItems
+	}
+	return 0
+}
+
+func (x *CustomAssessmentSubtopicInput) GetMaxItems() int32 {
+	if x != nil {
+		return x.MaxItems
+	}
+	return 0
+}
+
+func (x *CustomAssessmentSubtopicInput) GetStartDifficulty() int32 {
+	if x != nil {
+		return x.StartDifficulty
+	}
+	return 0
+}
+
+func (x *CustomAssessmentSubtopicInput) GetStopConfidence() float64 {
+	if x != nil {
+		return x.StopConfidence
+	}
+	return 0
+}
+
+// Тест  который проходит пользователь
 type Assessment struct {
 	state       protoimpl.MessageState `protogen:"open.v1"`
 	Id          int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -553,15 +825,22 @@ type Assessment struct {
 	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	// Какие подтемы входят в тест
-	Subtopics     []*AssessmentSubtopicConfig `protobuf:"bytes,16,rep,name=subtopics,proto3" json:"subtopics,omitempty"`
-	Mode          AssessmentMode              `protobuf:"varint,17,opt,name=mode,proto3,enum=assessment.v1.AssessmentMode" json:"mode,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Subtopics          []*AssessmentSubtopicConfig `protobuf:"bytes,16,rep,name=subtopics,proto3" json:"subtopics,omitempty"`
+	Mode               AssessmentMode              `protobuf:"varint,17,opt,name=mode,proto3,enum=assessment.v1.AssessmentMode" json:"mode,omitempty"`
+	Kind               AssessmentKind              `protobuf:"varint,18,opt,name=kind,proto3,enum=assessment.v1.AssessmentKind" json:"kind,omitempty"`
+	Visibility         AssessmentVisibility        `protobuf:"varint,19,opt,name=visibility,proto3,enum=assessment.v1.AssessmentVisibility" json:"visibility,omitempty"`
+	CreatedByUserId    string                      `protobuf:"bytes,20,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
+	IsEditable         bool                        `protobuf:"varint,21,opt,name=is_editable,json=isEditable,proto3" json:"is_editable,omitempty"`
+	CanUseInProject    bool                        `protobuf:"varint,22,opt,name=can_use_in_project,json=canUseInProject,proto3" json:"can_use_in_project,omitempty"`
+	Version            int32                       `protobuf:"varint,23,opt,name=version,proto3" json:"version,omitempty"`
+	ParentAssessmentId int64                       `protobuf:"varint,24,opt,name=parent_assessment_id,json=parentAssessmentId,proto3" json:"parent_assessment_id,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *Assessment) Reset() {
 	*x = Assessment{}
-	mi := &file_tests_tests_proto_msgTypes[3]
+	mi := &file_tests_tests_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -573,7 +852,7 @@ func (x *Assessment) String() string {
 func (*Assessment) ProtoMessage() {}
 
 func (x *Assessment) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[3]
+	mi := &file_tests_tests_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -586,7 +865,7 @@ func (x *Assessment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Assessment.ProtoReflect.Descriptor instead.
 func (*Assessment) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{3}
+	return file_tests_tests_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Assessment) GetId() int64 {
@@ -708,6 +987,55 @@ func (x *Assessment) GetMode() AssessmentMode {
 	return AssessmentMode_ASSESSMENT_MODE_UNSPECIFIED
 }
 
+func (x *Assessment) GetKind() AssessmentKind {
+	if x != nil {
+		return x.Kind
+	}
+	return AssessmentKind_ASSESSMENT_KIND_UNSPECIFIED
+}
+
+func (x *Assessment) GetVisibility() AssessmentVisibility {
+	if x != nil {
+		return x.Visibility
+	}
+	return AssessmentVisibility_ASSESSMENT_VISIBILITY_UNSPECIFIED
+}
+
+func (x *Assessment) GetCreatedByUserId() string {
+	if x != nil {
+		return x.CreatedByUserId
+	}
+	return ""
+}
+
+func (x *Assessment) GetIsEditable() bool {
+	if x != nil {
+		return x.IsEditable
+	}
+	return false
+}
+
+func (x *Assessment) GetCanUseInProject() bool {
+	if x != nil {
+		return x.CanUseInProject
+	}
+	return false
+}
+
+func (x *Assessment) GetVersion() int32 {
+	if x != nil {
+		return x.Version
+	}
+	return 0
+}
+
+func (x *Assessment) GetParentAssessmentId() int64 {
+	if x != nil {
+		return x.ParentAssessmentId
+	}
+	return 0
+}
+
 // Короткая карточка теста для списков
 type AssessmentSummary struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
@@ -719,13 +1047,29 @@ type AssessmentSummary struct {
 	Status          AssessmentStatus       `protobuf:"varint,6,opt,name=status,proto3,enum=assessment.v1.AssessmentStatus" json:"status,omitempty"`
 	DurationSeconds int32                  `protobuf:"varint,7,opt,name=duration_seconds,json=durationSeconds,proto3" json:"duration_seconds,omitempty"`
 	Mode            AssessmentMode         `protobuf:"varint,8,opt,name=mode,proto3,enum=assessment.v1.AssessmentMode" json:"mode,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	Kind            AssessmentKind         `protobuf:"varint,9,opt,name=kind,proto3,enum=assessment.v1.AssessmentKind" json:"kind,omitempty"`
+	Visibility      AssessmentVisibility   `protobuf:"varint,10,opt,name=visibility,proto3,enum=assessment.v1.AssessmentVisibility" json:"visibility,omitempty"`
+	// UUID пользователя-создателя
+	// Для системных тестов может быть пустым
+	CreatedByUserId string `protobuf:"bytes,11,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
+	// Можно ли текущему пользователю редактировать этот тест
+	// Backend сам считает это по правам, попыткам и использованию в проектах
+	IsEditable bool `protobuf:"varint,12,opt,name=is_editable,json=isEditable,proto3" json:"is_editable,omitempty"`
+	// Есть ли у текущего пользователя право использовать тест в проекте
+	// Полезно для страницы настройки требований проекта
+	CanUseInProject bool `protobuf:"varint,13,opt,name=can_use_in_project,json=canUseInProject,proto3" json:"can_use_in_project,omitempty"`
+	// Версия теста.
+	Version int32 `protobuf:"varint,14,opt,name=version,proto3" json:"version,omitempty"`
+	// Если это новая версия старого теста, тут id родителя
+	// 0 => родителя нет
+	ParentAssessmentId int64 `protobuf:"varint,106,opt,name=parent_assessment_id,json=parentAssessmentId,proto3" json:"parent_assessment_id,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *AssessmentSummary) Reset() {
 	*x = AssessmentSummary{}
-	mi := &file_tests_tests_proto_msgTypes[4]
+	mi := &file_tests_tests_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -737,7 +1081,7 @@ func (x *AssessmentSummary) String() string {
 func (*AssessmentSummary) ProtoMessage() {}
 
 func (x *AssessmentSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[4]
+	mi := &file_tests_tests_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -750,7 +1094,7 @@ func (x *AssessmentSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssessmentSummary.ProtoReflect.Descriptor instead.
 func (*AssessmentSummary) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{4}
+	return file_tests_tests_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *AssessmentSummary) GetId() int64 {
@@ -809,6 +1153,55 @@ func (x *AssessmentSummary) GetMode() AssessmentMode {
 	return AssessmentMode_ASSESSMENT_MODE_UNSPECIFIED
 }
 
+func (x *AssessmentSummary) GetKind() AssessmentKind {
+	if x != nil {
+		return x.Kind
+	}
+	return AssessmentKind_ASSESSMENT_KIND_UNSPECIFIED
+}
+
+func (x *AssessmentSummary) GetVisibility() AssessmentVisibility {
+	if x != nil {
+		return x.Visibility
+	}
+	return AssessmentVisibility_ASSESSMENT_VISIBILITY_UNSPECIFIED
+}
+
+func (x *AssessmentSummary) GetCreatedByUserId() string {
+	if x != nil {
+		return x.CreatedByUserId
+	}
+	return ""
+}
+
+func (x *AssessmentSummary) GetIsEditable() bool {
+	if x != nil {
+		return x.IsEditable
+	}
+	return false
+}
+
+func (x *AssessmentSummary) GetCanUseInProject() bool {
+	if x != nil {
+		return x.CanUseInProject
+	}
+	return false
+}
+
+func (x *AssessmentSummary) GetVersion() int32 {
+	if x != nil {
+		return x.Version
+	}
+	return 0
+}
+
+func (x *AssessmentSummary) GetParentAssessmentId() int64 {
+	if x != nil {
+		return x.ParentAssessmentId
+	}
+	return 0
+}
+
 type QuestionOption struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -821,7 +1214,7 @@ type QuestionOption struct {
 
 func (x *QuestionOption) Reset() {
 	*x = QuestionOption{}
-	mi := &file_tests_tests_proto_msgTypes[5]
+	mi := &file_tests_tests_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -833,7 +1226,7 @@ func (x *QuestionOption) String() string {
 func (*QuestionOption) ProtoMessage() {}
 
 func (x *QuestionOption) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[5]
+	mi := &file_tests_tests_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -846,7 +1239,7 @@ func (x *QuestionOption) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QuestionOption.ProtoReflect.Descriptor instead.
 func (*QuestionOption) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{5}
+	return file_tests_tests_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *QuestionOption) GetId() int64 {
@@ -890,7 +1283,7 @@ type Question struct {
 
 func (x *Question) Reset() {
 	*x = Question{}
-	mi := &file_tests_tests_proto_msgTypes[6]
+	mi := &file_tests_tests_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -902,7 +1295,7 @@ func (x *Question) String() string {
 func (*Question) ProtoMessage() {}
 
 func (x *Question) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[6]
+	mi := &file_tests_tests_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -915,7 +1308,7 @@ func (x *Question) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Question.ProtoReflect.Descriptor instead.
 func (*Question) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{6}
+	return file_tests_tests_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Question) GetId() int64 {
@@ -986,7 +1379,7 @@ type AttemptSubtopicState struct {
 
 func (x *AttemptSubtopicState) Reset() {
 	*x = AttemptSubtopicState{}
-	mi := &file_tests_tests_proto_msgTypes[7]
+	mi := &file_tests_tests_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -998,7 +1391,7 @@ func (x *AttemptSubtopicState) String() string {
 func (*AttemptSubtopicState) ProtoMessage() {}
 
 func (x *AttemptSubtopicState) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[7]
+	mi := &file_tests_tests_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1011,7 +1404,7 @@ func (x *AttemptSubtopicState) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AttemptSubtopicState.ProtoReflect.Descriptor instead.
 func (*AttemptSubtopicState) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{7}
+	return file_tests_tests_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *AttemptSubtopicState) GetAttemptId() int64 {
@@ -1173,7 +1566,7 @@ type Attempt struct {
 
 func (x *Attempt) Reset() {
 	*x = Attempt{}
-	mi := &file_tests_tests_proto_msgTypes[8]
+	mi := &file_tests_tests_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1185,7 +1578,7 @@ func (x *Attempt) String() string {
 func (*Attempt) ProtoMessage() {}
 
 func (x *Attempt) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[8]
+	mi := &file_tests_tests_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1198,7 +1591,7 @@ func (x *Attempt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Attempt.ProtoReflect.Descriptor instead.
 func (*Attempt) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{8}
+	return file_tests_tests_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Attempt) GetId() int64 {
@@ -1317,7 +1710,7 @@ type AttemptProgress struct {
 
 func (x *AttemptProgress) Reset() {
 	*x = AttemptProgress{}
-	mi := &file_tests_tests_proto_msgTypes[9]
+	mi := &file_tests_tests_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1329,7 +1722,7 @@ func (x *AttemptProgress) String() string {
 func (*AttemptProgress) ProtoMessage() {}
 
 func (x *AttemptProgress) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[9]
+	mi := &file_tests_tests_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1342,7 +1735,7 @@ func (x *AttemptProgress) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AttemptProgress.ProtoReflect.Descriptor instead.
 func (*AttemptProgress) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{9}
+	return file_tests_tests_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *AttemptProgress) GetAttemptId() int64 {
@@ -1419,7 +1812,7 @@ type ListSubjectsRequest struct {
 
 func (x *ListSubjectsRequest) Reset() {
 	*x = ListSubjectsRequest{}
-	mi := &file_tests_tests_proto_msgTypes[10]
+	mi := &file_tests_tests_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1431,7 +1824,7 @@ func (x *ListSubjectsRequest) String() string {
 func (*ListSubjectsRequest) ProtoMessage() {}
 
 func (x *ListSubjectsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[10]
+	mi := &file_tests_tests_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1444,7 +1837,7 @@ func (x *ListSubjectsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSubjectsRequest.ProtoReflect.Descriptor instead.
 func (*ListSubjectsRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{10}
+	return file_tests_tests_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ListSubjectsRequest) GetQuery() string {
@@ -1478,7 +1871,7 @@ type ListSubjectsResponse struct {
 
 func (x *ListSubjectsResponse) Reset() {
 	*x = ListSubjectsResponse{}
-	mi := &file_tests_tests_proto_msgTypes[11]
+	mi := &file_tests_tests_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1490,7 +1883,7 @@ func (x *ListSubjectsResponse) String() string {
 func (*ListSubjectsResponse) ProtoMessage() {}
 
 func (x *ListSubjectsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[11]
+	mi := &file_tests_tests_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1503,7 +1896,7 @@ func (x *ListSubjectsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSubjectsResponse.ProtoReflect.Descriptor instead.
 func (*ListSubjectsResponse) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{11}
+	return file_tests_tests_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ListSubjectsResponse) GetSubjects() []*Subject {
@@ -1533,7 +1926,7 @@ type ListSubtopicsRequest struct {
 
 func (x *ListSubtopicsRequest) Reset() {
 	*x = ListSubtopicsRequest{}
-	mi := &file_tests_tests_proto_msgTypes[12]
+	mi := &file_tests_tests_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1545,7 +1938,7 @@ func (x *ListSubtopicsRequest) String() string {
 func (*ListSubtopicsRequest) ProtoMessage() {}
 
 func (x *ListSubtopicsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[12]
+	mi := &file_tests_tests_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1558,7 +1951,7 @@ func (x *ListSubtopicsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSubtopicsRequest.ProtoReflect.Descriptor instead.
 func (*ListSubtopicsRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{12}
+	return file_tests_tests_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListSubtopicsRequest) GetSubjectId() int64 {
@@ -1599,7 +1992,7 @@ type ListSubtopicsResponse struct {
 
 func (x *ListSubtopicsResponse) Reset() {
 	*x = ListSubtopicsResponse{}
-	mi := &file_tests_tests_proto_msgTypes[13]
+	mi := &file_tests_tests_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1611,7 +2004,7 @@ func (x *ListSubtopicsResponse) String() string {
 func (*ListSubtopicsResponse) ProtoMessage() {}
 
 func (x *ListSubtopicsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[13]
+	mi := &file_tests_tests_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1624,7 +2017,7 @@ func (x *ListSubtopicsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSubtopicsResponse.ProtoReflect.Descriptor instead.
 func (*ListSubtopicsResponse) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{13}
+	return file_tests_tests_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListSubtopicsResponse) GetSubtopics() []*Subtopic {
@@ -1635,6 +2028,446 @@ func (x *ListSubtopicsResponse) GetSubtopics() []*Subtopic {
 }
 
 func (x *ListSubtopicsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+// Создание пользовательского теста из выбранных подтем
+// Backend должен выставлять:
+// - kind = ASSESSMENT_KIND_CUSTOM
+// - mode = ASSESSMENT_MODE_SUBTOPIC
+// - status = ASSESSMENT_STATUS_ACTIVE
+// - created_by_user_id из auth context
+type CreateCustomAssessmentRequest struct {
+	state       protoimpl.MessageState           `protogen:"open.v1"`
+	SubjectId   int64                            `protobuf:"varint,1,opt,name=subject_id,json=subjectId,proto3" json:"subject_id,omitempty"`
+	Title       string                           `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Description string                           `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Visibility  AssessmentVisibility             `protobuf:"varint,4,opt,name=visibility,proto3,enum=assessment.v1.AssessmentVisibility" json:"visibility,omitempty"`
+	Subtopics   []*CustomAssessmentSubtopicInput `protobuf:"bytes,5,rep,name=subtopics,proto3" json:"subtopics,omitempty"`
+	// Глобальные defaults теста
+	MinItems        int32   `protobuf:"varint,6,opt,name=min_items,json=minItems,proto3" json:"min_items,omitempty"`
+	MaxItems        int32   `protobuf:"varint,7,opt,name=max_items,json=maxItems,proto3" json:"max_items,omitempty"`
+	MinDifficulty   int32   `protobuf:"varint,8,opt,name=min_difficulty,json=minDifficulty,proto3" json:"min_difficulty,omitempty"`
+	MaxDifficulty   int32   `protobuf:"varint,9,opt,name=max_difficulty,json=maxDifficulty,proto3" json:"max_difficulty,omitempty"`
+	StartDifficulty int32   `protobuf:"varint,10,opt,name=start_difficulty,json=startDifficulty,proto3" json:"start_difficulty,omitempty"`
+	StopConfidence  float64 `protobuf:"fixed64,11,opt,name=stop_confidence,json=stopConfidence,proto3" json:"stop_confidence,omitempty"`
+	DurationSeconds int32   `protobuf:"varint,12,opt,name=duration_seconds,json=durationSeconds,proto3" json:"duration_seconds,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *CreateCustomAssessmentRequest) Reset() {
+	*x = CreateCustomAssessmentRequest{}
+	mi := &file_tests_tests_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateCustomAssessmentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateCustomAssessmentRequest) ProtoMessage() {}
+
+func (x *CreateCustomAssessmentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tests_tests_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateCustomAssessmentRequest.ProtoReflect.Descriptor instead.
+func (*CreateCustomAssessmentRequest) Descriptor() ([]byte, []int) {
+	return file_tests_tests_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *CreateCustomAssessmentRequest) GetSubjectId() int64 {
+	if x != nil {
+		return x.SubjectId
+	}
+	return 0
+}
+
+func (x *CreateCustomAssessmentRequest) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *CreateCustomAssessmentRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *CreateCustomAssessmentRequest) GetVisibility() AssessmentVisibility {
+	if x != nil {
+		return x.Visibility
+	}
+	return AssessmentVisibility_ASSESSMENT_VISIBILITY_UNSPECIFIED
+}
+
+func (x *CreateCustomAssessmentRequest) GetSubtopics() []*CustomAssessmentSubtopicInput {
+	if x != nil {
+		return x.Subtopics
+	}
+	return nil
+}
+
+func (x *CreateCustomAssessmentRequest) GetMinItems() int32 {
+	if x != nil {
+		return x.MinItems
+	}
+	return 0
+}
+
+func (x *CreateCustomAssessmentRequest) GetMaxItems() int32 {
+	if x != nil {
+		return x.MaxItems
+	}
+	return 0
+}
+
+func (x *CreateCustomAssessmentRequest) GetMinDifficulty() int32 {
+	if x != nil {
+		return x.MinDifficulty
+	}
+	return 0
+}
+
+func (x *CreateCustomAssessmentRequest) GetMaxDifficulty() int32 {
+	if x != nil {
+		return x.MaxDifficulty
+	}
+	return 0
+}
+
+func (x *CreateCustomAssessmentRequest) GetStartDifficulty() int32 {
+	if x != nil {
+		return x.StartDifficulty
+	}
+	return 0
+}
+
+func (x *CreateCustomAssessmentRequest) GetStopConfidence() float64 {
+	if x != nil {
+		return x.StopConfidence
+	}
+	return 0
+}
+
+func (x *CreateCustomAssessmentRequest) GetDurationSeconds() int32 {
+	if x != nil {
+		return x.DurationSeconds
+	}
+	return 0
+}
+
+// Полное обновление пользовательского теста
+// Разрешено только владельцу и только если backend считает assessment редактируемым
+type UpdateCustomAssessmentRequest struct {
+	state           protoimpl.MessageState           `protogen:"open.v1"`
+	AssessmentId    int64                            `protobuf:"varint,1,opt,name=assessment_id,json=assessmentId,proto3" json:"assessment_id,omitempty"`
+	Title           string                           `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Description     string                           `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Visibility      AssessmentVisibility             `protobuf:"varint,4,opt,name=visibility,proto3,enum=assessment.v1.AssessmentVisibility" json:"visibility,omitempty"`
+	Subtopics       []*CustomAssessmentSubtopicInput `protobuf:"bytes,5,rep,name=subtopics,proto3" json:"subtopics,omitempty"`
+	MinItems        int32                            `protobuf:"varint,6,opt,name=min_items,json=minItems,proto3" json:"min_items,omitempty"`
+	MaxItems        int32                            `protobuf:"varint,7,opt,name=max_items,json=maxItems,proto3" json:"max_items,omitempty"`
+	MinDifficulty   int32                            `protobuf:"varint,8,opt,name=min_difficulty,json=minDifficulty,proto3" json:"min_difficulty,omitempty"`
+	MaxDifficulty   int32                            `protobuf:"varint,9,opt,name=max_difficulty,json=maxDifficulty,proto3" json:"max_difficulty,omitempty"`
+	StartDifficulty int32                            `protobuf:"varint,10,opt,name=start_difficulty,json=startDifficulty,proto3" json:"start_difficulty,omitempty"`
+	StopConfidence  float64                          `protobuf:"fixed64,11,opt,name=stop_confidence,json=stopConfidence,proto3" json:"stop_confidence,omitempty"`
+	DurationSeconds int32                            `protobuf:"varint,12,opt,name=duration_seconds,json=durationSeconds,proto3" json:"duration_seconds,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *UpdateCustomAssessmentRequest) Reset() {
+	*x = UpdateCustomAssessmentRequest{}
+	mi := &file_tests_tests_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateCustomAssessmentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateCustomAssessmentRequest) ProtoMessage() {}
+
+func (x *UpdateCustomAssessmentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tests_tests_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateCustomAssessmentRequest.ProtoReflect.Descriptor instead.
+func (*UpdateCustomAssessmentRequest) Descriptor() ([]byte, []int) {
+	return file_tests_tests_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *UpdateCustomAssessmentRequest) GetAssessmentId() int64 {
+	if x != nil {
+		return x.AssessmentId
+	}
+	return 0
+}
+
+func (x *UpdateCustomAssessmentRequest) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *UpdateCustomAssessmentRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *UpdateCustomAssessmentRequest) GetVisibility() AssessmentVisibility {
+	if x != nil {
+		return x.Visibility
+	}
+	return AssessmentVisibility_ASSESSMENT_VISIBILITY_UNSPECIFIED
+}
+
+func (x *UpdateCustomAssessmentRequest) GetSubtopics() []*CustomAssessmentSubtopicInput {
+	if x != nil {
+		return x.Subtopics
+	}
+	return nil
+}
+
+func (x *UpdateCustomAssessmentRequest) GetMinItems() int32 {
+	if x != nil {
+		return x.MinItems
+	}
+	return 0
+}
+
+func (x *UpdateCustomAssessmentRequest) GetMaxItems() int32 {
+	if x != nil {
+		return x.MaxItems
+	}
+	return 0
+}
+
+func (x *UpdateCustomAssessmentRequest) GetMinDifficulty() int32 {
+	if x != nil {
+		return x.MinDifficulty
+	}
+	return 0
+}
+
+func (x *UpdateCustomAssessmentRequest) GetMaxDifficulty() int32 {
+	if x != nil {
+		return x.MaxDifficulty
+	}
+	return 0
+}
+
+func (x *UpdateCustomAssessmentRequest) GetStartDifficulty() int32 {
+	if x != nil {
+		return x.StartDifficulty
+	}
+	return 0
+}
+
+func (x *UpdateCustomAssessmentRequest) GetStopConfidence() float64 {
+	if x != nil {
+		return x.StopConfidence
+	}
+	return 0
+}
+
+func (x *UpdateCustomAssessmentRequest) GetDurationSeconds() int32 {
+	if x != nil {
+		return x.DurationSeconds
+	}
+	return 0
+}
+
+// Архивация пользовательского теста
+// Физически не удаляем, чтобы не ломать попытки и сохраненные результаты
+type ArchiveCustomAssessmentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AssessmentId  int64                  `protobuf:"varint,1,opt,name=assessment_id,json=assessmentId,proto3" json:"assessment_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ArchiveCustomAssessmentRequest) Reset() {
+	*x = ArchiveCustomAssessmentRequest{}
+	mi := &file_tests_tests_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ArchiveCustomAssessmentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ArchiveCustomAssessmentRequest) ProtoMessage() {}
+
+func (x *ArchiveCustomAssessmentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tests_tests_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ArchiveCustomAssessmentRequest.ProtoReflect.Descriptor instead.
+func (*ArchiveCustomAssessmentRequest) Descriptor() ([]byte, []int) {
+	return file_tests_tests_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *ArchiveCustomAssessmentRequest) GetAssessmentId() int64 {
+	if x != nil {
+		return x.AssessmentId
+	}
+	return 0
+}
+
+type ListMyCustomAssessmentsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Query string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	// UNSPECIFIED - любые статусы
+	Status        AssessmentStatus `protobuf:"varint,2,opt,name=status,proto3,enum=assessment.v1.AssessmentStatus" json:"status,omitempty"`
+	PageSize      int32            `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string           `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMyCustomAssessmentsRequest) Reset() {
+	*x = ListMyCustomAssessmentsRequest{}
+	mi := &file_tests_tests_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyCustomAssessmentsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyCustomAssessmentsRequest) ProtoMessage() {}
+
+func (x *ListMyCustomAssessmentsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tests_tests_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyCustomAssessmentsRequest.ProtoReflect.Descriptor instead.
+func (*ListMyCustomAssessmentsRequest) Descriptor() ([]byte, []int) {
+	return file_tests_tests_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *ListMyCustomAssessmentsRequest) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
+}
+
+func (x *ListMyCustomAssessmentsRequest) GetStatus() AssessmentStatus {
+	if x != nil {
+		return x.Status
+	}
+	return AssessmentStatus_ASSESSMENT_STATUS_UNSPECIFIED
+}
+
+func (x *ListMyCustomAssessmentsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListMyCustomAssessmentsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type ListMyCustomAssessmentsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Assessments   []*AssessmentSummary   `protobuf:"bytes,1,rep,name=assessments,proto3" json:"assessments,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMyCustomAssessmentsResponse) Reset() {
+	*x = ListMyCustomAssessmentsResponse{}
+	mi := &file_tests_tests_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyCustomAssessmentsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyCustomAssessmentsResponse) ProtoMessage() {}
+
+func (x *ListMyCustomAssessmentsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tests_tests_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyCustomAssessmentsResponse.ProtoReflect.Descriptor instead.
+func (*ListMyCustomAssessmentsResponse) Descriptor() ([]byte, []int) {
+	return file_tests_tests_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ListMyCustomAssessmentsResponse) GetAssessments() []*AssessmentSummary {
+	if x != nil {
+		return x.Assessments
+	}
+	return nil
+}
+
+func (x *ListMyCustomAssessmentsResponse) GetNextPageToken() string {
 	if x != nil {
 		return x.NextPageToken
 	}
@@ -1652,14 +2485,18 @@ type ListAssessmentsRequest struct {
 	PageSize  int32            `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken string           `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// UNSPECIFIED - любые, GLOBAL / SUBTOPIC по выбору
-	Mode          AssessmentMode `protobuf:"varint,6,opt,name=mode,proto3,enum=assessment.v1.AssessmentMode" json:"mode,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Mode            AssessmentMode       `protobuf:"varint,6,opt,name=mode,proto3,enum=assessment.v1.AssessmentMode" json:"mode,omitempty"`
+	Kind            AssessmentKind       `protobuf:"varint,7,opt,name=kind,proto3,enum=assessment.v1.AssessmentKind" json:"kind,omitempty"`
+	Visibility      AssessmentVisibility `protobuf:"varint,8,opt,name=visibility,proto3,enum=assessment.v1.AssessmentVisibility" json:"visibility,omitempty"`
+	Scope           AssessmentListScope  `protobuf:"varint,9,opt,name=scope,proto3,enum=assessment.v1.AssessmentListScope" json:"scope,omitempty"`
+	CreatedByUserId string               `protobuf:"bytes,10,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *ListAssessmentsRequest) Reset() {
 	*x = ListAssessmentsRequest{}
-	mi := &file_tests_tests_proto_msgTypes[14]
+	mi := &file_tests_tests_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1671,7 +2508,7 @@ func (x *ListAssessmentsRequest) String() string {
 func (*ListAssessmentsRequest) ProtoMessage() {}
 
 func (x *ListAssessmentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[14]
+	mi := &file_tests_tests_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1684,7 +2521,7 @@ func (x *ListAssessmentsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAssessmentsRequest.ProtoReflect.Descriptor instead.
 func (*ListAssessmentsRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{14}
+	return file_tests_tests_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListAssessmentsRequest) GetSubjectId() int64 {
@@ -1729,6 +2566,34 @@ func (x *ListAssessmentsRequest) GetMode() AssessmentMode {
 	return AssessmentMode_ASSESSMENT_MODE_UNSPECIFIED
 }
 
+func (x *ListAssessmentsRequest) GetKind() AssessmentKind {
+	if x != nil {
+		return x.Kind
+	}
+	return AssessmentKind_ASSESSMENT_KIND_UNSPECIFIED
+}
+
+func (x *ListAssessmentsRequest) GetVisibility() AssessmentVisibility {
+	if x != nil {
+		return x.Visibility
+	}
+	return AssessmentVisibility_ASSESSMENT_VISIBILITY_UNSPECIFIED
+}
+
+func (x *ListAssessmentsRequest) GetScope() AssessmentListScope {
+	if x != nil {
+		return x.Scope
+	}
+	return AssessmentListScope_ASSESSMENT_LIST_SCOPE_UNSPECIFIED
+}
+
+func (x *ListAssessmentsRequest) GetCreatedByUserId() string {
+	if x != nil {
+		return x.CreatedByUserId
+	}
+	return ""
+}
+
 type ListAssessmentsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Assessments   []*AssessmentSummary   `protobuf:"bytes,1,rep,name=assessments,proto3" json:"assessments,omitempty"`
@@ -1739,7 +2604,7 @@ type ListAssessmentsResponse struct {
 
 func (x *ListAssessmentsResponse) Reset() {
 	*x = ListAssessmentsResponse{}
-	mi := &file_tests_tests_proto_msgTypes[15]
+	mi := &file_tests_tests_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1751,7 +2616,7 @@ func (x *ListAssessmentsResponse) String() string {
 func (*ListAssessmentsResponse) ProtoMessage() {}
 
 func (x *ListAssessmentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[15]
+	mi := &file_tests_tests_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1764,7 +2629,7 @@ func (x *ListAssessmentsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAssessmentsResponse.ProtoReflect.Descriptor instead.
 func (*ListAssessmentsResponse) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{15}
+	return file_tests_tests_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ListAssessmentsResponse) GetAssessments() []*AssessmentSummary {
@@ -1792,7 +2657,7 @@ type GetAssessmentRequest struct {
 
 func (x *GetAssessmentRequest) Reset() {
 	*x = GetAssessmentRequest{}
-	mi := &file_tests_tests_proto_msgTypes[16]
+	mi := &file_tests_tests_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1804,7 +2669,7 @@ func (x *GetAssessmentRequest) String() string {
 func (*GetAssessmentRequest) ProtoMessage() {}
 
 func (x *GetAssessmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[16]
+	mi := &file_tests_tests_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1817,7 +2682,7 @@ func (x *GetAssessmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAssessmentRequest.ProtoReflect.Descriptor instead.
 func (*GetAssessmentRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{16}
+	return file_tests_tests_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *GetAssessmentRequest) GetAssessmentId() int64 {
@@ -1847,7 +2712,7 @@ type StartAttemptRequest struct {
 
 func (x *StartAttemptRequest) Reset() {
 	*x = StartAttemptRequest{}
-	mi := &file_tests_tests_proto_msgTypes[17]
+	mi := &file_tests_tests_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1859,7 +2724,7 @@ func (x *StartAttemptRequest) String() string {
 func (*StartAttemptRequest) ProtoMessage() {}
 
 func (x *StartAttemptRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[17]
+	mi := &file_tests_tests_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1872,7 +2737,7 @@ func (x *StartAttemptRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StartAttemptRequest.ProtoReflect.Descriptor instead.
 func (*StartAttemptRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{17}
+	return file_tests_tests_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *StartAttemptRequest) GetAssessmentId() int64 {
@@ -1902,7 +2767,7 @@ type StartAttemptResponse struct {
 
 func (x *StartAttemptResponse) Reset() {
 	*x = StartAttemptResponse{}
-	mi := &file_tests_tests_proto_msgTypes[18]
+	mi := &file_tests_tests_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1914,7 +2779,7 @@ func (x *StartAttemptResponse) String() string {
 func (*StartAttemptResponse) ProtoMessage() {}
 
 func (x *StartAttemptResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[18]
+	mi := &file_tests_tests_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1927,7 +2792,7 @@ func (x *StartAttemptResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StartAttemptResponse.ProtoReflect.Descriptor instead.
 func (*StartAttemptResponse) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{18}
+	return file_tests_tests_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *StartAttemptResponse) GetAttempt() *Attempt {
@@ -1962,7 +2827,7 @@ type GetAttemptRequest struct {
 
 func (x *GetAttemptRequest) Reset() {
 	*x = GetAttemptRequest{}
-	mi := &file_tests_tests_proto_msgTypes[19]
+	mi := &file_tests_tests_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1974,7 +2839,7 @@ func (x *GetAttemptRequest) String() string {
 func (*GetAttemptRequest) ProtoMessage() {}
 
 func (x *GetAttemptRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[19]
+	mi := &file_tests_tests_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1987,7 +2852,7 @@ func (x *GetAttemptRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAttemptRequest.ProtoReflect.Descriptor instead.
 func (*GetAttemptRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{19}
+	return file_tests_tests_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *GetAttemptRequest) GetAttemptId() int64 {
@@ -2013,7 +2878,7 @@ type GetAttemptProgressRequest struct {
 
 func (x *GetAttemptProgressRequest) Reset() {
 	*x = GetAttemptProgressRequest{}
-	mi := &file_tests_tests_proto_msgTypes[20]
+	mi := &file_tests_tests_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2025,7 +2890,7 @@ func (x *GetAttemptProgressRequest) String() string {
 func (*GetAttemptProgressRequest) ProtoMessage() {}
 
 func (x *GetAttemptProgressRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[20]
+	mi := &file_tests_tests_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2038,7 +2903,7 @@ func (x *GetAttemptProgressRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAttemptProgressRequest.ProtoReflect.Descriptor instead.
 func (*GetAttemptProgressRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{20}
+	return file_tests_tests_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *GetAttemptProgressRequest) GetAttemptId() int64 {
@@ -2057,7 +2922,7 @@ type GetNextQuestionRequest struct {
 
 func (x *GetNextQuestionRequest) Reset() {
 	*x = GetNextQuestionRequest{}
-	mi := &file_tests_tests_proto_msgTypes[21]
+	mi := &file_tests_tests_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2069,7 +2934,7 @@ func (x *GetNextQuestionRequest) String() string {
 func (*GetNextQuestionRequest) ProtoMessage() {}
 
 func (x *GetNextQuestionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[21]
+	mi := &file_tests_tests_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2082,7 +2947,7 @@ func (x *GetNextQuestionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetNextQuestionRequest.ProtoReflect.Descriptor instead.
 func (*GetNextQuestionRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{21}
+	return file_tests_tests_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *GetNextQuestionRequest) GetAttemptId() int64 {
@@ -2104,7 +2969,7 @@ type GetNextQuestionResponse struct {
 
 func (x *GetNextQuestionResponse) Reset() {
 	*x = GetNextQuestionResponse{}
-	mi := &file_tests_tests_proto_msgTypes[22]
+	mi := &file_tests_tests_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2116,7 +2981,7 @@ func (x *GetNextQuestionResponse) String() string {
 func (*GetNextQuestionResponse) ProtoMessage() {}
 
 func (x *GetNextQuestionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[22]
+	mi := &file_tests_tests_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2129,7 +2994,7 @@ func (x *GetNextQuestionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetNextQuestionResponse.ProtoReflect.Descriptor instead.
 func (*GetNextQuestionResponse) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{22}
+	return file_tests_tests_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *GetNextQuestionResponse) GetCompleted() bool {
@@ -2164,7 +3029,7 @@ type SubmitAnswerRequest struct {
 
 func (x *SubmitAnswerRequest) Reset() {
 	*x = SubmitAnswerRequest{}
-	mi := &file_tests_tests_proto_msgTypes[23]
+	mi := &file_tests_tests_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2176,7 +3041,7 @@ func (x *SubmitAnswerRequest) String() string {
 func (*SubmitAnswerRequest) ProtoMessage() {}
 
 func (x *SubmitAnswerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[23]
+	mi := &file_tests_tests_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2189,7 +3054,7 @@ func (x *SubmitAnswerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubmitAnswerRequest.ProtoReflect.Descriptor instead.
 func (*SubmitAnswerRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{23}
+	return file_tests_tests_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *SubmitAnswerRequest) GetAttemptId() int64 {
@@ -2225,7 +3090,7 @@ type SubmitAnswerResponse struct {
 
 func (x *SubmitAnswerResponse) Reset() {
 	*x = SubmitAnswerResponse{}
-	mi := &file_tests_tests_proto_msgTypes[24]
+	mi := &file_tests_tests_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2237,7 +3102,7 @@ func (x *SubmitAnswerResponse) String() string {
 func (*SubmitAnswerResponse) ProtoMessage() {}
 
 func (x *SubmitAnswerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[24]
+	mi := &file_tests_tests_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2250,7 +3115,7 @@ func (x *SubmitAnswerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubmitAnswerResponse.ProtoReflect.Descriptor instead.
 func (*SubmitAnswerResponse) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{24}
+	return file_tests_tests_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *SubmitAnswerResponse) GetCompleted() bool {
@@ -2285,7 +3150,7 @@ type FinishAttemptRequest struct {
 
 func (x *FinishAttemptRequest) Reset() {
 	*x = FinishAttemptRequest{}
-	mi := &file_tests_tests_proto_msgTypes[25]
+	mi := &file_tests_tests_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2297,7 +3162,7 @@ func (x *FinishAttemptRequest) String() string {
 func (*FinishAttemptRequest) ProtoMessage() {}
 
 func (x *FinishAttemptRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[25]
+	mi := &file_tests_tests_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2310,7 +3175,7 @@ func (x *FinishAttemptRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FinishAttemptRequest.ProtoReflect.Descriptor instead.
 func (*FinishAttemptRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{25}
+	return file_tests_tests_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *FinishAttemptRequest) GetAttemptId() int64 {
@@ -2341,7 +3206,7 @@ type ListMyAttemptsRequest struct {
 
 func (x *ListMyAttemptsRequest) Reset() {
 	*x = ListMyAttemptsRequest{}
-	mi := &file_tests_tests_proto_msgTypes[26]
+	mi := &file_tests_tests_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2353,7 +3218,7 @@ func (x *ListMyAttemptsRequest) String() string {
 func (*ListMyAttemptsRequest) ProtoMessage() {}
 
 func (x *ListMyAttemptsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[26]
+	mi := &file_tests_tests_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2366,7 +3231,7 @@ func (x *ListMyAttemptsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyAttemptsRequest.ProtoReflect.Descriptor instead.
 func (*ListMyAttemptsRequest) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{26}
+	return file_tests_tests_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *ListMyAttemptsRequest) GetAssessmentId() int64 {
@@ -2407,7 +3272,7 @@ type ListMyAttemptsResponse struct {
 
 func (x *ListMyAttemptsResponse) Reset() {
 	*x = ListMyAttemptsResponse{}
-	mi := &file_tests_tests_proto_msgTypes[27]
+	mi := &file_tests_tests_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2419,7 +3284,7 @@ func (x *ListMyAttemptsResponse) String() string {
 func (*ListMyAttemptsResponse) ProtoMessage() {}
 
 func (x *ListMyAttemptsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[27]
+	mi := &file_tests_tests_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2432,7 +3297,7 @@ func (x *ListMyAttemptsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyAttemptsResponse.ProtoReflect.Descriptor instead.
 func (*ListMyAttemptsResponse) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{27}
+	return file_tests_tests_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *ListMyAttemptsResponse) GetAttempts() []*Attempt {
@@ -2464,7 +3329,7 @@ type AttemptAssessmentSummary struct {
 
 func (x *AttemptAssessmentSummary) Reset() {
 	*x = AttemptAssessmentSummary{}
-	mi := &file_tests_tests_proto_msgTypes[28]
+	mi := &file_tests_tests_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2476,7 +3341,7 @@ func (x *AttemptAssessmentSummary) String() string {
 func (*AttemptAssessmentSummary) ProtoMessage() {}
 
 func (x *AttemptAssessmentSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_tests_tests_proto_msgTypes[28]
+	mi := &file_tests_tests_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2489,7 +3354,7 @@ func (x *AttemptAssessmentSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AttemptAssessmentSummary.ProtoReflect.Descriptor instead.
 func (*AttemptAssessmentSummary) Descriptor() ([]byte, []int) {
-	return file_tests_tests_proto_rawDescGZIP(), []int{28}
+	return file_tests_tests_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *AttemptAssessmentSummary) GetAssessmentId() int64 {
@@ -2545,7 +3410,7 @@ var File_tests_tests_proto protoreflect.FileDescriptor
 
 const file_tests_tests_proto_rawDesc = "" +
 	"\n" +
-	"\x11tests/tests.proto\x12\rassessment.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"~\n" +
+	"\x11tests/tests.proto\x12\rassessment.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"~\n" +
 	"\aSubject\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
@@ -2575,7 +3440,16 @@ const file_tests_tests_proto_rawDesc = "" +
 	"\n" +
 	"_max_itemsB\x13\n" +
 	"\x11_start_difficultyB\x12\n" +
-	"\x10_stop_confidence\"\xb7\x05\n" +
+	"\x10_stop_confidence\"\x82\x02\n" +
+	"\x1dCustomAssessmentSubtopicInput\x12\x1f\n" +
+	"\vsubtopic_id\x18\x01 \x01(\x03R\n" +
+	"subtopicId\x12\x16\n" +
+	"\x06weight\x18\x02 \x01(\x01R\x06weight\x12\x1a\n" +
+	"\bpriority\x18\x03 \x01(\x05R\bpriority\x12\x1b\n" +
+	"\tmin_items\x18\x04 \x01(\x05R\bminItems\x12\x1b\n" +
+	"\tmax_items\x18\x05 \x01(\x05R\bmaxItems\x12)\n" +
+	"\x10start_difficulty\x18\x06 \x01(\x05R\x0fstartDifficulty\x12'\n" +
+	"\x0fstop_confidence\x18\a \x01(\x01R\x0estopConfidence\"\xf6\a\n" +
 	"\n" +
 	"Assessment\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
@@ -2598,7 +3472,17 @@ const file_tests_tests_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12E\n" +
 	"\tsubtopics\x18\x10 \x03(\v2'.assessment.v1.AssessmentSubtopicConfigR\tsubtopics\x121\n" +
-	"\x04mode\x18\x11 \x01(\x0e2\x1d.assessment.v1.AssessmentModeR\x04mode\"\xa5\x02\n" +
+	"\x04mode\x18\x11 \x01(\x0e2\x1d.assessment.v1.AssessmentModeR\x04mode\x121\n" +
+	"\x04kind\x18\x12 \x01(\x0e2\x1d.assessment.v1.AssessmentKindR\x04kind\x12C\n" +
+	"\n" +
+	"visibility\x18\x13 \x01(\x0e2#.assessment.v1.AssessmentVisibilityR\n" +
+	"visibility\x12+\n" +
+	"\x12created_by_user_id\x18\x14 \x01(\tR\x0fcreatedByUserId\x12\x1f\n" +
+	"\vis_editable\x18\x15 \x01(\bR\n" +
+	"isEditable\x12+\n" +
+	"\x12can_use_in_project\x18\x16 \x01(\bR\x0fcanUseInProject\x12\x18\n" +
+	"\aversion\x18\x17 \x01(\x05R\aversion\x120\n" +
+	"\x14parent_assessment_id\x18\x18 \x01(\x03R\x12parentAssessmentId\"\xe4\x04\n" +
 	"\x11AssessmentSummary\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
@@ -2608,7 +3492,18 @@ const file_tests_tests_proto_rawDesc = "" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x127\n" +
 	"\x06status\x18\x06 \x01(\x0e2\x1f.assessment.v1.AssessmentStatusR\x06status\x12)\n" +
 	"\x10duration_seconds\x18\a \x01(\x05R\x0fdurationSeconds\x121\n" +
-	"\x04mode\x18\b \x01(\x0e2\x1d.assessment.v1.AssessmentModeR\x04mode\"q\n" +
+	"\x04mode\x18\b \x01(\x0e2\x1d.assessment.v1.AssessmentModeR\x04mode\x121\n" +
+	"\x04kind\x18\t \x01(\x0e2\x1d.assessment.v1.AssessmentKindR\x04kind\x12C\n" +
+	"\n" +
+	"visibility\x18\n" +
+	" \x01(\x0e2#.assessment.v1.AssessmentVisibilityR\n" +
+	"visibility\x12+\n" +
+	"\x12created_by_user_id\x18\v \x01(\tR\x0fcreatedByUserId\x12\x1f\n" +
+	"\vis_editable\x18\f \x01(\bR\n" +
+	"isEditable\x12+\n" +
+	"\x12can_use_in_project\x18\r \x01(\bR\x0fcanUseInProject\x12\x18\n" +
+	"\aversion\x18\x0e \x01(\x05R\aversion\x120\n" +
+	"\x14parent_assessment_id\x18j \x01(\x03R\x12parentAssessmentId\"q\n" +
 	"\x0eQuestionOption\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1f\n" +
 	"\vquestion_id\x18\x02 \x01(\x03R\n" +
@@ -2705,7 +3600,51 @@ const file_tests_tests_proto_rawDesc = "" +
 	"page_token\x18\x04 \x01(\tR\tpageToken\"v\n" +
 	"\x15ListSubtopicsResponse\x125\n" +
 	"\tsubtopics\x18\x01 \x03(\v2\x17.assessment.v1.SubtopicR\tsubtopics\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xf5\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x8e\x04\n" +
+	"\x1dCreateCustomAssessmentRequest\x12\x1d\n" +
+	"\n" +
+	"subject_id\x18\x01 \x01(\x03R\tsubjectId\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12C\n" +
+	"\n" +
+	"visibility\x18\x04 \x01(\x0e2#.assessment.v1.AssessmentVisibilityR\n" +
+	"visibility\x12J\n" +
+	"\tsubtopics\x18\x05 \x03(\v2,.assessment.v1.CustomAssessmentSubtopicInputR\tsubtopics\x12\x1b\n" +
+	"\tmin_items\x18\x06 \x01(\x05R\bminItems\x12\x1b\n" +
+	"\tmax_items\x18\a \x01(\x05R\bmaxItems\x12%\n" +
+	"\x0emin_difficulty\x18\b \x01(\x05R\rminDifficulty\x12%\n" +
+	"\x0emax_difficulty\x18\t \x01(\x05R\rmaxDifficulty\x12)\n" +
+	"\x10start_difficulty\x18\n" +
+	" \x01(\x05R\x0fstartDifficulty\x12'\n" +
+	"\x0fstop_confidence\x18\v \x01(\x01R\x0estopConfidence\x12)\n" +
+	"\x10duration_seconds\x18\f \x01(\x05R\x0fdurationSeconds\"\x94\x04\n" +
+	"\x1dUpdateCustomAssessmentRequest\x12#\n" +
+	"\rassessment_id\x18\x01 \x01(\x03R\fassessmentId\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12C\n" +
+	"\n" +
+	"visibility\x18\x04 \x01(\x0e2#.assessment.v1.AssessmentVisibilityR\n" +
+	"visibility\x12J\n" +
+	"\tsubtopics\x18\x05 \x03(\v2,.assessment.v1.CustomAssessmentSubtopicInputR\tsubtopics\x12\x1b\n" +
+	"\tmin_items\x18\x06 \x01(\x05R\bminItems\x12\x1b\n" +
+	"\tmax_items\x18\a \x01(\x05R\bmaxItems\x12%\n" +
+	"\x0emin_difficulty\x18\b \x01(\x05R\rminDifficulty\x12%\n" +
+	"\x0emax_difficulty\x18\t \x01(\x05R\rmaxDifficulty\x12)\n" +
+	"\x10start_difficulty\x18\n" +
+	" \x01(\x05R\x0fstartDifficulty\x12'\n" +
+	"\x0fstop_confidence\x18\v \x01(\x01R\x0estopConfidence\x12)\n" +
+	"\x10duration_seconds\x18\f \x01(\x05R\x0fdurationSeconds\"E\n" +
+	"\x1eArchiveCustomAssessmentRequest\x12#\n" +
+	"\rassessment_id\x18\x01 \x01(\x03R\fassessmentId\"\xab\x01\n" +
+	"\x1eListMyCustomAssessmentsRequest\x12\x14\n" +
+	"\x05query\x18\x01 \x01(\tR\x05query\x127\n" +
+	"\x06status\x18\x02 \x01(\x0e2\x1f.assessment.v1.AssessmentStatusR\x06status\x12\x1b\n" +
+	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x04 \x01(\tR\tpageToken\"\x8d\x01\n" +
+	"\x1fListMyCustomAssessmentsResponse\x12B\n" +
+	"\vassessments\x18\x01 \x03(\v2 .assessment.v1.AssessmentSummaryR\vassessments\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xd4\x03\n" +
 	"\x16ListAssessmentsRequest\x12\x1d\n" +
 	"\n" +
 	"subject_id\x18\x01 \x01(\x03R\tsubjectId\x12\x14\n" +
@@ -2714,7 +3653,14 @@ const file_tests_tests_proto_rawDesc = "" +
 	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x05 \x01(\tR\tpageToken\x121\n" +
-	"\x04mode\x18\x06 \x01(\x0e2\x1d.assessment.v1.AssessmentModeR\x04mode\"\x85\x01\n" +
+	"\x04mode\x18\x06 \x01(\x0e2\x1d.assessment.v1.AssessmentModeR\x04mode\x121\n" +
+	"\x04kind\x18\a \x01(\x0e2\x1d.assessment.v1.AssessmentKindR\x04kind\x12C\n" +
+	"\n" +
+	"visibility\x18\b \x01(\x0e2#.assessment.v1.AssessmentVisibilityR\n" +
+	"visibility\x128\n" +
+	"\x05scope\x18\t \x01(\x0e2\".assessment.v1.AssessmentListScopeR\x05scope\x12+\n" +
+	"\x12created_by_user_id\x18\n" +
+	" \x01(\tR\x0fcreatedByUserId\"\x85\x01\n" +
 	"\x17ListAssessmentsResponse\x12B\n" +
 	"\vassessments\x18\x01 \x03(\v2 .assessment.v1.AssessmentSummaryR\vassessments\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"h\n" +
@@ -2800,7 +3746,23 @@ const file_tests_tests_proto_rawDesc = "" +
 	"\x0eAssessmentMode\x12\x1f\n" +
 	"\x1bASSESSMENT_MODE_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18ASSESSMENT_MODE_SUBTOPIC\x10\x01\x12\x1a\n" +
-	"\x16ASSESSMENT_MODE_GLOBAL\x10\x022\xe2\a\n" +
+	"\x16ASSESSMENT_MODE_GLOBAL\x10\x02*i\n" +
+	"\x0eAssessmentKind\x12\x1f\n" +
+	"\x1bASSESSMENT_KIND_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16ASSESSMENT_KIND_SYSTEM\x10\x01\x12\x1a\n" +
+	"\x16ASSESSMENT_KIND_CUSTOM\x10\x02*\xa5\x01\n" +
+	"\x14AssessmentVisibility\x12%\n" +
+	"!ASSESSMENT_VISIBILITY_UNSPECIFIED\x10\x00\x12!\n" +
+	"\x1dASSESSMENT_VISIBILITY_PRIVATE\x10\x01\x12!\n" +
+	"\x1dASSESSMENT_VISIBILITY_PROJECT\x10\x02\x12 \n" +
+	"\x1cASSESSMENT_VISIBILITY_PUBLIC\x10\x03*\xfe\x01\n" +
+	"\x13AssessmentListScope\x12%\n" +
+	"!ASSESSMENT_LIST_SCOPE_UNSPECIFIED\x10\x00\x12#\n" +
+	"\x1fASSESSMENT_LIST_SCOPE_AVAILABLE\x10\x01\x12 \n" +
+	"\x1cASSESSMENT_LIST_SCOPE_SYSTEM\x10\x02\x12#\n" +
+	"\x1fASSESSMENT_LIST_SCOPE_MY_CUSTOM\x10\x03\x12+\n" +
+	"'ASSESSMENT_LIST_SCOPE_PROJECT_AVAILABLE\x10\x04\x12'\n" +
+	"#ASSESSMENT_LIST_SCOPE_PUBLIC_CUSTOM\x10\x052\x87\v\n" +
 	"\x0fAdaptiveTesting\x12W\n" +
 	"\fListSubjects\x12\".assessment.v1.ListSubjectsRequest\x1a#.assessment.v1.ListSubjectsResponse\x12Z\n" +
 	"\rListSubtopics\x12#.assessment.v1.ListSubtopicsRequest\x1a$.assessment.v1.ListSubtopicsResponse\x12`\n" +
@@ -2813,7 +3775,11 @@ const file_tests_tests_proto_rawDesc = "" +
 	"\x0fGetNextQuestion\x12%.assessment.v1.GetNextQuestionRequest\x1a&.assessment.v1.GetNextQuestionResponse\x12W\n" +
 	"\fSubmitAnswer\x12\".assessment.v1.SubmitAnswerRequest\x1a#.assessment.v1.SubmitAnswerResponse\x12L\n" +
 	"\rFinishAttempt\x12#.assessment.v1.FinishAttemptRequest\x1a\x16.assessment.v1.Attempt\x12]\n" +
-	"\x0eListMyAttempts\x12$.assessment.v1.ListMyAttemptsRequest\x1a%.assessment.v1.ListMyAttemptsResponseB\"Z evggo.assessment.v1;assessmentv1b\x06proto3"
+	"\x0eListMyAttempts\x12$.assessment.v1.ListMyAttemptsRequest\x1a%.assessment.v1.ListMyAttemptsResponse\x12a\n" +
+	"\x16CreateCustomAssessment\x12,.assessment.v1.CreateCustomAssessmentRequest\x1a\x19.assessment.v1.Assessment\x12a\n" +
+	"\x16UpdateCustomAssessment\x12,.assessment.v1.UpdateCustomAssessmentRequest\x1a\x19.assessment.v1.Assessment\x12c\n" +
+	"\x17ArchiveCustomAssessment\x12-.assessment.v1.ArchiveCustomAssessmentRequest\x1a\x19.assessment.v1.Assessment\x12x\n" +
+	"\x17ListMyCustomAssessments\x12-.assessment.v1.ListMyCustomAssessmentsRequest\x1a..assessment.v1.ListMyCustomAssessmentsResponseB\"Z evggo.assessment.v1;assessmentv1b\x06proto3"
 
 var (
 	file_tests_tests_proto_rawDescOnce sync.Once
@@ -2827,109 +3793,139 @@ func file_tests_tests_proto_rawDescGZIP() []byte {
 	return file_tests_tests_proto_rawDescData
 }
 
-var file_tests_tests_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_tests_tests_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
+var file_tests_tests_proto_enumTypes = make([]protoimpl.EnumInfo, 8)
+var file_tests_tests_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
 var file_tests_tests_proto_goTypes = []any{
-	(AssessmentStatus)(0),             // 0: assessment.v1.AssessmentStatus
-	(AttemptStatus)(0),                // 1: assessment.v1.AttemptStatus
-	(FinishAction)(0),                 // 2: assessment.v1.FinishAction
-	(FinishReason)(0),                 // 3: assessment.v1.FinishReason
-	(AssessmentMode)(0),               // 4: assessment.v1.AssessmentMode
-	(*Subject)(nil),                   // 5: assessment.v1.Subject
-	(*Subtopic)(nil),                  // 6: assessment.v1.Subtopic
-	(*AssessmentSubtopicConfig)(nil),  // 7: assessment.v1.AssessmentSubtopicConfig
-	(*Assessment)(nil),                // 8: assessment.v1.Assessment
-	(*AssessmentSummary)(nil),         // 9: assessment.v1.AssessmentSummary
-	(*QuestionOption)(nil),            // 10: assessment.v1.QuestionOption
-	(*Question)(nil),                  // 11: assessment.v1.Question
-	(*AttemptSubtopicState)(nil),      // 12: assessment.v1.AttemptSubtopicState
-	(*Attempt)(nil),                   // 13: assessment.v1.Attempt
-	(*AttemptProgress)(nil),           // 14: assessment.v1.AttemptProgress
-	(*ListSubjectsRequest)(nil),       // 15: assessment.v1.ListSubjectsRequest
-	(*ListSubjectsResponse)(nil),      // 16: assessment.v1.ListSubjectsResponse
-	(*ListSubtopicsRequest)(nil),      // 17: assessment.v1.ListSubtopicsRequest
-	(*ListSubtopicsResponse)(nil),     // 18: assessment.v1.ListSubtopicsResponse
-	(*ListAssessmentsRequest)(nil),    // 19: assessment.v1.ListAssessmentsRequest
-	(*ListAssessmentsResponse)(nil),   // 20: assessment.v1.ListAssessmentsResponse
-	(*GetAssessmentRequest)(nil),      // 21: assessment.v1.GetAssessmentRequest
-	(*StartAttemptRequest)(nil),       // 22: assessment.v1.StartAttemptRequest
-	(*StartAttemptResponse)(nil),      // 23: assessment.v1.StartAttemptResponse
-	(*GetAttemptRequest)(nil),         // 24: assessment.v1.GetAttemptRequest
-	(*GetAttemptProgressRequest)(nil), // 25: assessment.v1.GetAttemptProgressRequest
-	(*GetNextQuestionRequest)(nil),    // 26: assessment.v1.GetNextQuestionRequest
-	(*GetNextQuestionResponse)(nil),   // 27: assessment.v1.GetNextQuestionResponse
-	(*SubmitAnswerRequest)(nil),       // 28: assessment.v1.SubmitAnswerRequest
-	(*SubmitAnswerResponse)(nil),      // 29: assessment.v1.SubmitAnswerResponse
-	(*FinishAttemptRequest)(nil),      // 30: assessment.v1.FinishAttemptRequest
-	(*ListMyAttemptsRequest)(nil),     // 31: assessment.v1.ListMyAttemptsRequest
-	(*ListMyAttemptsResponse)(nil),    // 32: assessment.v1.ListMyAttemptsResponse
-	(*AttemptAssessmentSummary)(nil),  // 33: assessment.v1.AttemptAssessmentSummary
-	(*timestamppb.Timestamp)(nil),     // 34: google.protobuf.Timestamp
+	(AssessmentStatus)(0),                   // 0: assessment.v1.AssessmentStatus
+	(AttemptStatus)(0),                      // 1: assessment.v1.AttemptStatus
+	(FinishAction)(0),                       // 2: assessment.v1.FinishAction
+	(FinishReason)(0),                       // 3: assessment.v1.FinishReason
+	(AssessmentMode)(0),                     // 4: assessment.v1.AssessmentMode
+	(AssessmentKind)(0),                     // 5: assessment.v1.AssessmentKind
+	(AssessmentVisibility)(0),               // 6: assessment.v1.AssessmentVisibility
+	(AssessmentListScope)(0),                // 7: assessment.v1.AssessmentListScope
+	(*Subject)(nil),                         // 8: assessment.v1.Subject
+	(*Subtopic)(nil),                        // 9: assessment.v1.Subtopic
+	(*AssessmentSubtopicConfig)(nil),        // 10: assessment.v1.AssessmentSubtopicConfig
+	(*CustomAssessmentSubtopicInput)(nil),   // 11: assessment.v1.CustomAssessmentSubtopicInput
+	(*Assessment)(nil),                      // 12: assessment.v1.Assessment
+	(*AssessmentSummary)(nil),               // 13: assessment.v1.AssessmentSummary
+	(*QuestionOption)(nil),                  // 14: assessment.v1.QuestionOption
+	(*Question)(nil),                        // 15: assessment.v1.Question
+	(*AttemptSubtopicState)(nil),            // 16: assessment.v1.AttemptSubtopicState
+	(*Attempt)(nil),                         // 17: assessment.v1.Attempt
+	(*AttemptProgress)(nil),                 // 18: assessment.v1.AttemptProgress
+	(*ListSubjectsRequest)(nil),             // 19: assessment.v1.ListSubjectsRequest
+	(*ListSubjectsResponse)(nil),            // 20: assessment.v1.ListSubjectsResponse
+	(*ListSubtopicsRequest)(nil),            // 21: assessment.v1.ListSubtopicsRequest
+	(*ListSubtopicsResponse)(nil),           // 22: assessment.v1.ListSubtopicsResponse
+	(*CreateCustomAssessmentRequest)(nil),   // 23: assessment.v1.CreateCustomAssessmentRequest
+	(*UpdateCustomAssessmentRequest)(nil),   // 24: assessment.v1.UpdateCustomAssessmentRequest
+	(*ArchiveCustomAssessmentRequest)(nil),  // 25: assessment.v1.ArchiveCustomAssessmentRequest
+	(*ListMyCustomAssessmentsRequest)(nil),  // 26: assessment.v1.ListMyCustomAssessmentsRequest
+	(*ListMyCustomAssessmentsResponse)(nil), // 27: assessment.v1.ListMyCustomAssessmentsResponse
+	(*ListAssessmentsRequest)(nil),          // 28: assessment.v1.ListAssessmentsRequest
+	(*ListAssessmentsResponse)(nil),         // 29: assessment.v1.ListAssessmentsResponse
+	(*GetAssessmentRequest)(nil),            // 30: assessment.v1.GetAssessmentRequest
+	(*StartAttemptRequest)(nil),             // 31: assessment.v1.StartAttemptRequest
+	(*StartAttemptResponse)(nil),            // 32: assessment.v1.StartAttemptResponse
+	(*GetAttemptRequest)(nil),               // 33: assessment.v1.GetAttemptRequest
+	(*GetAttemptProgressRequest)(nil),       // 34: assessment.v1.GetAttemptProgressRequest
+	(*GetNextQuestionRequest)(nil),          // 35: assessment.v1.GetNextQuestionRequest
+	(*GetNextQuestionResponse)(nil),         // 36: assessment.v1.GetNextQuestionResponse
+	(*SubmitAnswerRequest)(nil),             // 37: assessment.v1.SubmitAnswerRequest
+	(*SubmitAnswerResponse)(nil),            // 38: assessment.v1.SubmitAnswerResponse
+	(*FinishAttemptRequest)(nil),            // 39: assessment.v1.FinishAttemptRequest
+	(*ListMyAttemptsRequest)(nil),           // 40: assessment.v1.ListMyAttemptsRequest
+	(*ListMyAttemptsResponse)(nil),          // 41: assessment.v1.ListMyAttemptsResponse
+	(*AttemptAssessmentSummary)(nil),        // 42: assessment.v1.AttemptAssessmentSummary
+	(*timestamppb.Timestamp)(nil),           // 43: google.protobuf.Timestamp
 }
 var file_tests_tests_proto_depIdxs = []int32{
-	34, // 0: assessment.v1.Subject.created_at:type_name -> google.protobuf.Timestamp
-	34, // 1: assessment.v1.Subtopic.created_at:type_name -> google.protobuf.Timestamp
+	43, // 0: assessment.v1.Subject.created_at:type_name -> google.protobuf.Timestamp
+	43, // 1: assessment.v1.Subtopic.created_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: assessment.v1.Assessment.status:type_name -> assessment.v1.AssessmentStatus
-	34, // 3: assessment.v1.Assessment.created_at:type_name -> google.protobuf.Timestamp
-	34, // 4: assessment.v1.Assessment.updated_at:type_name -> google.protobuf.Timestamp
-	7,  // 5: assessment.v1.Assessment.subtopics:type_name -> assessment.v1.AssessmentSubtopicConfig
+	43, // 3: assessment.v1.Assessment.created_at:type_name -> google.protobuf.Timestamp
+	43, // 4: assessment.v1.Assessment.updated_at:type_name -> google.protobuf.Timestamp
+	10, // 5: assessment.v1.Assessment.subtopics:type_name -> assessment.v1.AssessmentSubtopicConfig
 	4,  // 6: assessment.v1.Assessment.mode:type_name -> assessment.v1.AssessmentMode
-	0,  // 7: assessment.v1.AssessmentSummary.status:type_name -> assessment.v1.AssessmentStatus
-	4,  // 8: assessment.v1.AssessmentSummary.mode:type_name -> assessment.v1.AssessmentMode
-	10, // 9: assessment.v1.Question.options:type_name -> assessment.v1.QuestionOption
-	1,  // 10: assessment.v1.Attempt.status:type_name -> assessment.v1.AttemptStatus
-	3,  // 11: assessment.v1.Attempt.finish_reason:type_name -> assessment.v1.FinishReason
-	34, // 12: assessment.v1.Attempt.started_at:type_name -> google.protobuf.Timestamp
-	34, // 13: assessment.v1.Attempt.expires_at:type_name -> google.protobuf.Timestamp
-	34, // 14: assessment.v1.Attempt.completed_at:type_name -> google.protobuf.Timestamp
-	12, // 15: assessment.v1.Attempt.subtopic_states:type_name -> assessment.v1.AttemptSubtopicState
-	33, // 16: assessment.v1.Attempt.assessment_summary:type_name -> assessment.v1.AttemptAssessmentSummary
-	1,  // 17: assessment.v1.AttemptProgress.status:type_name -> assessment.v1.AttemptStatus
-	34, // 18: assessment.v1.AttemptProgress.started_at:type_name -> google.protobuf.Timestamp
-	34, // 19: assessment.v1.AttemptProgress.expires_at:type_name -> google.protobuf.Timestamp
-	5,  // 20: assessment.v1.ListSubjectsResponse.subjects:type_name -> assessment.v1.Subject
-	6,  // 21: assessment.v1.ListSubtopicsResponse.subtopics:type_name -> assessment.v1.Subtopic
-	0,  // 22: assessment.v1.ListAssessmentsRequest.status:type_name -> assessment.v1.AssessmentStatus
-	4,  // 23: assessment.v1.ListAssessmentsRequest.mode:type_name -> assessment.v1.AssessmentMode
-	9,  // 24: assessment.v1.ListAssessmentsResponse.assessments:type_name -> assessment.v1.AssessmentSummary
-	13, // 25: assessment.v1.StartAttemptResponse.attempt:type_name -> assessment.v1.Attempt
-	11, // 26: assessment.v1.StartAttemptResponse.first_question:type_name -> assessment.v1.Question
-	14, // 27: assessment.v1.StartAttemptResponse.progress:type_name -> assessment.v1.AttemptProgress
-	14, // 28: assessment.v1.GetNextQuestionResponse.progress:type_name -> assessment.v1.AttemptProgress
-	11, // 29: assessment.v1.GetNextQuestionResponse.next_question:type_name -> assessment.v1.Question
-	14, // 30: assessment.v1.SubmitAnswerResponse.progress:type_name -> assessment.v1.AttemptProgress
-	11, // 31: assessment.v1.SubmitAnswerResponse.next_question:type_name -> assessment.v1.Question
-	2,  // 32: assessment.v1.FinishAttemptRequest.action:type_name -> assessment.v1.FinishAction
-	1,  // 33: assessment.v1.ListMyAttemptsRequest.status:type_name -> assessment.v1.AttemptStatus
-	13, // 34: assessment.v1.ListMyAttemptsResponse.attempts:type_name -> assessment.v1.Attempt
-	4,  // 35: assessment.v1.AttemptAssessmentSummary.mode:type_name -> assessment.v1.AssessmentMode
-	15, // 36: assessment.v1.AdaptiveTesting.ListSubjects:input_type -> assessment.v1.ListSubjectsRequest
-	17, // 37: assessment.v1.AdaptiveTesting.ListSubtopics:input_type -> assessment.v1.ListSubtopicsRequest
-	19, // 38: assessment.v1.AdaptiveTesting.ListAssessments:input_type -> assessment.v1.ListAssessmentsRequest
-	21, // 39: assessment.v1.AdaptiveTesting.GetAssessment:input_type -> assessment.v1.GetAssessmentRequest
-	22, // 40: assessment.v1.AdaptiveTesting.StartAttempt:input_type -> assessment.v1.StartAttemptRequest
-	24, // 41: assessment.v1.AdaptiveTesting.GetAttempt:input_type -> assessment.v1.GetAttemptRequest
-	25, // 42: assessment.v1.AdaptiveTesting.GetAttemptProgress:input_type -> assessment.v1.GetAttemptProgressRequest
-	26, // 43: assessment.v1.AdaptiveTesting.GetNextQuestion:input_type -> assessment.v1.GetNextQuestionRequest
-	28, // 44: assessment.v1.AdaptiveTesting.SubmitAnswer:input_type -> assessment.v1.SubmitAnswerRequest
-	30, // 45: assessment.v1.AdaptiveTesting.FinishAttempt:input_type -> assessment.v1.FinishAttemptRequest
-	31, // 46: assessment.v1.AdaptiveTesting.ListMyAttempts:input_type -> assessment.v1.ListMyAttemptsRequest
-	16, // 47: assessment.v1.AdaptiveTesting.ListSubjects:output_type -> assessment.v1.ListSubjectsResponse
-	18, // 48: assessment.v1.AdaptiveTesting.ListSubtopics:output_type -> assessment.v1.ListSubtopicsResponse
-	20, // 49: assessment.v1.AdaptiveTesting.ListAssessments:output_type -> assessment.v1.ListAssessmentsResponse
-	8,  // 50: assessment.v1.AdaptiveTesting.GetAssessment:output_type -> assessment.v1.Assessment
-	23, // 51: assessment.v1.AdaptiveTesting.StartAttempt:output_type -> assessment.v1.StartAttemptResponse
-	13, // 52: assessment.v1.AdaptiveTesting.GetAttempt:output_type -> assessment.v1.Attempt
-	14, // 53: assessment.v1.AdaptiveTesting.GetAttemptProgress:output_type -> assessment.v1.AttemptProgress
-	27, // 54: assessment.v1.AdaptiveTesting.GetNextQuestion:output_type -> assessment.v1.GetNextQuestionResponse
-	29, // 55: assessment.v1.AdaptiveTesting.SubmitAnswer:output_type -> assessment.v1.SubmitAnswerResponse
-	13, // 56: assessment.v1.AdaptiveTesting.FinishAttempt:output_type -> assessment.v1.Attempt
-	32, // 57: assessment.v1.AdaptiveTesting.ListMyAttempts:output_type -> assessment.v1.ListMyAttemptsResponse
-	47, // [47:58] is the sub-list for method output_type
-	36, // [36:47] is the sub-list for method input_type
-	36, // [36:36] is the sub-list for extension type_name
-	36, // [36:36] is the sub-list for extension extendee
-	0,  // [0:36] is the sub-list for field type_name
+	5,  // 7: assessment.v1.Assessment.kind:type_name -> assessment.v1.AssessmentKind
+	6,  // 8: assessment.v1.Assessment.visibility:type_name -> assessment.v1.AssessmentVisibility
+	0,  // 9: assessment.v1.AssessmentSummary.status:type_name -> assessment.v1.AssessmentStatus
+	4,  // 10: assessment.v1.AssessmentSummary.mode:type_name -> assessment.v1.AssessmentMode
+	5,  // 11: assessment.v1.AssessmentSummary.kind:type_name -> assessment.v1.AssessmentKind
+	6,  // 12: assessment.v1.AssessmentSummary.visibility:type_name -> assessment.v1.AssessmentVisibility
+	14, // 13: assessment.v1.Question.options:type_name -> assessment.v1.QuestionOption
+	1,  // 14: assessment.v1.Attempt.status:type_name -> assessment.v1.AttemptStatus
+	3,  // 15: assessment.v1.Attempt.finish_reason:type_name -> assessment.v1.FinishReason
+	43, // 16: assessment.v1.Attempt.started_at:type_name -> google.protobuf.Timestamp
+	43, // 17: assessment.v1.Attempt.expires_at:type_name -> google.protobuf.Timestamp
+	43, // 18: assessment.v1.Attempt.completed_at:type_name -> google.protobuf.Timestamp
+	16, // 19: assessment.v1.Attempt.subtopic_states:type_name -> assessment.v1.AttemptSubtopicState
+	42, // 20: assessment.v1.Attempt.assessment_summary:type_name -> assessment.v1.AttemptAssessmentSummary
+	1,  // 21: assessment.v1.AttemptProgress.status:type_name -> assessment.v1.AttemptStatus
+	43, // 22: assessment.v1.AttemptProgress.started_at:type_name -> google.protobuf.Timestamp
+	43, // 23: assessment.v1.AttemptProgress.expires_at:type_name -> google.protobuf.Timestamp
+	8,  // 24: assessment.v1.ListSubjectsResponse.subjects:type_name -> assessment.v1.Subject
+	9,  // 25: assessment.v1.ListSubtopicsResponse.subtopics:type_name -> assessment.v1.Subtopic
+	6,  // 26: assessment.v1.CreateCustomAssessmentRequest.visibility:type_name -> assessment.v1.AssessmentVisibility
+	11, // 27: assessment.v1.CreateCustomAssessmentRequest.subtopics:type_name -> assessment.v1.CustomAssessmentSubtopicInput
+	6,  // 28: assessment.v1.UpdateCustomAssessmentRequest.visibility:type_name -> assessment.v1.AssessmentVisibility
+	11, // 29: assessment.v1.UpdateCustomAssessmentRequest.subtopics:type_name -> assessment.v1.CustomAssessmentSubtopicInput
+	0,  // 30: assessment.v1.ListMyCustomAssessmentsRequest.status:type_name -> assessment.v1.AssessmentStatus
+	13, // 31: assessment.v1.ListMyCustomAssessmentsResponse.assessments:type_name -> assessment.v1.AssessmentSummary
+	0,  // 32: assessment.v1.ListAssessmentsRequest.status:type_name -> assessment.v1.AssessmentStatus
+	4,  // 33: assessment.v1.ListAssessmentsRequest.mode:type_name -> assessment.v1.AssessmentMode
+	5,  // 34: assessment.v1.ListAssessmentsRequest.kind:type_name -> assessment.v1.AssessmentKind
+	6,  // 35: assessment.v1.ListAssessmentsRequest.visibility:type_name -> assessment.v1.AssessmentVisibility
+	7,  // 36: assessment.v1.ListAssessmentsRequest.scope:type_name -> assessment.v1.AssessmentListScope
+	13, // 37: assessment.v1.ListAssessmentsResponse.assessments:type_name -> assessment.v1.AssessmentSummary
+	17, // 38: assessment.v1.StartAttemptResponse.attempt:type_name -> assessment.v1.Attempt
+	15, // 39: assessment.v1.StartAttemptResponse.first_question:type_name -> assessment.v1.Question
+	18, // 40: assessment.v1.StartAttemptResponse.progress:type_name -> assessment.v1.AttemptProgress
+	18, // 41: assessment.v1.GetNextQuestionResponse.progress:type_name -> assessment.v1.AttemptProgress
+	15, // 42: assessment.v1.GetNextQuestionResponse.next_question:type_name -> assessment.v1.Question
+	18, // 43: assessment.v1.SubmitAnswerResponse.progress:type_name -> assessment.v1.AttemptProgress
+	15, // 44: assessment.v1.SubmitAnswerResponse.next_question:type_name -> assessment.v1.Question
+	2,  // 45: assessment.v1.FinishAttemptRequest.action:type_name -> assessment.v1.FinishAction
+	1,  // 46: assessment.v1.ListMyAttemptsRequest.status:type_name -> assessment.v1.AttemptStatus
+	17, // 47: assessment.v1.ListMyAttemptsResponse.attempts:type_name -> assessment.v1.Attempt
+	4,  // 48: assessment.v1.AttemptAssessmentSummary.mode:type_name -> assessment.v1.AssessmentMode
+	19, // 49: assessment.v1.AdaptiveTesting.ListSubjects:input_type -> assessment.v1.ListSubjectsRequest
+	21, // 50: assessment.v1.AdaptiveTesting.ListSubtopics:input_type -> assessment.v1.ListSubtopicsRequest
+	28, // 51: assessment.v1.AdaptiveTesting.ListAssessments:input_type -> assessment.v1.ListAssessmentsRequest
+	30, // 52: assessment.v1.AdaptiveTesting.GetAssessment:input_type -> assessment.v1.GetAssessmentRequest
+	31, // 53: assessment.v1.AdaptiveTesting.StartAttempt:input_type -> assessment.v1.StartAttemptRequest
+	33, // 54: assessment.v1.AdaptiveTesting.GetAttempt:input_type -> assessment.v1.GetAttemptRequest
+	34, // 55: assessment.v1.AdaptiveTesting.GetAttemptProgress:input_type -> assessment.v1.GetAttemptProgressRequest
+	35, // 56: assessment.v1.AdaptiveTesting.GetNextQuestion:input_type -> assessment.v1.GetNextQuestionRequest
+	37, // 57: assessment.v1.AdaptiveTesting.SubmitAnswer:input_type -> assessment.v1.SubmitAnswerRequest
+	39, // 58: assessment.v1.AdaptiveTesting.FinishAttempt:input_type -> assessment.v1.FinishAttemptRequest
+	40, // 59: assessment.v1.AdaptiveTesting.ListMyAttempts:input_type -> assessment.v1.ListMyAttemptsRequest
+	23, // 60: assessment.v1.AdaptiveTesting.CreateCustomAssessment:input_type -> assessment.v1.CreateCustomAssessmentRequest
+	24, // 61: assessment.v1.AdaptiveTesting.UpdateCustomAssessment:input_type -> assessment.v1.UpdateCustomAssessmentRequest
+	25, // 62: assessment.v1.AdaptiveTesting.ArchiveCustomAssessment:input_type -> assessment.v1.ArchiveCustomAssessmentRequest
+	26, // 63: assessment.v1.AdaptiveTesting.ListMyCustomAssessments:input_type -> assessment.v1.ListMyCustomAssessmentsRequest
+	20, // 64: assessment.v1.AdaptiveTesting.ListSubjects:output_type -> assessment.v1.ListSubjectsResponse
+	22, // 65: assessment.v1.AdaptiveTesting.ListSubtopics:output_type -> assessment.v1.ListSubtopicsResponse
+	29, // 66: assessment.v1.AdaptiveTesting.ListAssessments:output_type -> assessment.v1.ListAssessmentsResponse
+	12, // 67: assessment.v1.AdaptiveTesting.GetAssessment:output_type -> assessment.v1.Assessment
+	32, // 68: assessment.v1.AdaptiveTesting.StartAttempt:output_type -> assessment.v1.StartAttemptResponse
+	17, // 69: assessment.v1.AdaptiveTesting.GetAttempt:output_type -> assessment.v1.Attempt
+	18, // 70: assessment.v1.AdaptiveTesting.GetAttemptProgress:output_type -> assessment.v1.AttemptProgress
+	36, // 71: assessment.v1.AdaptiveTesting.GetNextQuestion:output_type -> assessment.v1.GetNextQuestionResponse
+	38, // 72: assessment.v1.AdaptiveTesting.SubmitAnswer:output_type -> assessment.v1.SubmitAnswerResponse
+	17, // 73: assessment.v1.AdaptiveTesting.FinishAttempt:output_type -> assessment.v1.Attempt
+	41, // 74: assessment.v1.AdaptiveTesting.ListMyAttempts:output_type -> assessment.v1.ListMyAttemptsResponse
+	12, // 75: assessment.v1.AdaptiveTesting.CreateCustomAssessment:output_type -> assessment.v1.Assessment
+	12, // 76: assessment.v1.AdaptiveTesting.UpdateCustomAssessment:output_type -> assessment.v1.Assessment
+	12, // 77: assessment.v1.AdaptiveTesting.ArchiveCustomAssessment:output_type -> assessment.v1.Assessment
+	27, // 78: assessment.v1.AdaptiveTesting.ListMyCustomAssessments:output_type -> assessment.v1.ListMyCustomAssessmentsResponse
+	64, // [64:79] is the sub-list for method output_type
+	49, // [49:64] is the sub-list for method input_type
+	49, // [49:49] is the sub-list for extension type_name
+	49, // [49:49] is the sub-list for extension extendee
+	0,  // [0:49] is the sub-list for field type_name
 }
 
 func init() { file_tests_tests_proto_init() }
@@ -2938,18 +3934,18 @@ func file_tests_tests_proto_init() {
 		return
 	}
 	file_tests_tests_proto_msgTypes[2].OneofWrappers = []any{}
-	file_tests_tests_proto_msgTypes[7].OneofWrappers = []any{}
 	file_tests_tests_proto_msgTypes[8].OneofWrappers = []any{}
-	file_tests_tests_proto_msgTypes[18].OneofWrappers = []any{}
-	file_tests_tests_proto_msgTypes[22].OneofWrappers = []any{}
+	file_tests_tests_proto_msgTypes[9].OneofWrappers = []any{}
 	file_tests_tests_proto_msgTypes[24].OneofWrappers = []any{}
+	file_tests_tests_proto_msgTypes[28].OneofWrappers = []any{}
+	file_tests_tests_proto_msgTypes[30].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tests_tests_proto_rawDesc), len(file_tests_tests_proto_rawDesc)),
-			NumEnums:      5,
-			NumMessages:   29,
+			NumEnums:      8,
+			NumMessages:   35,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
