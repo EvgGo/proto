@@ -187,6 +187,8 @@ message Assessment {
 
   int32 version = 23;
   int64 parent_assessment_id = 24;
+  string subject_code = 25;
+  string subject_title = 26;
 }
 
 
@@ -221,7 +223,9 @@ message AssessmentSummary {
 
   // Если это новая версия старого теста, тут id родителя
   // 0 => родителя нет
-  int64 parent_assessment_id = 106;
+  int64 parent_assessment_id = 15;
+  string subject_code = 16;
+  string subject_title = 17;
 }
 
 message QuestionOption {

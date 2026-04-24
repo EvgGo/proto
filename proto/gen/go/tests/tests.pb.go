@@ -834,6 +834,8 @@ type Assessment struct {
 	CanUseInProject    bool                        `protobuf:"varint,22,opt,name=can_use_in_project,json=canUseInProject,proto3" json:"can_use_in_project,omitempty"`
 	Version            int32                       `protobuf:"varint,23,opt,name=version,proto3" json:"version,omitempty"`
 	ParentAssessmentId int64                       `protobuf:"varint,24,opt,name=parent_assessment_id,json=parentAssessmentId,proto3" json:"parent_assessment_id,omitempty"`
+	SubjectCode        string                      `protobuf:"bytes,25,opt,name=subject_code,json=subjectCode,proto3" json:"subject_code,omitempty"`
+	SubjectTitle       string                      `protobuf:"bytes,26,opt,name=subject_title,json=subjectTitle,proto3" json:"subject_title,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -1036,6 +1038,20 @@ func (x *Assessment) GetParentAssessmentId() int64 {
 	return 0
 }
 
+func (x *Assessment) GetSubjectCode() string {
+	if x != nil {
+		return x.SubjectCode
+	}
+	return ""
+}
+
+func (x *Assessment) GetSubjectTitle() string {
+	if x != nil {
+		return x.SubjectTitle
+	}
+	return ""
+}
+
 // Короткая карточка теста для списков
 type AssessmentSummary struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
@@ -1062,7 +1078,9 @@ type AssessmentSummary struct {
 	Version int32 `protobuf:"varint,14,opt,name=version,proto3" json:"version,omitempty"`
 	// Если это новая версия старого теста, тут id родителя
 	// 0 => родителя нет
-	ParentAssessmentId int64 `protobuf:"varint,106,opt,name=parent_assessment_id,json=parentAssessmentId,proto3" json:"parent_assessment_id,omitempty"`
+	ParentAssessmentId int64  `protobuf:"varint,15,opt,name=parent_assessment_id,json=parentAssessmentId,proto3" json:"parent_assessment_id,omitempty"`
+	SubjectCode        string `protobuf:"bytes,16,opt,name=subject_code,json=subjectCode,proto3" json:"subject_code,omitempty"`
+	SubjectTitle       string `protobuf:"bytes,17,opt,name=subject_title,json=subjectTitle,proto3" json:"subject_title,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -1200,6 +1218,20 @@ func (x *AssessmentSummary) GetParentAssessmentId() int64 {
 		return x.ParentAssessmentId
 	}
 	return 0
+}
+
+func (x *AssessmentSummary) GetSubjectCode() string {
+	if x != nil {
+		return x.SubjectCode
+	}
+	return ""
+}
+
+func (x *AssessmentSummary) GetSubjectTitle() string {
+	if x != nil {
+		return x.SubjectTitle
+	}
+	return ""
 }
 
 type QuestionOption struct {
@@ -3449,7 +3481,7 @@ const file_tests_tests_proto_rawDesc = "" +
 	"\tmin_items\x18\x04 \x01(\x05R\bminItems\x12\x1b\n" +
 	"\tmax_items\x18\x05 \x01(\x05R\bmaxItems\x12)\n" +
 	"\x10start_difficulty\x18\x06 \x01(\x05R\x0fstartDifficulty\x12'\n" +
-	"\x0fstop_confidence\x18\a \x01(\x01R\x0estopConfidence\"\xf6\a\n" +
+	"\x0fstop_confidence\x18\a \x01(\x01R\x0estopConfidence\"\xbe\b\n" +
 	"\n" +
 	"Assessment\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
@@ -3482,7 +3514,9 @@ const file_tests_tests_proto_rawDesc = "" +
 	"isEditable\x12+\n" +
 	"\x12can_use_in_project\x18\x16 \x01(\bR\x0fcanUseInProject\x12\x18\n" +
 	"\aversion\x18\x17 \x01(\x05R\aversion\x120\n" +
-	"\x14parent_assessment_id\x18\x18 \x01(\x03R\x12parentAssessmentId\"\xe4\x04\n" +
+	"\x14parent_assessment_id\x18\x18 \x01(\x03R\x12parentAssessmentId\x12!\n" +
+	"\fsubject_code\x18\x19 \x01(\tR\vsubjectCode\x12#\n" +
+	"\rsubject_title\x18\x1a \x01(\tR\fsubjectTitle\"\xac\x05\n" +
 	"\x11AssessmentSummary\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
@@ -3503,7 +3537,9 @@ const file_tests_tests_proto_rawDesc = "" +
 	"isEditable\x12+\n" +
 	"\x12can_use_in_project\x18\r \x01(\bR\x0fcanUseInProject\x12\x18\n" +
 	"\aversion\x18\x0e \x01(\x05R\aversion\x120\n" +
-	"\x14parent_assessment_id\x18j \x01(\x03R\x12parentAssessmentId\"q\n" +
+	"\x14parent_assessment_id\x18\x0f \x01(\x03R\x12parentAssessmentId\x12!\n" +
+	"\fsubject_code\x18\x10 \x01(\tR\vsubjectCode\x12#\n" +
+	"\rsubject_title\x18\x11 \x01(\tR\fsubjectTitle\"q\n" +
 	"\x0eQuestionOption\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1f\n" +
 	"\vquestion_id\x18\x02 \x01(\x03R\n" +
