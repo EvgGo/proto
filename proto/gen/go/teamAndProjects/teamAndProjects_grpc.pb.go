@@ -621,6 +621,13 @@ const (
 	Projects_ListMyInvitableProjects_FullMethodName                 = "/workspace.v1.Projects/ListMyInvitableProjects"
 	Projects_SetProjectAssessmentRequirements_FullMethodName        = "/workspace.v1.Projects/SetProjectAssessmentRequirements"
 	Projects_GetMyProjectJoinEligibility_FullMethodName             = "/workspace.v1.Projects/GetMyProjectJoinEligibility"
+	Projects_CreateProjectStage_FullMethodName                      = "/workspace.v1.Projects/CreateProjectStage"
+	Projects_GetProjectStage_FullMethodName                         = "/workspace.v1.Projects/GetProjectStage"
+	Projects_UpdateProjectStage_FullMethodName                      = "/workspace.v1.Projects/UpdateProjectStage"
+	Projects_DeleteProjectStage_FullMethodName                      = "/workspace.v1.Projects/DeleteProjectStage"
+	Projects_ListProjectStages_FullMethodName                       = "/workspace.v1.Projects/ListProjectStages"
+	Projects_ReorderProjectStages_FullMethodName                    = "/workspace.v1.Projects/ReorderProjectStages"
+	Projects_EvaluateProjectStage_FullMethodName                    = "/workspace.v1.Projects/EvaluateProjectStage"
 )
 
 // ProjectsClient is the client API for Projects service.
@@ -704,6 +711,14 @@ type ProjectsClient interface {
 	// Используется фронтом перед RequestJoinProject
 	// чтобы показать модалку с недостающими тестами / уровнями
 	GetMyProjectJoinEligibility(ctx context.Context, in *GetMyProjectJoinEligibilityRequest, opts ...grpc.CallOption) (*GetMyProjectJoinEligibilityResponse, error)
+	// Этапы проекта
+	CreateProjectStage(ctx context.Context, in *CreateProjectStageRequest, opts ...grpc.CallOption) (*ProjectStage, error)
+	GetProjectStage(ctx context.Context, in *GetProjectStageRequest, opts ...grpc.CallOption) (*ProjectStage, error)
+	UpdateProjectStage(ctx context.Context, in *UpdateProjectStageRequest, opts ...grpc.CallOption) (*ProjectStage, error)
+	DeleteProjectStage(ctx context.Context, in *DeleteProjectStageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListProjectStages(ctx context.Context, in *ListProjectStagesRequest, opts ...grpc.CallOption) (*ListProjectStagesResponse, error)
+	ReorderProjectStages(ctx context.Context, in *ReorderProjectStagesRequest, opts ...grpc.CallOption) (*ListProjectStagesResponse, error)
+	EvaluateProjectStage(ctx context.Context, in *EvaluateProjectStageRequest, opts ...grpc.CallOption) (*ProjectStage, error)
 }
 
 type projectsClient struct {
@@ -1044,6 +1059,76 @@ func (c *projectsClient) GetMyProjectJoinEligibility(ctx context.Context, in *Ge
 	return out, nil
 }
 
+func (c *projectsClient) CreateProjectStage(ctx context.Context, in *CreateProjectStageRequest, opts ...grpc.CallOption) (*ProjectStage, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectStage)
+	err := c.cc.Invoke(ctx, Projects_CreateProjectStage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) GetProjectStage(ctx context.Context, in *GetProjectStageRequest, opts ...grpc.CallOption) (*ProjectStage, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectStage)
+	err := c.cc.Invoke(ctx, Projects_GetProjectStage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) UpdateProjectStage(ctx context.Context, in *UpdateProjectStageRequest, opts ...grpc.CallOption) (*ProjectStage, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectStage)
+	err := c.cc.Invoke(ctx, Projects_UpdateProjectStage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) DeleteProjectStage(ctx context.Context, in *DeleteProjectStageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Projects_DeleteProjectStage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) ListProjectStages(ctx context.Context, in *ListProjectStagesRequest, opts ...grpc.CallOption) (*ListProjectStagesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListProjectStagesResponse)
+	err := c.cc.Invoke(ctx, Projects_ListProjectStages_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) ReorderProjectStages(ctx context.Context, in *ReorderProjectStagesRequest, opts ...grpc.CallOption) (*ListProjectStagesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListProjectStagesResponse)
+	err := c.cc.Invoke(ctx, Projects_ReorderProjectStages_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) EvaluateProjectStage(ctx context.Context, in *EvaluateProjectStageRequest, opts ...grpc.CallOption) (*ProjectStage, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProjectStage)
+	err := c.cc.Invoke(ctx, Projects_EvaluateProjectStage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectsServer is the server API for Projects service.
 // All implementations must embed UnimplementedProjectsServer
 // for forward compatibility.
@@ -1125,6 +1210,14 @@ type ProjectsServer interface {
 	// Используется фронтом перед RequestJoinProject
 	// чтобы показать модалку с недостающими тестами / уровнями
 	GetMyProjectJoinEligibility(context.Context, *GetMyProjectJoinEligibilityRequest) (*GetMyProjectJoinEligibilityResponse, error)
+	// Этапы проекта
+	CreateProjectStage(context.Context, *CreateProjectStageRequest) (*ProjectStage, error)
+	GetProjectStage(context.Context, *GetProjectStageRequest) (*ProjectStage, error)
+	UpdateProjectStage(context.Context, *UpdateProjectStageRequest) (*ProjectStage, error)
+	DeleteProjectStage(context.Context, *DeleteProjectStageRequest) (*emptypb.Empty, error)
+	ListProjectStages(context.Context, *ListProjectStagesRequest) (*ListProjectStagesResponse, error)
+	ReorderProjectStages(context.Context, *ReorderProjectStagesRequest) (*ListProjectStagesResponse, error)
+	EvaluateProjectStage(context.Context, *EvaluateProjectStageRequest) (*ProjectStage, error)
 	mustEmbedUnimplementedProjectsServer()
 }
 
@@ -1233,6 +1326,27 @@ func (UnimplementedProjectsServer) SetProjectAssessmentRequirements(context.Cont
 }
 func (UnimplementedProjectsServer) GetMyProjectJoinEligibility(context.Context, *GetMyProjectJoinEligibilityRequest) (*GetMyProjectJoinEligibilityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMyProjectJoinEligibility not implemented")
+}
+func (UnimplementedProjectsServer) CreateProjectStage(context.Context, *CreateProjectStageRequest) (*ProjectStage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProjectStage not implemented")
+}
+func (UnimplementedProjectsServer) GetProjectStage(context.Context, *GetProjectStageRequest) (*ProjectStage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProjectStage not implemented")
+}
+func (UnimplementedProjectsServer) UpdateProjectStage(context.Context, *UpdateProjectStageRequest) (*ProjectStage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProjectStage not implemented")
+}
+func (UnimplementedProjectsServer) DeleteProjectStage(context.Context, *DeleteProjectStageRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProjectStage not implemented")
+}
+func (UnimplementedProjectsServer) ListProjectStages(context.Context, *ListProjectStagesRequest) (*ListProjectStagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectStages not implemented")
+}
+func (UnimplementedProjectsServer) ReorderProjectStages(context.Context, *ReorderProjectStagesRequest) (*ListProjectStagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReorderProjectStages not implemented")
+}
+func (UnimplementedProjectsServer) EvaluateProjectStage(context.Context, *EvaluateProjectStageRequest) (*ProjectStage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EvaluateProjectStage not implemented")
 }
 func (UnimplementedProjectsServer) mustEmbedUnimplementedProjectsServer() {}
 func (UnimplementedProjectsServer) testEmbeddedByValue()                  {}
@@ -1849,6 +1963,132 @@ func _Projects_GetMyProjectJoinEligibility_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_CreateProjectStage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateProjectStageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).CreateProjectStage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_CreateProjectStage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).CreateProjectStage(ctx, req.(*CreateProjectStageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_GetProjectStage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectStageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).GetProjectStage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_GetProjectStage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).GetProjectStage(ctx, req.(*GetProjectStageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_UpdateProjectStage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProjectStageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).UpdateProjectStage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_UpdateProjectStage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).UpdateProjectStage(ctx, req.(*UpdateProjectStageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_DeleteProjectStage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProjectStageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).DeleteProjectStage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_DeleteProjectStage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).DeleteProjectStage(ctx, req.(*DeleteProjectStageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_ListProjectStages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectStagesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).ListProjectStages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_ListProjectStages_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).ListProjectStages(ctx, req.(*ListProjectStagesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_ReorderProjectStages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReorderProjectStagesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).ReorderProjectStages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_ReorderProjectStages_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).ReorderProjectStages(ctx, req.(*ReorderProjectStagesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_EvaluateProjectStage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EvaluateProjectStageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).EvaluateProjectStage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_EvaluateProjectStage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).EvaluateProjectStage(ctx, req.(*EvaluateProjectStageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Projects_ServiceDesc is the grpc.ServiceDesc for Projects service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1987,6 +2227,34 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMyProjectJoinEligibility",
 			Handler:    _Projects_GetMyProjectJoinEligibility_Handler,
+		},
+		{
+			MethodName: "CreateProjectStage",
+			Handler:    _Projects_CreateProjectStage_Handler,
+		},
+		{
+			MethodName: "GetProjectStage",
+			Handler:    _Projects_GetProjectStage_Handler,
+		},
+		{
+			MethodName: "UpdateProjectStage",
+			Handler:    _Projects_UpdateProjectStage_Handler,
+		},
+		{
+			MethodName: "DeleteProjectStage",
+			Handler:    _Projects_DeleteProjectStage_Handler,
+		},
+		{
+			MethodName: "ListProjectStages",
+			Handler:    _Projects_ListProjectStages_Handler,
+		},
+		{
+			MethodName: "ReorderProjectStages",
+			Handler:    _Projects_ReorderProjectStages_Handler,
+		},
+		{
+			MethodName: "EvaluateProjectStage",
+			Handler:    _Projects_EvaluateProjectStage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

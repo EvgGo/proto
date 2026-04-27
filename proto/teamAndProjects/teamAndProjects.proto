@@ -50,6 +50,14 @@ enum ProjectPublicSortBy {
   PROJECT_PUBLIC_SORT_BY_PROFILE_SKILL_MATCH = 3;
 }
 
+enum ProjectStageStatus {
+  PROJECT_STAGE_STATUS_UNSPECIFIED = 0;
+  PROJECT_STAGE_STATUS_PLANNED = 1;
+  PROJECT_STAGE_STATUS_IN_PROGRESS = 2;
+  PROJECT_STAGE_STATUS_DONE = 3;
+  PROJECT_STAGE_STATUS_CANCELLED = 4;
+}
+
 enum SortOrder {
   SORT_ORDER_UNSPECIFIED = 0;
   SORT_ORDER_ASC = 1;
@@ -121,6 +129,8 @@ message Project {
   // Требования проекта по тестированию
   // Пользователь может вступить в проект только если закрыл эти требования
   repeated ProjectAssessmentRequirement assessment_requirements = 15;
+
+  ProjectStagesSummary stages_summary = 16;
 }
 
 
@@ -145,6 +155,57 @@ message ProjectPublic {
   // Публичные требования проекта по тестированию
   // Нужны, чтобы кандидат сразу видел, какие тесты и уровни требуются
   repeated ProjectAssessmentRequirement assessment_requirements = 13;
+}
+
+message ProjectStage {
+  string id = 1;                 // UUID
+  string project_id = 2;         // UUID
+
+  string title = 3;
+  string description = 4;
+
+  int32 position = 5;            // порядок этапа внутри проекта
+  int32 weight_percent = 6;      // 0..100
+
+  ProjectStageStatus status = 7;
+
+  int32 progress_percent = 8;    // 0..100
+
+  optional int32 score = 9;      // 1..5, если этап оценен
+  string score_comment = 10;
+
+  optional string evaluated_by = 11; // UUID
+  optional Date evaluated_at = 12;
+
+  Date created_at = 13;
+  Date updated_at = 14;
+}
+
+message ProjectStagesSummary {
+  int32 stages_count = 1;
+
+  // сумма weight_percent всех этапов проекта
+  int32 total_weight_percent = 2;
+
+  // общий прогресс проекта по весам этапов
+  // формула: sum(weight_percent * progress_percent) / 100
+  double total_progress_percent = 3;
+
+  int32 evaluated_stages_count = 4;
+
+  // сумма весов этапов, у которых есть score
+  int32 evaluated_weight_percent = 5;
+
+  // средневзвешенная оценка только по оцененным этапам
+  // формула: sum(weight_percent * score) / evaluated_weight_percent
+  optional double evaluated_score = 6;
+
+  // итоговая оценка всего проекта
+  // заполняется только если total_weight_percent = 100
+  // и evaluated_weight_percent = 100
+  optional double total_score = 7;
+
+  bool is_total_score_ready = 8;
 }
 
 message ProjectMember {
@@ -403,6 +464,21 @@ service Projects {
   // чтобы показать модалку с недостающими тестами / уровнями
   rpc GetMyProjectJoinEligibility(GetMyProjectJoinEligibilityRequest)
       returns (GetMyProjectJoinEligibilityResponse);
+
+  // Этапы проекта
+  rpc CreateProjectStage(CreateProjectStageRequest) returns (ProjectStage);
+
+  rpc GetProjectStage(GetProjectStageRequest) returns (ProjectStage);
+
+  rpc UpdateProjectStage(UpdateProjectStageRequest) returns (ProjectStage);
+
+  rpc DeleteProjectStage(DeleteProjectStageRequest) returns (google.protobuf.Empty);
+
+  rpc ListProjectStages(ListProjectStagesRequest) returns (ListProjectStagesResponse);
+
+  rpc ReorderProjectStages(ReorderProjectStagesRequest) returns (ListProjectStagesResponse);
+
+  rpc EvaluateProjectStage(EvaluateProjectStageRequest) returns (ProjectStage);
 }
 
 message CreateProjectRequest {
@@ -1096,4 +1172,71 @@ message TeamProjectAssignmentItem {
 message ListTeamProjectsForAssignmentResponse {
   repeated TeamProjectAssignmentItem items = 1;
   string next_page_token = 2;
+}
+
+message CreateProjectStageRequest {
+  string project_id = 1;
+
+  string title = 2;
+  string description = 3;
+
+  // Если 0, backend ставит последний position + 1
+  int32 position = 4;
+
+  // 0..100
+  int32 weight_percent = 5;
+
+  ProjectStageStatus status = 6;
+
+  // 0..100
+  int32 progress_percent = 7;
+}
+
+message GetProjectStageRequest {
+  string stage_id = 1;
+}
+
+message UpdateProjectStageRequest {
+  string stage_id = 1;
+
+  optional string title = 2;
+  optional string description = 3;
+
+  optional int32 weight_percent = 4;
+
+  optional ProjectStageStatus status = 5;
+
+  optional int32 progress_percent = 6;
+}
+
+message DeleteProjectStageRequest {
+  string stage_id = 1;
+}
+
+message ListProjectStagesRequest {
+  string project_id = 1;
+}
+
+message ListProjectStagesResponse {
+  repeated ProjectStage stages = 1;
+  ProjectStagesSummary summary = 2;
+}
+
+message ProjectStageOrderItem {
+  string stage_id = 1;
+  int32 position = 2;
+}
+
+message ReorderProjectStagesRequest {
+  string project_id = 1;
+  repeated ProjectStageOrderItem items = 2;
+}
+
+message EvaluateProjectStageRequest {
+  string stage_id = 1;
+
+  // 1..5
+  int32 score = 2;
+
+  string score_comment = 3;
 }
