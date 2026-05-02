@@ -592,6 +592,7 @@ const (
 	Projects_GetProject_FullMethodName                              = "/workspace.v1.Projects/GetProject"
 	Projects_UpdateProject_FullMethodName                           = "/workspace.v1.Projects/UpdateProject"
 	Projects_DeleteProject_FullMethodName                           = "/workspace.v1.Projects/DeleteProject"
+	Projects_LeaveProject_FullMethodName                            = "/workspace.v1.Projects/LeaveProject"
 	Projects_ListProjects_FullMethodName                            = "/workspace.v1.Projects/ListProjects"
 	Projects_ListPublicProjects_FullMethodName                      = "/workspace.v1.Projects/ListPublicProjects"
 	Projects_ListProjectMembers_FullMethodName                      = "/workspace.v1.Projects/ListProjectMembers"
@@ -641,6 +642,10 @@ type ProjectsClient interface {
 	// Частичный апдейт проекта
 	UpdateProject(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*Project, error)
 	DeleteProject(ctx context.Context, in *DeleteProjectRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// Текущий пользователь выходит из проекта
+	// Удаляется только связь project_member
+	// Пользователь НЕ удаляется из команды проекта
+	LeaveProject(ctx context.Context, in *LeaveProjectRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Список проектов для внутренних страниц: мои проекты, проекты команды
 	ListProjects(ctx context.Context, in *ListProjectsRequest, opts ...grpc.CallOption) (*ListProjectsResponse, error)
 	// Публичный листинг проектов для поиска (главный сценарий)
@@ -763,6 +768,16 @@ func (c *projectsClient) DeleteProject(ctx context.Context, in *DeleteProjectReq
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, Projects_DeleteProject_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsClient) LeaveProject(ctx context.Context, in *LeaveProjectRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Projects_LeaveProject_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1140,6 +1155,10 @@ type ProjectsServer interface {
 	// Частичный апдейт проекта
 	UpdateProject(context.Context, *UpdateProjectRequest) (*Project, error)
 	DeleteProject(context.Context, *DeleteProjectRequest) (*emptypb.Empty, error)
+	// Текущий пользователь выходит из проекта
+	// Удаляется только связь project_member
+	// Пользователь НЕ удаляется из команды проекта
+	LeaveProject(context.Context, *LeaveProjectRequest) (*emptypb.Empty, error)
 	// Список проектов для внутренних страниц: мои проекты, проекты команды
 	ListProjects(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error)
 	// Публичный листинг проектов для поиска (главный сценарий)
@@ -1239,6 +1258,9 @@ func (UnimplementedProjectsServer) UpdateProject(context.Context, *UpdateProject
 }
 func (UnimplementedProjectsServer) DeleteProject(context.Context, *DeleteProjectRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteProject not implemented")
+}
+func (UnimplementedProjectsServer) LeaveProject(context.Context, *LeaveProjectRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LeaveProject not implemented")
 }
 func (UnimplementedProjectsServer) ListProjects(context.Context, *ListProjectsRequest) (*ListProjectsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProjects not implemented")
@@ -1437,6 +1459,24 @@ func _Projects_DeleteProject_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsServer).DeleteProject(ctx, req.(*DeleteProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Projects_LeaveProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LeaveProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).LeaveProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Projects_LeaveProject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).LeaveProject(ctx, req.(*LeaveProjectRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2111,6 +2151,10 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteProject",
 			Handler:    _Projects_DeleteProject_Handler,
+		},
+		{
+			MethodName: "LeaveProject",
+			Handler:    _Projects_LeaveProject_Handler,
 		},
 		{
 			MethodName: "ListProjects",

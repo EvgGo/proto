@@ -370,6 +370,11 @@ service Projects {
 
   rpc DeleteProject(DeleteProjectRequest) returns (google.protobuf.Empty);
 
+  // Текущий пользователь выходит из проекта
+  // Удаляется только связь project_member
+  // Пользователь НЕ удаляется из команды проекта
+  rpc LeaveProject(LeaveProjectRequest) returns (google.protobuf.Empty);
+
   // Список проектов для внутренних страниц: мои проекты, проекты команды
   rpc ListProjects(ListProjectsRequest) returns (ListProjectsResponse);
 
@@ -1254,4 +1259,8 @@ message EvaluateProjectStageRequest {
   int32 score = 2;
 
   string score_comment = 3;
+}
+
+message LeaveProjectRequest {
+  string project_id = 1;
 }
