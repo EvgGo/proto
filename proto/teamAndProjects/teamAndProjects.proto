@@ -58,6 +58,19 @@ enum ProjectStageStatus {
   PROJECT_STAGE_STATUS_CANCELLED = 4;
 }
 
+enum CreateProjectTeamMode {
+  CREATE_PROJECT_TEAM_MODE_UNSPECIFIED = 0;
+
+  // Если team_name пустой — создать команду с автогенерируемым названием
+  CREATE_PROJECT_TEAM_MODE_AUTO_GENERATE = 1;
+
+  // team_name обязателен. Найти существующую команду по имени
+  CREATE_PROJECT_TEAM_MODE_ATTACH_EXISTING_BY_NAME = 2;
+
+  // team_name обязателен. Создать новую команду с этим именем
+  CREATE_PROJECT_TEAM_MODE_CREATE_NEW_WITH_NAME = 3;
+}
+
 enum SortOrder {
   SORT_ORDER_UNSPECIFIED = 0;
   SORT_ORDER_ASC = 1;
@@ -499,6 +512,8 @@ message CreateProjectRequest {
   string team_name = 8;
 
   repeated string skill_ids = 9; // полный список skill_id для проекта, max 60
+
+  CreateProjectTeamMode team_mode = 10;
 }
 
 message GetProjectRequest {
