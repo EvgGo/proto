@@ -281,6 +281,17 @@ service Teams {
   // Обновление duties участника команды (частично)
   rpc UpdateTeamMember(UpdateTeamMemberRequest) returns (TeamMember);
 
+  // Текущий пользователь выходит из команды
+  //
+  // При выходе:
+  // - пользователь удаляется из team_members;
+  // - пользователь удаляется из project_members во всех проектах этой команды
+  // - проекты не удаляются
+  // - сама команда не удаляется
+  //
+  // Founder команды выйти не может
+  rpc LeaveTeam(LeaveTeamRequest) returns (google.protobuf.Empty);
+
   rpc RemoveTeamMember(RemoveTeamMemberRequest) returns (google.protobuf.Empty);
 
   rpc ListTeamMemberDetails(ListTeamMemberDetailsRequest)
@@ -1263,4 +1274,8 @@ message EvaluateProjectStageRequest {
 
 message LeaveProjectRequest {
   string project_id = 1;
+}
+
+message LeaveTeamRequest {
+  string team_id = 1;
 }

@@ -27,6 +27,7 @@ const (
 	Teams_ListTeams_FullMethodName                     = "/workspace.v1.Teams/ListTeams"
 	Teams_ListTeamMembers_FullMethodName               = "/workspace.v1.Teams/ListTeamMembers"
 	Teams_UpdateTeamMember_FullMethodName              = "/workspace.v1.Teams/UpdateTeamMember"
+	Teams_LeaveTeam_FullMethodName                     = "/workspace.v1.Teams/LeaveTeam"
 	Teams_RemoveTeamMember_FullMethodName              = "/workspace.v1.Teams/RemoveTeamMember"
 	Teams_ListTeamMemberDetails_FullMethodName         = "/workspace.v1.Teams/ListTeamMemberDetails"
 	Teams_UpdateTeamMemberDuties_FullMethodName        = "/workspace.v1.Teams/UpdateTeamMemberDuties"
@@ -51,6 +52,16 @@ type TeamsClient interface {
 	ListTeamMembers(ctx context.Context, in *ListTeamMembersRequest, opts ...grpc.CallOption) (*ListTeamMembersResponse, error)
 	// Обновление duties участника команды (частично)
 	UpdateTeamMember(ctx context.Context, in *UpdateTeamMemberRequest, opts ...grpc.CallOption) (*TeamMember, error)
+	// Текущий пользователь выходит из команды
+	//
+	// При выходе:
+	// - пользователь удаляется из team_members;
+	// - пользователь удаляется из project_members во всех проектах этой команды
+	// - проекты не удаляются
+	// - сама команда не удаляется
+	//
+	// Founder команды выйти не может
+	LeaveTeam(ctx context.Context, in *LeaveTeamRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	RemoveTeamMember(ctx context.Context, in *RemoveTeamMemberRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ListTeamMemberDetails(ctx context.Context, in *ListTeamMemberDetailsRequest, opts ...grpc.CallOption) (*ListTeamMemberDetailsResponse, error)
 	UpdateTeamMemberDuties(ctx context.Context, in *UpdateTeamMemberDutiesRequest, opts ...grpc.CallOption) (*TeamMember, error)
@@ -137,6 +148,16 @@ func (c *teamsClient) UpdateTeamMember(ctx context.Context, in *UpdateTeamMember
 	return out, nil
 }
 
+func (c *teamsClient) LeaveTeam(ctx context.Context, in *LeaveTeamRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Teams_LeaveTeam_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *teamsClient) RemoveTeamMember(ctx context.Context, in *RemoveTeamMemberRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
@@ -213,6 +234,16 @@ type TeamsServer interface {
 	ListTeamMembers(context.Context, *ListTeamMembersRequest) (*ListTeamMembersResponse, error)
 	// Обновление duties участника команды (частично)
 	UpdateTeamMember(context.Context, *UpdateTeamMemberRequest) (*TeamMember, error)
+	// Текущий пользователь выходит из команды
+	//
+	// При выходе:
+	// - пользователь удаляется из team_members;
+	// - пользователь удаляется из project_members во всех проектах этой команды
+	// - проекты не удаляются
+	// - сама команда не удаляется
+	//
+	// Founder команды выйти не может
+	LeaveTeam(context.Context, *LeaveTeamRequest) (*emptypb.Empty, error)
 	RemoveTeamMember(context.Context, *RemoveTeamMemberRequest) (*emptypb.Empty, error)
 	ListTeamMemberDetails(context.Context, *ListTeamMemberDetailsRequest) (*ListTeamMemberDetailsResponse, error)
 	UpdateTeamMemberDuties(context.Context, *UpdateTeamMemberDutiesRequest) (*TeamMember, error)
@@ -249,6 +280,9 @@ func (UnimplementedTeamsServer) ListTeamMembers(context.Context, *ListTeamMember
 }
 func (UnimplementedTeamsServer) UpdateTeamMember(context.Context, *UpdateTeamMemberRequest) (*TeamMember, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTeamMember not implemented")
+}
+func (UnimplementedTeamsServer) LeaveTeam(context.Context, *LeaveTeamRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LeaveTeam not implemented")
 }
 func (UnimplementedTeamsServer) RemoveTeamMember(context.Context, *RemoveTeamMemberRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveTeamMember not implemented")
@@ -415,6 +449,24 @@ func _Teams_UpdateTeamMember_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Teams_LeaveTeam_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LeaveTeamRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TeamsServer).LeaveTeam(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Teams_LeaveTeam_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TeamsServer).LeaveTeam(ctx, req.(*LeaveTeamRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Teams_RemoveTeamMember_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RemoveTeamMemberRequest)
 	if err := dec(in); err != nil {
@@ -557,6 +609,10 @@ var Teams_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateTeamMember",
 			Handler:    _Teams_UpdateTeamMember_Handler,
+		},
+		{
+			MethodName: "LeaveTeam",
+			Handler:    _Teams_LeaveTeam_Handler,
 		},
 		{
 			MethodName: "RemoveTeamMember",
